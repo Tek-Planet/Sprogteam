@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "481830882695",
+    "project_id": "sprogteam-267cd",
+    "storage_bucket": "sprogteam-267cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481830882695:android:d8700395f1986b9fe91722",
+        "android_client_info": {
+          "package_name": "com.aats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481830882695-u51gndr834o20hi888prv4dhuk15nh60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa0aEX4YUWQ2Phfjn9wM2Piz6is7-T_e0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481830882695-u51gndr834o20hi888prv4dhuk15nh60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

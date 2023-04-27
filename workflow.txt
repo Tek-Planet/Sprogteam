@@ -1,0 +1,10 @@
+Order 5315 is created on app and messages for citizens is not
+shown and there is no option for accepting task, when interpreter
+choose to se details
+
+Rejected request shouldn’t be stored if it’s canceled before there 
+have been reached agreement
+
+
+
+
