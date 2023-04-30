@@ -28,6 +28,8 @@ import jwt_decode from 'jwt-decode';
 import messaging from '@react-native-firebase/messaging';
 import {Alert, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {StripeKey} from '@env';
+import {StripeProvider} from '@stripe/stripe-react-native';
 
 axios.defaults.baseURL = baseURL + '/api';
 
@@ -302,11 +304,13 @@ const Routes = () => {
     return <SplashScreen />;
   } else {
     return (
-      <SafeAreaView style={{flex: 1}}>
-        <NavigationContainer>
-          <MainNavigation />
-        </NavigationContainer>
-      </SafeAreaView>
+      <StripeProvider publishableKey={StripeKey}>
+        <SafeAreaView style={{flex: 1}}>
+          <NavigationContainer>
+            <MainNavigation />
+          </NavigationContainer>
+        </SafeAreaView>
+      </StripeProvider>
     );
   }
 };

@@ -19,7 +19,6 @@ import {
   transcript,
   proofreading,
   lawsuit,
-  written,
 } from '../assets/icons';
 // get user details
 

@@ -1,10 +1,11 @@
-import {parse} from '@babel/core';
-import React from 'react';
-import {View, TextInput, StyleSheet, Text, Image} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, StyleSheet, Text, Image, Alert} from 'react-native';
 import {fonts} from '../../assets/fonts';
 import {Button, ProfileHeader} from '../../components';
 import {useTranslation} from 'react-i18next';
 import {baseCurrency} from '../../util/util';
+import {presentPaymentSheet, useStripe} from '@stripe/stripe-react-native';
+import {getClientSecretKey} from '../../data/payment';
 
 export default function LandingPage(props) {
   const {t} = useTranslation();
@@ -25,6 +26,12 @@ export default function LandingPage(props) {
 
   const [amt, setamt] = React.useState(total + charges);
 
+  const [clientKey, setClientKey] = useState(null);
+  const [customer, setCustomer] = useState(null);
+  const [ephemeralKey, setEphemeralKey] = useState(null);
+
+  const {initPaymentSheet} = useStripe();
+
   const pay = () => {
     if (amt != '') {
       // navigation.navigate('Payment', {amt: amt});
@@ -35,22 +42,74 @@ export default function LandingPage(props) {
     }
   };
 
+  const fetchData = async () => {
+    const res = await getClientSecretKey(amt);
+
+    if (res !== 'error') {
+      setClientKey(res.paymentIntent);
+      setCustomer(res.customer);
+      setEphemeralKey(res.ephemeralKey);
+      console.log(res.paymentIntent);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  useEffect(() => {
+    if (clientKey) {
+      initialisePaymentSheet();
+    }
+  }, [clientKey]);
+  const initialisePaymentSheet = async () => {
+    if (!clientKey) return;
+    const {error} = await initPaymentSheet({
+      merchantDisplayName: 'WoofMatchDog',
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: clientKey,
+      // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
+      //methods that complete payment after a delay, like SEPA Debit and Sofort.
+      allowsDelayedPaymentMethods: true,
+    });
+    if (error) {
+      console(error);
+    } else {
+      console.log('initialise successfully');
+    }
+  };
+
+  const openPaymentSheet = async () => {
+    const {error} = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert(t('common:success'), t('common:success_mgs'));
+
+      navigation.navigate('OtherNav', {
+        screen: 'Success',
+        params: {amount: amt, item: item, from: from},
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <ProfileHeader navigation={navigation} />
+      <ProfileHeader />
       <View style={{flex: 1}}>
         <View
           style={{
             backgroundColor: '#F5F5F5',
             height: 400,
             alignItems: 'center',
-            justifyContent: 'center',
+            // justifyContent: 'center',
+            paddingTop: 20,
             width: '100%',
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
             // padding:10
           }}>
-          <Image source={require('./paypal.png')} style={styles.img} />
+          {/* <Image source={require('./paypal.png')} style={styles.img} /> */}
           <View
             style={{
               flexDirection: 'row',
@@ -98,15 +157,8 @@ export default function LandingPage(props) {
         </View>
       </View>
 
-      {/* <TextInput
-        placeholder="Enter Amount"
-        style={styles.textinput}
-        value={amt}
-        onChangeText={val => setamt(val)}
-        keyboardType="number-pad"
-      /> */}
       <View style={{margin: 10}}>
-        <Button buttonTitle={t('common:proceed')} onPress={pay} />
+        <Button buttonTitle={t('common:proceed')} onPress={openPaymentSheet} />
       </View>
     </View>
   );

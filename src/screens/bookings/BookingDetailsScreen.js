@@ -755,22 +755,24 @@ const BookingDetailsScreen = ({navigation, route}) => {
                         </Text>
                       </View>
 
-                      {item?.IsBookingCompleted > 0 && item?.TaskTypeId !== 1 && (
-                        <View style={styles.row}>
-                          <Text style={[styles.text, {fontFamily: fonts.bold}]}>
-                            {t('common:you_get')} :
-                          </Text>
-                          <Text style={[styles.text, {flex: 1}]}>
-                            {item?.InterpreterSalary}{' '}
-                            {!CreateByApp
-                              ? ''
-                              : IsBookingCompleted === 0
-                              ? ' '
-                              : baseCurrency.usd}{' '}
-                            ( - 20% service charges)
-                          </Text>
-                        </View>
-                      )}
+                      {item?.IsBookingCompleted > 0 &&
+                        item?.TaskTypeId !== 1 && (
+                          <View style={styles.row}>
+                            <Text
+                              style={[styles.text, {fontFamily: fonts.bold}]}>
+                              {t('common:you_get')} :
+                            </Text>
+                            <Text style={[styles.text, {flex: 1}]}>
+                              {item?.InterpreterSalary}{' '}
+                              {!CreateByApp
+                                ? ''
+                                : IsBookingCompleted === 0
+                                ? ' '
+                                : baseCurrency.usd}{' '}
+                              ( - 20% service charges)
+                            </Text>
+                          </View>
+                        )}
                       {item?.TaskTypeId === 1 && (
                         <View>
                           {item?.TfareCustomer !== null && (
@@ -1328,11 +1330,9 @@ const BookingDetailsScreen = ({navigation, route}) => {
                         </View>
                       )}
                       {/* booking negotiation button for customer 2 */}
-                      {dateToMilliSeconds(item.DateTimeStart) >
-                        dateToMilliSeconds(getCurrentDate()) &&
-                        ((OfferStage === 'initial' ||
-                          OfferStage === 'negotiating') &&
-                        IsBookingCompleted === 2 ? (
+                      {(OfferStage === 'initial' ||
+                        OfferStage === 'negotiating') &&
+                        (IsBookingCompleted === 2 ? (
                           <View style={styles.buttonWrapper}>
                             <Button
                               onPress={() =>
@@ -1453,7 +1453,11 @@ const BookingDetailsScreen = ({navigation, route}) => {
                       <Button
                         onPress={() => updateBookingStatus(6, BookingID)}
                         bGcolor={'#800000'}
-                        buttonTitle={t('common:reject')}
+                        buttonTitle={
+                          item.StatusName === 1
+                            ? t('common:reject')
+                            : t('common:cancel')
+                        }
                       />
                     </View>
                   )}
