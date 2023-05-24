@@ -40,6 +40,7 @@ const GigsScreen = ({route}) => {
                 margin: 10,
                 fontFamily: fonts.light,
                 fontSize: 16,
+                color: colors.black,
               }}>
               {t('common:no') + ' ' + t('common:gig') + ' ' + t('common:found')}
             </Text>
@@ -49,7 +50,9 @@ const GigsScreen = ({route}) => {
         data={gigs}
         renderItem={({item, index}) => {
           // console.log(item.request);
-          return <GigListFull item={item} index={index} />;
+          return (
+            <GigListFull translatorInfo={profile} item={item} index={index} />
+          );
         }}
       />
     </View>

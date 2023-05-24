@@ -21,6 +21,7 @@ import {
 } from '../../data/data';
 // import Feather from 'react-native-vector-icons/Feather';
 import {authBaseUrl, setHeaders} from '../../util/util';
+import {colors} from '../../assets/colors';
 
 const SignIn = ({navigation}) => {
   const {setUser, setAuth, user, userName, setUserName} =
@@ -253,6 +254,7 @@ const SignIn = ({navigation}) => {
                   fontSize: 15,
                   fontFamily: fonts.medium,
                   alignSelf: 'center',
+                  color: colors.black,
                 }}>
                 {t('common:sign_up')} ?
               </Text>

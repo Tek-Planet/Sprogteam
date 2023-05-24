@@ -58,13 +58,12 @@ const TranlatorsListDirect = props => {
       {/* top    */}
       <View>
         <TouchableOpacity
-        // onPress={() =>
-        //   navigation.navigate('OtherNav', {
-        //     screen: 'PublicProfile',
-        //     params: {profile: item},
-        //   })
-        // }
-        >
+          onPress={() =>
+            navigation.navigate('OtherNav', {
+              screen: 'PublicProfile',
+              params: {profile: item},
+            })
+          }>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View
               style={{

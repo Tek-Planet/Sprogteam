@@ -302,4 +302,9 @@ export default {
   start: 'Comienzo',
   translating: 'Traductorio',
   service: 'Servicio',
+  success: 'Éxito',
+  success_mgs: 'Pago exitoso',
+  freelancer: 'Persona de libre dedicación',
+  review: 'Revisar',
+  negotiate: 'Puede editar el precio para negociar',
 };

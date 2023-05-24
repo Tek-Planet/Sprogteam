@@ -147,6 +147,7 @@ const GigListPrice = props => {
           screen: 'ViewGiG',
           params: {
             item: item,
+            translatorInfo: translatorInfo,
           },
         });
       }}
@@ -167,6 +168,7 @@ const GigListPrice = props => {
           <Text
             style={{
               fontFamily: fonts.medium,
+              color: colors.black,
 
               // width: dimention.width * 0.6,
             }}>
@@ -188,6 +190,7 @@ const GigListPrice = props => {
           fontFamily: fonts.medium,
           marginTop: 10,
           marginBottom: 5,
+          color: colors.black,
         }}>
         {t('common:translating')}
       </Text>
@@ -201,6 +204,7 @@ const GigListPrice = props => {
           style={{
             fontFamily: fonts.medium,
             flex: 1,
+            color: colors.black,
           }}>
           {t('common:from')} : {languageName}
         </Text>
@@ -208,6 +212,7 @@ const GigListPrice = props => {
         <Text
           style={{
             fontFamily: fonts.medium,
+            color: colors.black,
           }}>
           {t('common:to')} : {toLanguageName}
         </Text>

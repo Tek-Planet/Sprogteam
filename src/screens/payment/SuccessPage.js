@@ -18,6 +18,7 @@ import {
 } from '../../data/data';
 
 import {AuthContext} from '../../context/AuthProvider';
+import {colors} from '../../assets/colors';
 
 export default function Success({navigation}) {
   const {user, setReload} = useContext(AuthContext);
@@ -219,10 +220,22 @@ export default function Success({navigation}) {
             marginBottom: 30,
           }}
         />
-        <Text style={{fontFamily: fonts.bold, fontSize: 20, margin: 10}}>
+        <Text
+          style={{
+            fontFamily: fonts.bold,
+            fontSize: 20,
+            margin: 10,
+            color: colors.black,
+          }}>
           Payment of {amount} Successful
         </Text>
-        <Text style={{fontFamily: fonts.medium, fontSize: 18, margin: 10}}>
+        <Text
+          style={{
+            fontFamily: fonts.medium,
+            fontSize: 18,
+            margin: 10,
+            color: colors.black,
+          }}>
           Your booking has been scheduled
         </Text>
       </View>

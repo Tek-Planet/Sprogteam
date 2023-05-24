@@ -27,7 +27,7 @@ const SearchScreen = () => {
     const res = await searchGiGs(filter);
     if (selected === 0) setGigs(res);
     else setTranslatorList(res);
-    // console.log(res);
+    console.log(res[0].userId);
     if (res.length === 0) setShowFilterText(true);
     setLoading(false);
   }

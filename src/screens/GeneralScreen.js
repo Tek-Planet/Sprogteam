@@ -170,6 +170,9 @@ const GeneralScreen = ({navigation, route}) => {
 
       // console.log(res);
 
+      // var responseData = await res.json();
+      // console.log(responseData);
+
       const resUser = await getUser(user.profile.Email);
       await storeDetails(resUser);
       setUser(resUser);

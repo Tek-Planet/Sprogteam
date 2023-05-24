@@ -304,4 +304,9 @@ export default {
   translating: 'Translating',
   service: 'Service',
   message: 'Message',
+  success: 'Success',
+  success_mgs: 'Payment Successful',
+  freelancer: 'Freelancer',
+  review: 'Review',
+  negotiate: 'You can edit price to negotiate',
 };

@@ -6,6 +6,8 @@ import {useTranslation} from 'react-i18next';
 import {baseCurrency} from '../../util/util';
 import {presentPaymentSheet, useStripe} from '@stripe/stripe-react-native';
 import {getClientSecretKey} from '../../data/payment';
+import {cashless} from '../../assets/icons';
+import {colors} from '../../assets/colors';
 
 export default function LandingPage(props) {
   const {t} = useTranslation();
@@ -109,7 +111,7 @@ export default function LandingPage(props) {
             borderBottomRightRadius: 20,
             // padding:10
           }}>
-          {/* <Image source={require('./paypal.png')} style={styles.img} /> */}
+          <Image source={cashless} style={styles.img} />
           <View
             style={{
               flexDirection: 'row',
@@ -134,7 +136,7 @@ export default function LandingPage(props) {
               {t('common:booking') + ' ' + t('common:fee')}
             </Text>
             <Text style={styles.title}>
-              {charges} {baseCurrency.usd}
+              {charges.toFixed(2)} {baseCurrency.usd}
             </Text>
           </View>
           <View
@@ -143,9 +145,7 @@ export default function LandingPage(props) {
               justifyContent: 'space-between',
               width: '100%',
             }}>
-            <Text style={[styles.title, {fontFamily: fonts.medium}]}>
-              {t('common:total_fee')}
-            </Text>
+            <Text style={[styles.title]}>{t('common:total_fee')}</Text>
             <Text style={styles.title}>
               {amt} {baseCurrency.usd}
             </Text>
@@ -188,5 +188,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: 18,
     padding: 10,
+    color: colors.black,
   },
 });

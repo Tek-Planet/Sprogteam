@@ -296,4 +296,9 @@ export default {
   start: 'Start',
   translating: 'Oversættelse',
   service: 'Service',
+  success: 'Succes',
+  success_mgs: 'Betaling lykkedes',
+  freelancer: 'Freelancer',
+  review: 'Anmeldelse',
+  negotiate: 'Du kan redigere prisen for at forhandle',
 };

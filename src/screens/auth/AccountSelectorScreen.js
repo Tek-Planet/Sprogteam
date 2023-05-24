@@ -88,14 +88,14 @@ const AccountSelectorScreen = ({navigation}) => {
             mp
             checked={checkCustomer}
             setChecked={setCheckedCustomer}
-            placeholder={'Customer'}
+            placeholder={t('common:customer')}
           />
           <View style={{marginTop: 15}} />
           <CustomCheckBox
             mp
             checked={checkTranslator}
             setChecked={setCheckedTranslator}
-            placeholder={'Freelancer'}
+            placeholder={t('common:freelancer')}
           />
           <View style={{marginTop: 10}}>
             {error !== null && <ErrorMsg error={error} />}

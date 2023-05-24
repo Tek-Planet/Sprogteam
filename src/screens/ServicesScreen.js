@@ -47,10 +47,6 @@ const ServicesScreen = ({navigation}) => {
 
   // console.log(user.profile.CanBook);
 
-  const [translatorList, setTranslatorList] = useState(
-    refreshing ? [] : translators,
-  );
-
   const [filter, setFilter] = useState('');
 
   const [loading, setLoading] = useState(false);

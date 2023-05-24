@@ -256,6 +256,7 @@ const PublicProfileScreen = ({navigation, route}) => {
                   {gigs?.map((item, index) => {
                     return (
                       <GigListFull
+                        translatorInfo={profile}
                         key={index.toString()}
                         mini
                         item={item}

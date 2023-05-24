@@ -5,6 +5,7 @@ import {fonts} from '../assets/fonts';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {isIpad} from '../util/util';
+import {colors} from '../assets/colors';
 
 const ProfileHeader = props => {
   const {name, filter, showSearchBar, placeholder, onsubmit, setValue} = props;
@@ -73,7 +74,13 @@ const ProfileHeader = props => {
         </View>
       )}
 
-      <Text style={{fontSize: 16, fontFamily: fonts.medium, marginStart: 15}}>
+      <Text
+        style={{
+          fontSize: 16,
+          fontFamily: fonts.medium,
+          marginStart: 15,
+          color: colors.black,
+        }}>
         {name}
       </Text>
     </View>

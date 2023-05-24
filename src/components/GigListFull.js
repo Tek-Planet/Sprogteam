@@ -11,13 +11,14 @@ import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../assets/fonts';
 import {baseCurrency, isIpad} from '../util/util';
 import {useTranslation} from 'react-i18next';
+import {colors} from '../assets/colors';
 
 const {width} = Dimensions.get('screen');
 
 const GigListFull = props => {
   const {t} = useTranslation();
 
-  const {item, mini} = props;
+  const {item, mini, translatorInfo} = props;
   const {title, imgOne, service} = item;
 
   const navigation = useNavigation();
@@ -25,16 +26,13 @@ const GigListFull = props => {
   return (
     <TouchableOpacity
       onPress={() => {
-        // console.log(item.value);
-
         navigation.navigate('OtherNav', {
           screen: 'ViewGiG',
           params: {
             item: item,
+            translatorInfo,
           },
         });
-
-        // navigation.navigate('GigDetails', {item: item});
       }}
       style={[
         {
@@ -74,6 +72,7 @@ const GigListFull = props => {
             fontFamily: fonts.bold,
             fontSize: 15,
             textAlign: 'center',
+            color: colors.black,
           }}>
           {title}
         </Text>
@@ -83,12 +82,14 @@ const GigListFull = props => {
             style={{
               fontFamily: fonts.light,
               marginEnd: 10,
+              color: colors.black,
             }}>
             {t('common:service')}
           </Text>
           <Text
             style={{
               fontFamily: fonts.medium,
+              color: colors.black,
             }}>
             {service}
           </Text>
@@ -97,7 +98,7 @@ const GigListFull = props => {
         <Text
           style={{
             fontFamily: fonts.medium,
-
+            color: colors.black,
             margin: 5,
           }}>
           {t('common:translating')}
@@ -113,6 +114,7 @@ const GigListFull = props => {
             <Text
               style={{
                 fontFamily: fonts.light,
+                color: colors.black,
               }}>
               {t('common:from')} :
             </Text>
@@ -120,6 +122,7 @@ const GigListFull = props => {
             <Text
               style={{
                 fontFamily: fonts.medium,
+                color: colors.black,
               }}>
               {item?.languageName}
             </Text>
@@ -128,12 +131,14 @@ const GigListFull = props => {
             <Text
               style={{
                 fontFamily: fonts.light,
+                color: colors.black,
               }}>
               {t('common:to')} :
             </Text>
             <Text
               style={{
                 fontFamily: fonts.medium,
+                color: colors.black,
               }}>
               {item?.toLanguageName}
             </Text>
@@ -150,6 +155,7 @@ const GigListFull = props => {
             style={{
               fontFamily: fonts.bold,
               fontSize: 18,
+              color: colors.black,
             }}>
             {item?.package[0]?.PPPrice} {baseCurrency.usd}
           </Text>
@@ -158,6 +164,7 @@ const GigListFull = props => {
             style={{
               fontFamily: fonts.light,
               marginEnd: 10,
+              color: colors.black,
             }}>
             {t('common:from')}
           </Text>

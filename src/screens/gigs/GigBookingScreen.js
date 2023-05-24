@@ -87,7 +87,7 @@ const GigBookingScreen = ({navigation, route}) => {
 
   const {returnToChat, customerInfo, translatorInfo} = route.params;
 
-  // console.log(translatorInfo)
+  console.log(translatorInfo?.Email);
 
   const {
     checkVideo,

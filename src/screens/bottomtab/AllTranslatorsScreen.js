@@ -232,8 +232,6 @@ const AllTranslatorsScreen = ({navigation}) => {
         showSearchBar={true}
       />
 
-      {/* <Text>   {JSON.stringify(translators)}</Text> */}
-
       <View>
         {/* <Header/> */}
         <View style={{marginStart: 8, marginEnd: 8, marginBottom: 100}}>

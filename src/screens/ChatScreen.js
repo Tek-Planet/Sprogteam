@@ -264,7 +264,7 @@ export function ChatScreen({navigation, route}) {
     })
       .then(async image => {
         // const imageUri = image.path;
-        // console.log(image);
+        console.log(image);
         // postImageOperation(imageUri);
         // const absoluitePath = await RNFetchBlob.fs.stat(image.path);
         const path = await normalizePath(image.path);

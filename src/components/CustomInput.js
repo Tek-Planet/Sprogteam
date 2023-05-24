@@ -10,6 +10,7 @@ import {
 import {fonts} from '../assets/fonts';
 
 import Feather from 'react-native-vector-icons/Feather';
+import {colors} from '../assets/colors';
 
 const CustomInput = ({name, image, placeholder, ...rest}) => {
   const [secure, setSecure] = useState(true);
@@ -103,5 +104,6 @@ const styles = StyleSheet.create({
   placeholder: {
     marginVertical: 10,
     fontFamily: fonts.medium,
+    color: colors.black,
   },
 });

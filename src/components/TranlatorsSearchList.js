@@ -209,7 +209,12 @@ const TranslatorSearchList = props => {
         {/* gig list  */}
         <View style={styles.infoContainer}>
           <View style={styles.row}>
-            <GigListPrice full item={gigInfo} index={index} />
+            <GigListPrice
+              translatorInfo={item}
+              full
+              item={gigInfo}
+              index={index}
+            />
           </View>
         </View>
       </View>

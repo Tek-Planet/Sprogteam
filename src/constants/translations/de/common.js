@@ -306,4 +306,9 @@ export default {
   start: 'Start',
   translating: 'Übersetzen',
   service: 'Service',
+  success: 'Erfolg',
+  success_mgs: 'Bezahlung erfolgreich',
+  freelancer: 'Freiberufler',
+  review: 'Rezension',
+  negotiate: 'Sie können den Preis bearbeiten, um ihn auszuhandeln',
 };

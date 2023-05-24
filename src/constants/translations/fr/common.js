@@ -303,4 +303,9 @@ export default {
   start: 'Début',
   translating: 'Traduction en cours',
   service: 'Un service',
+  success: 'Succès',
+  success_mgs: 'Paiement réussi',
+  freelancer: 'Indépendant',
+  review: 'Examen',
+  negotiate: 'Vous pouvez modifier le prix à négocier',
 };

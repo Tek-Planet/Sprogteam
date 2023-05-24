@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: fonts.bold,
     marginStart: 10,
+    color: colors.black,
   },
   paypalBox: {
     height: 80,

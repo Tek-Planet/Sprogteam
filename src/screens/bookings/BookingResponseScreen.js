@@ -42,7 +42,7 @@ const BookingResponseScreen = ({navigation, route}) => {
   const [userDetails, setUserDetails] = useState(null);
   const [price, setPrice] = useState(PricesCustomer.toString());
   const [interpreterFee, setInterpreterFee] = useState(0);
-  const [customerFee, setCustomerFee] = useState(0);
+  const [priceChanged, setPriceChanged] = useState(false);
   const [total, setTotal] = useState(0);
 
   const [tfare, setTfare] = useState(
@@ -104,15 +104,23 @@ const BookingResponseScreen = ({navigation, route}) => {
       const responseBooking = await axios.put(`/orders/apply`, bookingObject);
       if (responseBooking.data.msg === 'success') {
         setReload(true);
-        toast('response sent', 'success');
-        navigation.navigate({
-          name: path,
-          params: {
-            reload: 'Yes',
-            bookingId: item.BookingID,
-          },
-          merge: true,
-        });
+
+        if (status === 'concluded') {
+          navigation.navigate('OtherNav', {
+            screen: 'LandingPage',
+            params: {item: item, from: 1},
+          });
+        } else {
+          toast('response sent', 'success');
+          navigation.navigate({
+            name: path,
+            params: {
+              reload: 'Yes',
+              bookingId: item.BookingID,
+            },
+            merge: true,
+          });
+        }
       } else {
         console.log(responseBooking.data);
         toast('unable to submit your response', 'error');
@@ -139,13 +147,16 @@ const BookingResponseScreen = ({navigation, route}) => {
     var translatorIncome = priceCalculator(total);
     setInterpreterFee(translatorIncome);
     setTotal(total);
-
-    console.log(total, 'et', translatorIncome);
   };
 
   useEffect(() => {
     if (price > 0) changeInPrice();
   }, [price, tfare]);
+
+  useEffect(() => {
+    if (price !== PricesCustomer.toString()) setPriceChanged(true);
+    else setPriceChanged(false);
+  }, [price]);
 
   // 86400000
 
@@ -383,7 +394,6 @@ const BookingResponseScreen = ({navigation, route}) => {
                 {t('common:tasktype')} :
               </Text>
               <Text style={styles.text}>
-                {' '}
                 {ServiceId === null || ServiceId === 3 || ServiceId === 0
                   ? getTaskName(item?.TaskTypeId)
                   : available_services[ServiceId - 1]?.label}
@@ -412,26 +422,14 @@ const BookingResponseScreen = ({navigation, route}) => {
             )}
           </View>
 
-          <View style={{width: '100%', marginTop: 20}}>
-            <Button
-              onPress={() =>
-                updateBooking('concluded', item.IsBookingCompleted)
-              }
-              bGcolor={'green'}
-              buttonTitle={
-                t('common:accept') +
-                ' ' +
-                t('common:current') +
-                ' ' +
-                t('common:terms')
-              }
-            />
-          </View>
-
           {(item.StatusName === 1 || item.StatusName === 8) && (
             <View style={styles.view}>
               <Text style={[styles.text, {fontFamily: fonts.bold}]}>
                 {t('common:review') + ' ' + ' ' + t('common:terms')}
+              </Text>
+
+              <Text style={[styles.text, {margin: 10}]}>
+                {t('common:negotiate')}
               </Text>
 
               <View style={styles.dateRow}>
@@ -507,13 +505,13 @@ const BookingResponseScreen = ({navigation, route}) => {
         <View>
           {loading ? (
             <ActivityIndicator show={loading} size={'large'} />
-          ) : (
+          ) : priceChanged ? (
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
               }}>
-              {(item.StatusName === 1 || item.StatusName === 8) && (
+              {(item.StatusName === 1 || item.StatusName === 8) && !error && (
                 <View style={{width: '100%', marginTop: 20}}>
                   <Button
                     onPress={() =>
@@ -524,6 +522,22 @@ const BookingResponseScreen = ({navigation, route}) => {
                   />
                 </View>
               )}
+            </View>
+          ) : (
+            <View style={{width: '100%', marginTop: 20}}>
+              <Button
+                onPress={() =>
+                  updateBooking('concluded', item.IsBookingCompleted)
+                }
+                bGcolor={'green'}
+                buttonTitle={
+                  t('common:accept') +
+                  ' ' +
+                  t('common:current') +
+                  ' ' +
+                  t('common:terms')
+                }
+              />
             </View>
           )}
         </View>
@@ -540,6 +554,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     textAlign: 'justify',
     margin: 5,
+    color: colors.black,
   },
   view: {
     borderColor: colors.main,
@@ -560,11 +575,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     minWidth: 80,
   },
-  filterText: {
-    fontFamily: fonts.bold,
-    fontSize: 12,
-    textAlign: 'center',
-  },
+
   dateRow: {
     flexDirection: 'row',
     alignContent: 'center',
@@ -573,12 +584,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  offertext: {
-    fontSize: 16,
-    margin: 5,
-    color: '#000',
-    fontFamily: fonts.bold,
-  },
   offertextinput: {
     textAlignVertical: 'top',
     borderColor: '#000',

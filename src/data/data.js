@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {baseURL, dateToMilliSeconds, getCurrentDate} from '../util/util';
-import firestore from '@react-native-firebase/firestore';
 import {useTranslation} from 'react-i18next';
 import {
   interpreter,
@@ -949,27 +948,6 @@ export const addChat = async chat => {
     // console.log(res.data.msg);
   } catch (err) {
     console.log(err);
-  }
-};
-
-export const getRegisterDevice = async userId => {
-  try {
-    const chk = await firestore()
-      .collection('tokens')
-      .doc(userId)
-      .collection('devices')
-      // .where('deviceId', '==', body.token)
-      .get();
-
-    var tokens = [];
-    chk.forEach(doc => {
-      tokens.push(doc.data().token);
-    });
-
-    return tokens;
-  } catch (error) {
-    console.log(error);
-    return [];
   }
 };
 

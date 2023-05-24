@@ -863,14 +863,15 @@ export const logoUrl =
 
 //https://srpogteam.onrender.com
 // https://api.sweet-meitner.185-208-207-107.plesk.page/authenticate
+// https://sprofteamauthapi.onrender.com
 export const baseURL =
   mode === 'testing'
-    ? 'https://mobile.sweet-meitner.185-208-207-107.plesk.page'
+    ? 'http://192.168.0.175:8000'
     : 'https://mobileapi.sprogteam.dk';
 
 export const authBaseUrl =
   mode === 'testing'
-    ? 'https://api.sweet-meitner.185-208-207-107.plesk.page/authenticate'
+    ? 'https://sprofteamauthapi.onrender.com/authenticate'
     : 'https://mobile.sprogteam.dk/authenticate';
 // {"info": {"class": 16, "event": "errorMessage", "lineNumber": 1, "message": "Cannot insert the value NULL into column 'BookingID', table 'devSprogteam.dbo.BookingModel'; column does not allow nulls. INSERT fails.", "name": "ERROR", "number": 515, "procName": "", "serverName": "VMI1060141\\MSSQLSERVER2019", "state": 2}}
 // sb-xvsu26127952@personal.example.com

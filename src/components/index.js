@@ -25,6 +25,7 @@ import GigListPrice from './GigListPrice';
 import KycList from './KycList';
 import Calendar from './Calendar';
 import TranlatorsListDirect from './TranlatorsListDirect';
+import Loader from './Loader';
 
 export {
   Header,
@@ -54,4 +55,5 @@ export {
   KycList,
   Calendar,
   TranlatorsListDirect,
+  Loader,
 };
