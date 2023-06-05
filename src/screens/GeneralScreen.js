@@ -15,6 +15,8 @@ import {authBaseUrl} from '../util/util';
 import {getUser, storeDetails} from '../data/data';
 import {ActivityIndicator, ProfileHeader} from '../components';
 import {colors} from '../assets/colors';
+import RNFetchBlob from 'rn-fetch-blob';
+import axios from 'axios';
 
 const GeneralScreen = ({navigation, route}) => {
   const {user, setUser, available_services} = useContext(AuthContext);
@@ -106,15 +108,14 @@ const GeneralScreen = ({navigation, route}) => {
       cropping: true,
     })
       .then(async image => {
-        const imageUri = Platform.OS === 'ios' ? image.path : image.path;
+        // const imageUri = Platform.OS === 'ios' ? image.path : image.path;
 
-        saveImageToDB(image);
+        saveImageToDB(image.path);
         setShowImageOption(false);
       })
       .catch(err => {
         Alert.alert(err.message);
         console.log(err);
-        setUploading(false);
       });
   };
 
@@ -125,53 +126,42 @@ const GeneralScreen = ({navigation, route}) => {
       cropping: true,
     })
       .then(async image => {
-        const imageUri = Platform.OS === 'ios' ? image.path : image.path;
+        // const imageUri = Platform.OS === 'ios' ? image.path : image.path;
 
-        //   Alert.alert('sourceUrl ' + image.sourceURL);
-
-        // Alert.alert('path ' + image.path);
-
-        saveImageToDB(image);
+        saveImageToDB(image.path);
 
         setShowImageOption(false);
-        // if (imageUri !== null)
-        // else alert('Unable to get image path please try again');
       })
       .catch(err => {
         Alert.alert(err.message);
         console.log(err.message);
-        setUploading(false);
       });
   };
   // wgawant man
 
-  const saveImageToDB = async image => {
-    setUploading(true);
-    const imageData = {
-      uri: image.path,
-      name: image.filename,
-      type: 'image/jpeg',
-    };
-
-    // console.log(imageData);
-
-    let formdata = new FormData();
-    formdata.append('userName', user.profile.Email);
-    formdata.append('image', imageData);
-
+  const saveImageToDB = async imageUri => {
     try {
-      var res = await fetch(`${authBaseUrl}/upload`, {
-        method: 'post',
-        body: formdata,
-        headers: {
-          'Content-Type': 'multipart/form-data; ',
-        },
+      setUploading(true);
+      let formData = new FormData();
+      formData.append('userName', user.profile.Email);
+      formData.append('file', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'profile-picture.jpg',
       });
 
-      // console.log(res);
+      let options = {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      };
 
-      // var responseData = await res.json();
-      // console.log(responseData);
+      let response = await fetch(authBaseUrl + '/upload', options);
+      let result = await response.json();
+      console.log(result);
 
       const resUser = await getUser(user.profile.Email);
       await storeDetails(resUser);

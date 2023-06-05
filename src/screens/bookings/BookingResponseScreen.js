@@ -105,7 +105,7 @@ const BookingResponseScreen = ({navigation, route}) => {
       if (responseBooking.data.msg === 'success') {
         setReload(true);
 
-        if (status === 'concluded') {
+        if (status === 'concluded' && isCustomer(user)) {
           navigation.navigate('OtherNav', {
             screen: 'LandingPage',
             params: {item: item, from: 1},
