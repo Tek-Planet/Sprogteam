@@ -423,7 +423,7 @@ const SignUpTranslatorScreen = ({navigation}) => {
                 <View style={{flex: 1}}>
                   <TextBoxTitle title={t('common:date_of_birth')} />
 
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <View style={{flex: 0.5}}>
                       <TextBox
                         name="calendar"
@@ -433,16 +433,17 @@ const SignUpTranslatorScreen = ({navigation}) => {
                         placeholderTextColor="#fafafa"
                       />
                     </View>
-                    <Icon
-                      type={'feather'}
-                      onPress={() => {
-                        setCalendarVisible(true);
-                      }}
-                      name={'calendar'}
-                      size={25}
-                      color={'#659ED6'}
-                      style={{margin: 10, marginTop: 5}}
-                    />
+                    <View style={{marginStart: 10}}>
+                      <Icon
+                        type={'feather'}
+                        onPress={() => {
+                          setCalendarVisible(true);
+                        }}
+                        name={'calendar'}
+                        size={30}
+                        color={'#659ED6'}
+                      />
+                    </View>
                   </View>
                 </View>
               </View>

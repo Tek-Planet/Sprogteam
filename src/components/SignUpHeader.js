@@ -4,10 +4,12 @@ import {fonts} from '../assets/fonts';
 import {useNavigation} from '@react-navigation/native';
 import {dimention} from '../util/util';
 import {colors} from '../assets/colors';
+import {useTranslation} from 'react-i18next';
 
 const SignUpHeader = props => {
   const {page} = props;
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   return (
     <View style={{}}>
@@ -98,7 +100,7 @@ const SignUpHeader = props => {
           marginTop: 5,
         }}>
         <Text style={{fontFamily: page === 1 ? fonts.bold : fonts.light}}>
-          Profile
+          {t('common:profile')}
         </Text>
 
         <Text
@@ -114,11 +116,11 @@ const SignUpHeader = props => {
             fontFamily: page === 3 ? fonts.bold : fonts.light,
             marginStart: 20,
           }}>
-          Services
+          {t('common:services')}
         </Text>
 
         <Text style={{fontFamily: page === 4 ? fonts.bold : fonts.light}}>
-          Language
+          {t('common:language')}
         </Text>
       </View>
     </View>
