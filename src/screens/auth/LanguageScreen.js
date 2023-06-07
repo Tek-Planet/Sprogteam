@@ -13,7 +13,7 @@ import {AuthContext} from '../../context/AuthProvider';
 
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CheckBox} from 'react-native-elements';
-import TextBox from '../../components/TextInput';
+
 import ErrorMsg from '../../components/ErrorMsg';
 import Indicator from '../../components/ActivityIndicator';
 import axios from 'axios';
@@ -25,15 +25,18 @@ import {fonts} from '../../assets/fonts';
 import CustomDropDown from '../../components/CustomDropDown';
 import CustomLanguageDropDown from '../../components/CustomLanguageDropDown';
 import {colors} from '../../assets/colors';
+import {ProfileHeader, SignUpHeader} from '../../components';
 
 const LanguageScreen = ({navigation, route}) => {
   const {email} = route.params;
 
   // console.log(email);
-  const {languages, setLanguages, user, setUser} = useContext(AuthContext);
+  const {languages, setLanguages, user, setUser, auth} =
+    useContext(AuthContext);
   const {t} = useTranslation();
 
   const initialState = {label: t('common:select'), value: 'Select'};
+  const [counter, setCounter] = useState(0);
 
   const [language, setLanguage] = useState(initialState);
   const [myLanguage, setMyLanguage] = useState(
@@ -72,7 +75,7 @@ const LanguageScreen = ({navigation, route}) => {
       setError(null);
       setLoading(true);
       const data = {
-        InterpretorName: email,
+        InterpretorName: 'techplanet49@gmail.com',
         LevelName: level.value,
         LanguageName: item.value,
         Mastery: mastry.value,
@@ -83,16 +86,21 @@ const LanguageScreen = ({navigation, route}) => {
       try {
         let res = await axios.post('/languages', data);
 
-        var details = await getUser(email);
-        setUser(details);
-        setMyLanguage(details.profile.languages);
-        if (details.msg === 'success') {
-          await storeDetails(details);
+        if (auth) {
+          var details = await getUser(email);
+          setUser(details);
+          setMyLanguage(details.profile.languages);
+          if (details.msg === 'success') {
+            await storeDetails(details);
+          }
+        } else {
+          setCounter(counter + 1);
         }
+
         if (res.data.msg === 'success') {
           Toast.show({
             type: 'success',
-            text1: 'Lnaguage added',
+            text1: 'Language added',
           });
           setLanguage(initialState);
           setCheckedPolice(false);
@@ -241,67 +249,118 @@ const LanguageScreen = ({navigation, route}) => {
   }, [route.params?.url]);
 
   return (
-    <View style={{backgroundColor: '#fff', flex: 1}}>
+    <View
+      style={{
+        backgroundColor: '#fff',
+        flex: 1,
+        justifyContent: 'space-between',
+      }}>
       <View>
-        {user && user !== null && (
-          <View>
-            <TextBoxTitle title={t('common:language')} />
-
-            <ScrollView
-              contentContainerStyle={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                marginEnd: 10,
-              }}
-              showsHorizontalScrollIndicator={false}>
-              {myLanguage?.map((item, index) => {
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      margin: 3,
-                      borderRadius: 10,
-                      padding: 8,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <Text style={styles.info}>{item.label}</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        delLanguage(item.UserLanguageId);
-                      }}
-                      style={{
-                        backgroundColor: '#E43F5A',
-                        borderRadius: 100,
-                        width: 25,
-                        height: 25,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Ionicons name="delete" size={18} color="#fff" />
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </ScrollView>
+        {auth ? (
+          <ProfileHeader name={t('common:add') + ' ' + t('common:language')} />
+        ) : (
+          <View
+            style={{
+              padding: 10,
+              paddingBottom: 0,
+              margin: 10,
+              marginBottom: 0,
+            }}>
+            <SignUpHeader page={4} />
           </View>
         )}
+        <View>
+          {user && user !== null && (
+            <View>
+              <TextBoxTitle title={t('common:language')} />
 
-        <TextBoxTitle
-          title={t('common:select') + ' ' + t('common:language')}
-          showAsh={true}
-        />
+              <ScrollView
+                contentContainerStyle={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  marginEnd: 10,
+                }}
+                showsHorizontalScrollIndicator={false}>
+                {myLanguage?.map((item, index) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        margin: 3,
+                        borderRadius: 10,
+                        padding: 8,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <Text style={styles.info}>{item.label}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          delLanguage(item.UserLanguageId);
+                        }}
+                        style={{
+                          backgroundColor: '#E43F5A',
+                          borderRadius: 100,
+                          width: 25,
+                          height: 25,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Ionicons name="delete" size={18} color="#fff" />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          )}
 
-        <CustomLanguageDropDown
-          value={language}
-          language={languages}
-          setValue={setLanguage}
-        />
+          <View style={{padding: 5, margin: 5}}>
+            <TextBoxTitle
+              title={t('common:select') + ' ' + t('common:language')}
+              showAsh={true}
+            />
 
-        {language.value !== 'Select' && listItem(language)}
+            <CustomLanguageDropDown
+              value={language}
+              language={languages}
+              setValue={setLanguage}
+            />
+
+            {language.value !== 'Select' && listItem(language)}
+          </View>
+        </View>
       </View>
+
+      {!auth && counter > 0 && (
+        <View
+          style={{
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              fontFamily: fonts.medium,
+              textAlign: 'center',
+              lineHeight: 25,
+              marginBottom: 10,
+            }}>
+            {t('common:account_completion')}
+          </Text>
+          <View style={{width: '50%'}}>
+            <Button
+              onPress={() => {
+                navigation.replace('Info', {
+                  email: email,
+                });
+              }}
+              bGcolor={'#659ED6'}
+              buttonTitle={t('common:done')}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };

@@ -24,17 +24,13 @@ import {useTranslation} from 'react-i18next';
 import {usePasswordValidation} from '../../util';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {
-  getServerToken,
-  getUser,
-  storeDetails,
-  storeUserName,
-} from '../../data/data';
+import {getServerToken, storeUserName} from '../../data/data';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {authBaseUrl, dimention, setHeaders} from '../../util/util';
 import {CountryPickerModal} from '../../components';
+import {colors} from '../../assets/colors';
 
-const SignUp = ({navigation}) => {
+const SignUpTranslatorScreen = ({navigation}) => {
   const {setUser, setAuth} = useContext(AuthContext);
   const {t} = useTranslation();
   const [terms, setTerms] = useState(false);
@@ -96,13 +92,6 @@ const SignUp = ({navigation}) => {
     if (email === null) setError('email cannot be empty');
     else if (firstName === null) setError('firstName cannot be empty');
     else if (lastName === null) setError('lastName cannot be empty');
-    else if (
-      (checkedPublicCompany || checkedPrivateCompany) &&
-      companyName === null
-    )
-      setError('company name cannot be empty');
-    else if (checkedPublicCompany && departmentId === null)
-      setError('Department ID cannot be empty');
     else if (address === null) setError('address cannot be empty');
     else if (city === null) setError('city cannot be empty');
     // else if (state === null) setError('state cannot be empty');
@@ -126,88 +115,17 @@ const SignUp = ({navigation}) => {
   };
 
   const addFeeTranslator = async id => {
-    var price;
-
-    if (categoryId == 1) {
-      price = 615.19;
-    } else if (categoryId === 2) {
-      price = 410.13;
-    } else {
-      price = 351.52;
-    }
-    const fee = {
-      UserName: email,
-      Phonevideo: price,
-      Attendance: price,
-      KmPrice: 3.51,
-    };
-
     try {
-      // add the trnaslator fee to the table
-      const res = await axios.post(`/users/fees`, fee);
+      // store the username for future usage
+      await storeUserName(email);
+      // var details = await getUser(email);
 
-      // once its succes save it  the user variable
-      if (res.data.msg === 'success') {
-        // get user details
-        // store the username for future usage
-        await storeUserName(email);
-        // var details = await getUser(email);
-
-        navigation.replace('NewKYC', {
-          email: id,
-        });
-
-        // if (details.msg === 'success') {
-        //   await storeDetails(details);
-        //   setUser(details);
-
-        // } else {
-        //   setError(details.msg);
-        //   setLoading(false);
-        // }
-      } else {
-        setLoading(false);
-        console.log('error @ fee ', res.data);
-        setError('Unable to create your account');
-      }
+      navigation.replace('NewKYC', {
+        email: id,
+      });
     } catch (error) {
       setLoading(false);
       console.log('catch @ fee', error.message);
-    }
-  };
-
-  const addFeeCustomer = async id => {
-    const fee = {
-      UserName: email,
-      VideoPhoneprice: 320,
-      AttendancePrice: 320,
-      KmPrice: 3.44,
-      CompanyName:
-        companyName !== null ? companyName : firstName + ' ' + lastName,
-    };
-    try {
-      const res = await axios.post(`/users/feescustomer`, fee);
-      if (res.data.msg === 'success') {
-        await storeUserName(email);
-
-        var details = await getUser(email);
-
-        if (details.msg === 'success') {
-          await storeDetails(details);
-          setUser(details);
-          setAuth(true);
-        } else {
-          setError(details.msg);
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-        setError('Unable to create your account');
-        console.log(res.data.err.originalError);
-      }
-    } catch (err) {
-      setLoading(false);
-      console.log(err.message);
     }
   };
 
@@ -230,11 +148,7 @@ const SignUp = ({navigation}) => {
   };
 
   const addUser = async () => {
-    let companyname;
-    if (checkedTranlator) companyname = null;
-    if (checkedCustomer) companyname = firstName + ' ' + lastName;
-    if (checkedPrivateCompany || checkedPublicCompany)
-      companyname = companyName;
+    let companyname = firstName + ' ' + lastName;
 
     const newUser = {
       // UserName: email,
@@ -265,15 +179,7 @@ const SignUp = ({navigation}) => {
 
     var endPoint;
     let res;
-    if (checkedTranlator) endPoint = `${authBaseUrl}/register`;
-    // testing server
-    // endPoint = 'https://aaltapi.herokuapp.com/api/authenticate/register';
-    else
-      endPoint =
-        // live
-        `${authBaseUrl}/register-customer`;
-    // testing server
-    // 'https://aaltapi.herokuapp.com/api/authenticate/register-customer';
+    endPoint = `${authBaseUrl}/register`;
 
     try {
       res = await axios.post(endPoint, newUser);
@@ -297,23 +203,9 @@ const SignUp = ({navigation}) => {
 
           await setHeaders(token.secret, token.token);
 
-          if (checkedTranlator) {
-            // if the user is a translator add default translator fee
-            await addRole(
-              res.data.user.id,
-              '1cf787b6-f0d6-499b-aabf-59f54fb43f13',
-            );
+          addRole(res.data.user.id, '1cf787b6-f0d6-499b-aabf-59f54fb43f13');
 
-            addFeeTranslator(res.data.user.id);
-          } else {
-            // if the user is  a customr add customer default fee
-            await addRole(
-              res.data.user.id,
-              '68e81ba9-0899-40c4-b232-beeb4d60148b',
-            );
-
-            addFeeCustomer(res.data.user.id);
-          }
+          addFeeTranslator(res.data.user.id);
         } else {
           setError('Unable to authenticate you, please login to continue');
           setLoading(false);
@@ -344,12 +236,6 @@ const SignUp = ({navigation}) => {
     }
 
     // end of register user
-  };
-
-  const reset = () => {
-    setCheckedPrivateCompany(false);
-    setCheckedPublicCompany(false);
-    setCheckedPerson(false);
   };
 
   const resetCategry = () => {
@@ -399,8 +285,8 @@ const SignUp = ({navigation}) => {
         <Image
           resizeMode="contain"
           style={{
-            height: 80,
-            width: 80,
+            height: 60,
+            width: 60,
             marginTop: 20,
             borderRadius: 100,
           }}
@@ -419,84 +305,95 @@ const SignUp = ({navigation}) => {
             elevation: 2,
             marginBottom: 20,
           }}>
-          <TitleHeader title={t('common:create_new_user')} />
+          {/* <TitleHeader title={t('common:create_new_user')} /> */}
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              marginBottom: 20,
+            }}>
+            {/* personal details */}
+            <View style={styles.outer}>
+              <View style={styles.inner}>
+                <View style={styles.circle}>
+                  <Text
+                    style={{
+                      fontFamily: fonts.bold,
+                      color: colors.white,
+                    }}>
+                    1
+                  </Text>
+                </View>
+
+                <View style={styles.line} />
+              </View>
+              <Text style={{fontFamily: fonts.light, marginStart: -40}}>
+                Bio Data
+              </Text>
+            </View>
+
+            {/* kyc */}
+
+            <View style={styles.outer}>
+              <View style={styles.inner}>
+                <View style={styles.circle}>
+                  <Text
+                    style={{
+                      fontFamily: fonts.bold,
+                      color: colors.white,
+                    }}>
+                    1
+                  </Text>
+                </View>
+
+                <View style={styles.line} />
+              </View>
+              <Text>KYC</Text>
+            </View>
+
+            {/* services */}
+
+            <View style={styles.outer}>
+              <View style={styles.inner}>
+                <View style={styles.circle}>
+                  <Text
+                    style={{
+                      fontFamily: fonts.bold,
+                      color: colors.white,
+                    }}>
+                    1
+                  </Text>
+                </View>
+
+                <View style={styles.line} />
+              </View>
+              <Text>Services</Text>
+            </View>
+
+            {/* language */}
+            <View style={{}}>
+              <View style={styles.inner}>
+                <View style={styles.line} />
+                <View style={styles.circle}>
+                  <Text
+                    style={{
+                      fontFamily: fonts.bold,
+                      color: colors.white,
+                    }}>
+                    1
+                  </Text>
+                </View>
+              </View>
+              <Text>Language</Text>
+            </View>
+          </View>
 
           {/* usetype */}
 
-          <TextBoxTitle title={t('common:user_type')} />
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <CheckBox
-              onPress={() => [
-                setCheckedTranlator(checkedCustomer),
-                setCheckedCustomer(!checkedCustomer),
-              ]}
-              checked={checkedCustomer}
-            />
-            <TextBoxTitle title={t('common:customer')} showAsh={true} />
-
-            <CheckBox
-              onPress={() => {
-                setCheckedCustomer(checkedTranlator);
-                setCheckedTranlator(!checkedTranlator);
-                reset();
-              }}
-              checked={checkedTranlator}
-            />
-            <TextBoxTitle title={t('common:interpreter')} showAsh={true} />
-          </View>
-          {/* additional informaion */}
-          {checkedCustomer && (
-            <View>
-              <View style={styles.checkBoxRow}>
-                <CheckBox
-                  onPress={() => {
-                    if (checkedPerson) {
-                      reset();
-                    } else {
-                      setCheckedPerson(true);
-                      setCheckedPrivateCompany(false);
-                      setCheckedPublicCompany(false);
-                      setCompanyStatus('Person');
-                    }
-                  }}
-                  checked={checkedPerson}
-                />
-                <TextBoxTitle title="Privat person" showAsh={true} />
-              </View>
-              <View style={styles.checkBoxRow}>
-                <CheckBox
-                  onPress={() => {
-                    if (checkedPrivateCompany) {
-                      reset();
-                    } else {
-                      setCheckedPrivateCompany(true);
-                      setCheckedPerson(false);
-                      setCheckedPublicCompany(false);
-                      setCompanyStatus('Private');
-                    }
-                  }}
-                  checked={checkedPrivateCompany}
-                />
-                <TextBoxTitle title="Privat virksomhed" showAsh={true} />
-              </View>
-              <View style={styles.checkBoxRow}>
-                <CheckBox
-                  onPress={() => {
-                    if (checkedPublicCompany) {
-                      reset();
-                    } else {
-                      setCheckedPublicCompany(true);
-                      setCheckedPerson(false);
-                      setCheckedPrivateCompany(false);
-                      setCompanyStatus('Public');
-                    }
-                  }}
-                  checked={checkedPublicCompany}
-                />
-                <TextBoxTitle title="Offentlig institution" showAsh={true} />
-              </View>
-            </View>
-          )}
           <View>
             {/* Email; */}
             <TextBoxTitle title={t('common:email')} />
@@ -509,18 +406,7 @@ const SignUp = ({navigation}) => {
             {/* firsname */}
 
             <View>
-              <TextBoxTitle
-                title={
-                  checkedPrivateCompany || checkedPublicCompany
-                    ? t('common:contact') +
-                      ' ' +
-                      t('common:person') +
-                      ' ' +
-                      t('common:first') +
-                      t('common:name')
-                    : t('common:first') + t('common:name')
-                }
-              />
+              <TextBoxTitle title={t('common:first') + t('common:name')} />
               <TextBox
                 name="person-outline"
                 onChangeText={val => setFirstName(val)}
@@ -528,50 +414,13 @@ const SignUp = ({navigation}) => {
               />
 
               {/* firsname */}
-              <TextBoxTitle
-                title={
-                  checkedPrivateCompany || checkedPublicCompany
-                    ? t('common:contact') +
-                      ' ' +
-                      t('common:person') +
-                      ' ' +
-                      t('common:last') +
-                      t('common:name')
-                    : t('common:last') + t('common:name')
-                }
-              />
+              <TextBoxTitle title={t('common:last') + t('common:name')} />
               <TextBox
                 name="person"
                 onChangeText={val => setLastName(val)}
                 placeholderTextColor="#fafafa"
               />
             </View>
-            {(checkedPrivateCompany || checkedPublicCompany) && (
-              <View>
-                <TextBoxTitle
-                  title={t('common:company') + ' ' + t('common:name')}
-                />
-                <TextBox
-                  name="person-add"
-                  onChangeText={val => setCompanyName(val)}
-                  placeholderTextColor="#fafafa"
-                />
-              </View>
-            )}
-
-            {checkedPublicCompany && checkedPublicCompany && (
-              <View>
-                <TextBoxTitle
-                  title={t('common:department') + ' ' + t('common:name')}
-                />
-                <TextBox
-                  name="person-circle"
-                  keyboardType={'numeric'}
-                  onChangeText={val => setDepartmentID(val)}
-                  placeholderTextColor="#fafafa"
-                />
-              </View>
-            )}
 
             {/* Adreess */}
             <TextBoxTitle title={t('common:address')} />
@@ -645,195 +494,142 @@ const SignUp = ({navigation}) => {
             {/* dob */}
 
             {/* Ean */}
-            {(checkedPublicCompany || checkedPrivateCompany) && (
-              <View>
-                <TextBoxTitle
-                  keyboardType={'numeric'}
-                  title="EAN"
-                  showAsh={checkedPrivateCompany}
-                />
-                <TextBox
-                  name="receipt"
-                  onChangeText={val => setEAN(val)}
-                  placeholderTextColor="#fafafa"
-                />
-              </View>
-            )}
 
             {/* cvr */}
-            {(checkedPublicCompany || checkedPrivateCompany) && (
-              <View>
-                <TextBoxTitle keyboardType={'numeric'} title="CVR" />
-                <TextBox
-                  name="receipt-outline"
-                  onChangeText={val => setCVR(val)}
-                  placeholderTextColor="#fafafa"
-                />
-              </View>
-            )}
 
-            {(checkedPerson || checkedTranlator) && (
-              <View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                  }}>
-                  <View style={{flex: 1}}>
-                    <TextBoxTitle title={t('common:date_of_birth')} />
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}>
+                <View style={{flex: 1}}>
+                  <TextBoxTitle title={t('common:date_of_birth')} />
 
-                    <View style={{flexDirection: 'row'}}>
-                      <View style={{flex: 0.5}}>
-                        <TextBox
-                          name="calendar"
-                          editable={false}
-                          keyboardType={'numeric'}
-                          value={DOB}
-                          placeholderTextColor="#fafafa"
-                        />
-                      </View>
-                      <Icon
-                        type={'feather'}
-                        onPress={() => {
-                          setCalendarVisible(true);
-                        }}
-                        name={'calendar'}
-                        size={25}
-                        color={'#659ED6'}
-                        style={{margin: 10, marginTop: 5}}
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 0.5}}>
+                      <TextBox
+                        name="calendar"
+                        editable={false}
+                        keyboardType={'numeric'}
+                        value={DOB}
+                        placeholderTextColor="#fafafa"
                       />
                     </View>
+                    <Icon
+                      type={'feather'}
+                      onPress={() => {
+                        setCalendarVisible(true);
+                      }}
+                      name={'calendar'}
+                      size={25}
+                      color={'#659ED6'}
+                      style={{margin: 10, marginTop: 5}}
+                    />
                   </View>
                 </View>
-                {/* sex */}
-                <TextBoxTitle title={t('common:sex')} />
-
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <CheckBox
-                    onPress={() => [
-                      setCheckedFemale(checkedMale),
-                      setCheckedMale(!checkedMale),
-                    ]}
-                    checked={checkedMale}
-                  />
-                  <TextBoxTitle title={t('common:male')} showAsh={true} />
-
-                  <CheckBox
-                    onPress={() => [
-                      setCheckedMale(checkedFemale),
-                      setCheckedFemale(!checkedFemale),
-                    ]}
-                    checked={checkedFemale}
-                  />
-                  <TextBoxTitle title={t('common:female')} showAsh={true} />
-                </View>
               </View>
-            )}
+              {/* sex */}
+              <TextBoxTitle title={t('common:sex')} />
+
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <CheckBox
+                  onPress={() => [
+                    setCheckedFemale(checkedMale),
+                    setCheckedMale(!checkedMale),
+                  ]}
+                  checked={checkedMale}
+                />
+                <TextBoxTitle title={t('common:male')} showAsh={true} />
+
+                <CheckBox
+                  onPress={() => [
+                    setCheckedMale(checkedFemale),
+                    setCheckedFemale(!checkedFemale),
+                  ]}
+                  checked={checkedFemale}
+                />
+                <TextBoxTitle title={t('common:female')} showAsh={true} />
+              </View>
+            </View>
 
             {/* additional customer information */}
             {/* needs cutting away from here */}
             {/* additional  translator information  */}
-            {checkedTranlator && (
-              <View>
-                {/* sunheld */}
-                {/* <TextBoxTitle title="Sundhedstolk" showAsh={true} /> */}
-                {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
+            <View>
+              {/* translator categoty  */}
+
+              <TextBoxTitle title={t('common:category')} />
+              <View style={{marginTop: 15}}>
+                <View style={styles.checkBoxRow}>
                   <CheckBox
-                    checked={checkedSunheld}
                     onPress={() => {
-                      checkedSunheld
-                        ? setCheckedSunheld(false)
-                        : setCheckedSunheld(true);
+                      if (checkedLevelThree) {
+                        resetCategry();
+                      } else {
+                        setCategoryId(1);
+                        setCheckedLevelThree(true);
+                        setCheckedLevelOne(false);
+                        setCheckedLevelTwo(false);
+                      }
                     }}
+                    checked={checkedLevelThree}
                   />
-                  <TextBoxTitle title="Yes" showAsh={true} />
-                </View> */}
-
-                {/* <TextBoxTitle title="Politigodkendt ?" showAsh={true} />
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <TextBoxTitle
+                    title={t('common:government_approve')}
+                    showAsh={true}
+                  />
+                </View>
+                <View style={styles.checkBoxRow}>
                   <CheckBox
-                    checked={checkedPolice}
                     onPress={() => {
-                      checkedPolice
-                        ? setCheckedPolice(false)
-                        : setCheckedPolice(true);
+                      if (checkedLevelTwo) {
+                        resetCategry();
+                      } else {
+                        setCategoryId(2);
+                        setCheckedLevelOne(false);
+                        setCheckedLevelTwo(true);
+                        setCheckedLevelThree(false);
+                      }
                     }}
+                    checked={checkedLevelTwo}
                   />
-                  <TextBoxTitle title="Yes" showAsh={true} />
-                </View> */}
-
-                {/* translator categoty  */}
-
-                <TextBoxTitle title={t('common:category')} />
-                <View style={{marginTop: 15}}>
-                  <View style={styles.checkBoxRow}>
-                    <CheckBox
-                      onPress={() => {
-                        if (checkedLevelThree) {
-                          resetCategry();
-                        } else {
-                          setCategoryId(1);
-                          setCheckedLevelThree(true);
-                          setCheckedLevelOne(false);
-                          setCheckedLevelTwo(false);
-                        }
-                      }}
-                      checked={checkedLevelThree}
-                    />
+                  <View style={styles.checkBoxTextWrapper}>
                     <TextBoxTitle
-                      title={t('common:government_approve')}
+                      title={t('common:state_approve')}
                       showAsh={true}
                     />
                   </View>
-                  <View style={styles.checkBoxRow}>
-                    <CheckBox
-                      onPress={() => {
-                        if (checkedLevelTwo) {
-                          resetCategry();
-                        } else {
-                          setCategoryId(2);
-                          setCheckedLevelOne(false);
-                          setCheckedLevelTwo(true);
-                          setCheckedLevelThree(false);
-                        }
-                      }}
-                      checked={checkedLevelTwo}
-                    />
-                    <View style={styles.checkBoxTextWrapper}>
-                      <TextBoxTitle
-                        title={t('common:state_approve')}
-                        showAsh={true}
-                      />
-                    </View>
-                  </View>
-                  <View style={styles.checkBoxRow}>
-                    <CheckBox
-                      onPress={() => {
-                        if (checkedLevelOne) {
-                          resetCategry();
-                        } else {
-                          setCategoryId(3);
-                          setCheckedLevelOne(true);
-                          setCheckedLevelTwo(false);
-                          setCheckedLevelThree(false);
-                        }
-                      }}
-                      checked={checkedLevelOne}
-                    />
-                    <TextBoxTitle title={t('common:others')} showAsh={true} />
-                  </View>
                 </View>
+                <View style={styles.checkBoxRow}>
+                  <CheckBox
+                    onPress={() => {
+                      if (checkedLevelOne) {
+                        resetCategry();
+                      } else {
+                        setCategoryId(3);
+                        setCheckedLevelOne(true);
+                        setCheckedLevelTwo(false);
+                        setCheckedLevelThree(false);
+                      }
+                    }}
+                    checked={checkedLevelOne}
+                  />
+                  <TextBoxTitle title={t('common:others')} showAsh={true} />
+                </View>
+              </View>
 
-                <TextBoxTitle title={t('common:about_you')} showAsh={true} />
-                <TextBox
-                  name="information"
-                  onChangeText={val => setAbout(val)}
-                  placeholderTextColor="#fafafa"
-                  placeholder={'Short note about you'}
-                />
+              <TextBoxTitle title={t('common:about_you')} showAsh={true} />
+              <TextBox
+                name="information"
+                onChangeText={val => setAbout(val)}
+                placeholderTextColor="#fafafa"
+                placeholder={'Short note about you'}
+              />
 
-                {/* account */}
-                {/* <TextBoxTitle
+              {/* account */}
+              {/* <TextBoxTitle
                   title={t('common:account') + ' ' + t('common:number')}
                 />
                 <TextBox
@@ -841,8 +637,8 @@ const SignUp = ({navigation}) => {
                   onChangeText={val => setAccount(val)}
                   placeholderTextColor="#fafafa"
                 /> */}
-              </View>
-            )}
+            </View>
+
             {/* Password */}
             <TextBoxTitle title={t('common:password')} />
             <TextBox
@@ -975,6 +771,7 @@ const SignUp = ({navigation}) => {
                   style={{
                     fontFamily: fonts.medium,
                     width: dimention.width * 0.7,
+                    color: colors.black,
                   }}>
                   I agree to Sprogteam's Terms & Conditions and Policy Privacy
                 </Text>
@@ -1024,6 +821,7 @@ const SignUp = ({navigation}) => {
                     fontSize: 15,
                     fontFamily: fonts.medium,
                     alignSelf: 'center',
+                    color: colors.black,
                   }}>
                   {t('common:log_in')}
                 </Text>
@@ -1045,7 +843,7 @@ const SignUp = ({navigation}) => {
   );
 };
 
-export default SignUp;
+export default SignUpTranslatorScreen;
 
 const styles = StyleSheet.create({
   checkBoxRow: {
@@ -1063,6 +861,31 @@ const styles = StyleSheet.create({
   validationRow: {
     flexDirection: 'row',
     margin: 5,
+    alignItems: 'center',
+  },
+  line: {
+    height: 2,
+    flex: 1,
+    backgroundColor: 'red',
+    borderRadius: 100,
+  },
+  circle: {
+    height: 25,
+    width: 25,
+    backgroundColor: colors.main,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  outer: {
+    flex: 1,
+    width: dimention.width * 0.25,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inner: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

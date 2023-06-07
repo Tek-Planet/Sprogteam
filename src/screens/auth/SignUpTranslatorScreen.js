@@ -27,7 +27,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {getServerToken, storeUserName} from '../../data/data';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {authBaseUrl, dimention, setHeaders} from '../../util/util';
-import {CountryPickerModal} from '../../components';
+import {CountryPickerModal, SignUpHeader} from '../../components';
 import {colors} from '../../assets/colors';
 
 const SignUpTranslatorScreen = ({navigation}) => {
@@ -285,8 +285,8 @@ const SignUpTranslatorScreen = ({navigation}) => {
         <Image
           resizeMode="contain"
           style={{
-            height: 80,
-            width: 80,
+            height: 60,
+            width: 60,
             marginTop: 20,
             borderRadius: 100,
           }}
@@ -305,7 +305,9 @@ const SignUpTranslatorScreen = ({navigation}) => {
             elevation: 2,
             marginBottom: 20,
           }}>
-          <TitleHeader title={t('common:create_new_user')} />
+          {/* <TitleHeader title={t('common:create_new_user')} /> */}
+
+          <SignUpHeader page={1} />
 
           {/* usetype */}
 
@@ -708,6 +710,9 @@ const SignUpTranslatorScreen = ({navigation}) => {
                       return;
                     }
                     signUp();
+                    // navigation.replace('NewKYC', {
+                    //   email: 'hello world',
+                    // });
                   }}
                   bGcolor={'#659ED6'}
                   buttonTitle={t('common:sign_up')}

@@ -8,6 +8,7 @@ import {
   CustomInput,
   ErrorMsg,
   ProfileHeader,
+  SignUpHeader,
 } from '../../components';
 import {AuthContext} from '../../context/AuthProvider';
 import {fonts} from '../../assets/fonts';
@@ -137,21 +138,31 @@ const NewKycScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       {/* <Header navigation={navigation} /> */}
-      <View>
+      {ID !== null ? (
+        <View
+          style={{padding: 10, paddingBottom: 0, margin: 10, marginBottom: 0}}>
+          <SignUpHeader page={2} />
+        </View>
+      ) : (
         <ProfileHeader name={t('common:document') + ' ' + t('common:upload')} />
-
+      )}
+      <View style={{}}>
         <View style={{padding: 10}}>
           {ID !== null && (
             <Text
               style={[
                 styles.text,
-                {fontFamily: fonts.bold, marginVertical: 15},
+                {
+                  fontFamily: fonts.bold,
+
+                  margin: 10,
+                },
               ]}>
               {t('common:new_id')}
             </Text>
           )}
 
-          <Text style={styles.text}>
+          <Text style={{...styles.text, margin: 10}}>
             {t('common:document') + ' ' + t('common:type')}
           </Text>
 
@@ -162,36 +173,65 @@ const NewKycScreen = ({navigation, route}) => {
             setValue={setValue}
           />
 
-          <Text style={[styles.text, {marginTop: 10}]}>DOC ID</Text>
           <View style={{marginHorizontal: 10}}>
+            <Text style={[styles.text, {marginVertical: 10}]}>DOC ID</Text>
             <CustomInput
               // name="document-outline"
               onChangeText={val => setDocID(val)}
             />
           </View>
         </View>
-        <Text style={[styles.text, {marginBottom: 10}]}>
-          {t('common:clear_document')}
-        </Text>
-
-        <TouchableOpacity
-          onPress={() => {
-            setShowImageOption(!showImageOption);
+        <View
+          style={{
+            paddingHorizontal: 10,
+            marginHorizontal: 10,
           }}>
-          <Image
-            style={{
-              width: 200,
-              height: 200,
-              margin: 10,
-              alignSelf: 'center',
-            }}
-            source={
-              image !== null
-                ? {uri: image.pathUrl}
-                : require('../../assets/imgs/empty.png')
-            }
-          />
-        </TouchableOpacity>
+          <Text style={[styles.text, {marginBottom: 10}]}>
+            {t('common:clear_document')}
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowImageOption(!showImageOption);
+            }}>
+            <Image
+              style={{
+                width: 200,
+                height: 200,
+                margin: 10,
+                alignSelf: 'center',
+              }}
+              source={
+                image !== null
+                  ? {uri: image.pathUrl}
+                  : require('../../assets/imgs/empty.png')
+              }
+            />
+          </TouchableOpacity>
+
+          {error !== null && <ErrorMsg error={error} />}
+          <View style={{marginTop: 20}}>
+            {loading ? (
+              <ActivityIndicator
+                color={'#659ED6'}
+                show={loading}
+                size={'large'}
+              />
+            ) : (
+              // <Text>Loading</Text>
+              <Button
+                onPress={() => {
+                  addDoc();
+                  // navigation.replace('AddServices', {
+                  //   email: 'hello world',
+                  // });
+                }}
+                bGcolor={'#659ED6'}
+                buttonTitle={t('common:submit')}
+              />
+            )}
+          </View>
+        </View>
       </View>
 
       {showImageOption && (
@@ -201,20 +241,6 @@ const NewKycScreen = ({navigation, route}) => {
           setShowImageOption={setShowImageOption}
         />
       )}
-
-      {error !== null && <ErrorMsg error={error} />}
-      <View style={{}}>
-        {loading ? (
-          <ActivityIndicator color={'#659ED6'} show={loading} size={'large'} />
-        ) : (
-          // <Text>Loading</Text>
-          <Button
-            onPress={() => addDoc()}
-            bGcolor={'#659ED6'}
-            buttonTitle={t('common:submit')}
-          />
-        )}
-      </View>
     </View>
   );
 };
@@ -225,10 +251,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   text: {
     fontFamily: fonts.medium,
-    marginStart: 10,
   },
 });

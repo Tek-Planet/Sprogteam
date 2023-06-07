@@ -44,7 +44,7 @@ function AuthNavigation() {
       />
       <RootStack.Screen
         options={{
-          headerShown: true,
+          headerShown: false,
         }}
         name="AddLanguage"
         component={LanguageScreen}

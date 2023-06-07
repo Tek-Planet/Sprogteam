@@ -11,7 +11,7 @@ import axios from 'axios';
 import {useTranslation} from 'react-i18next';
 import {CheckBox} from 'react-native-elements';
 import {toastNew as toast} from '../../util/util';
-import {ProfileHeader} from '../../components';
+import {ProfileHeader, SignUpHeader} from '../../components';
 import {fonts} from '../../assets/fonts';
 
 const ServicesScreen = ({navigation, route}) => {
@@ -75,7 +75,7 @@ const ServicesScreen = ({navigation, route}) => {
       console.log('6', operation);
     }
 
-    navigation.replace('Info', {
+    navigation.replace('AddLanguage', {
       email: email,
     });
   };
@@ -102,14 +102,17 @@ const ServicesScreen = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <ProfileHeader name={'AddServices'} />
+    <View style={{flex: 1, backgroundColor: '#fff', padding: 20}}>
+      {/* <ProfileHeader name={'AddServices'} /> */}
+
+      <View>
+        <SignUpHeader page={3} />
+      </View>
 
       <View
         style={{
           flex: 1,
           justifyContent: 'space-between',
-          backgroundColor: '#fff',
           margin: 5,
         }}>
         <View>
@@ -271,9 +274,15 @@ const ServicesScreen = ({navigation, route}) => {
           <Indicator color={'#659ED6'} show={loading} size={'large'} />
         ) : (
           <Button
-            onPress={() => goNext()}
+            onPress={() => {
+              goNext();
+
+              // navigation.replace('AddLanguage', {
+              //   email: 'Hello world',
+              // });
+            }}
             bGcolor={'#659ED6'}
-            buttonTitle={'continue'}
+            buttonTitle={t('common:continue')}
           />
         )}
       </View>
@@ -293,6 +302,5 @@ const styles = StyleSheet.create({
   checkBoxTextWrapper: {marginStart: -20},
   text: {
     fontFamily: fonts.medium,
-    marginStart: 10,
   },
 });

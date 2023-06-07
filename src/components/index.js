@@ -26,6 +26,7 @@ import KycList from './KycList';
 import Calendar from './Calendar';
 import TranlatorsListDirect from './TranlatorsListDirect';
 import Loader from './Loader';
+import SignUpHeader from './SignUpHeader';
 
 export {
   Header,
@@ -56,4 +57,5 @@ export {
   Calendar,
   TranlatorsListDirect,
   Loader,
+  SignUpHeader,
 };

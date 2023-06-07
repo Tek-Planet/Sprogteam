@@ -268,7 +268,7 @@ export default MyRequestList;
 const styles = StyleSheet.create({
   text: {
     fontSize: 15,
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: fonts.medium,
     textAlign: 'justify',
     margin: 5,
   },

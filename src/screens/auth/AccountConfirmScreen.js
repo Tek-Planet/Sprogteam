@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Image, Text} from 'react-native';
 import TextBoxTitle from '../../components/TextBoxTitle';
 import Button from '../../components/Button';
 import {fonts} from '../../assets/fonts';
 import {useTranslation} from 'react-i18next';
+import {active} from '../../assets/icons';
 
 const AccountConfirmScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -17,6 +18,15 @@ const AccountConfirmScreen = ({navigation, route}) => {
         backgroundColor: '#fff',
         flex: 1,
       }}>
+      <Image
+        source={active}
+        style={{
+          width: 250,
+          height: 100,
+          resizeMode: 'contain',
+          marginBottom: 30,
+        }}
+      />
       <Text
         style={{
           color: 'green',
@@ -29,7 +39,7 @@ const AccountConfirmScreen = ({navigation, route}) => {
         {t('common:welcome_text')}
       </Text>
       <TextBoxTitle title={t('common:account_text')} showAsh={true} />
-      <Text
+      {/* <Text
         style={{
           color: 'red',
           textAlign: 'center',
@@ -37,11 +47,11 @@ const AccountConfirmScreen = ({navigation, route}) => {
           margin: 20,
           fontFamily: fonts.medium,
         }}>
-        {/* Vi vil først evaluere din konto, før den kan bruges */}
+       
         {t('common:evaluate_text')}
-      </Text>
+      </Text> */}
 
-      <Text
+      {/* <Text
         style={{
           color: '#000',
           textAlign: 'center',
@@ -49,15 +59,16 @@ const AccountConfirmScreen = ({navigation, route}) => {
           margin: 20,
           fontFamily: fonts.medium,
         }}>
-        {/* Tilføj det sprog, du mestrer 100 %, ved at klikke på knappen nedenfor */}
         {t('common:add_language_text')}
-      </Text>
+      </Text> */}
 
-      <Button
-        onPress={() => navigation.replace('AddLanguage', {email: email})}
-        bGcolor={'#659ED6'}
-        buttonTitle={t('common:add') + ' ' + t('common:language')}
-      />
+      <View style={{marginTop: 30, width: '60%'}}>
+        <Button
+          onPress={() => navigation.replace('SignIn')}
+          bGcolor={'#659ED6'}
+          buttonTitle={t('common:log_in')}
+        />
+      </View>
     </View>
   );
 };

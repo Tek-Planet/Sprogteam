@@ -21,3 +21,4 @@ export const instagram = require('../icons/instagram.png');
 export const deleteaccount = require('../icons/deleteaccount.png');
 export const booking = require('../icons/booking.png');
 export const cashless = require('../icons/cashless.png');
+export const active = require('../icons/active.png');
