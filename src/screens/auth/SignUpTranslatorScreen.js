@@ -712,7 +712,7 @@ const SignUpTranslatorScreen = ({navigation}) => {
                     }
                     signUp();
                     // navigation.replace('NewKYC', {
-                    //   email: 'hello world',
+                    //   email: 'techplanet49@gmail.com',
                     // });
                   }}
                   bGcolor={'#659ED6'}

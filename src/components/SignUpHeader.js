@@ -99,27 +99,34 @@ const SignUpHeader = props => {
           marginBottom: 20,
           marginTop: 5,
         }}>
-        <Text style={{fontFamily: page === 1 ? fonts.bold : fonts.light}}>
+        <Text
+          style={{
+            fontFamily: page === 1 ? fonts.bold : fonts.light,
+            color: colors.black,
+          }}>
           {t('common:profile')}
         </Text>
-
         <Text
           style={{
             fontFamily: page === 2 ? fonts.bold : fonts.light,
             marginStart: 20,
+            color: colors.black,
           }}>
           KYC
         </Text>
-
         <Text
           style={{
             fontFamily: page === 3 ? fonts.bold : fonts.light,
             marginStart: 20,
+            color: colors.black,
           }}>
           {t('common:services')}
         </Text>
-
-        <Text style={{fontFamily: page === 4 ? fonts.bold : fonts.light}}>
+        <Text
+          style={{
+            fontFamily: page === 4 ? fonts.bold : fonts.light,
+            color: colors.black,
+          }}>
           {t('common:language')}
         </Text>
       </View>

@@ -826,7 +826,7 @@ export async function requestStoragePermission() {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       {
-        title: 'Storage Reuest',
+        title: 'Storage Request',
         message: 'SprogTeam want to access your storage',
         buttonNegative: 'Cancel',
         buttonPositive: 'Ok',
@@ -837,6 +837,29 @@ export async function requestStoragePermission() {
       return true;
     } else {
       console.log('storage permission denied');
+      return false;
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
+export async function requestCameraPermission() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      {
+        title: 'Camera Request',
+        message: 'SprogTeam want to access your camera',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'Ok',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can access camera');
+      return true;
+    } else {
+      console.log('camera permission denied');
       return false;
     }
   } catch (error) {

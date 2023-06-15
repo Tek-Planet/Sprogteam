@@ -13,6 +13,7 @@ import {CheckBox} from 'react-native-elements';
 import {toastNew as toast} from '../../util/util';
 import {ProfileHeader, SignUpHeader} from '../../components';
 import {fonts} from '../../assets/fonts';
+import {colors} from '../../assets/colors';
 
 const ServicesScreen = ({navigation, route}) => {
   const {email} = route.params;
@@ -302,5 +303,6 @@ const styles = StyleSheet.create({
   checkBoxTextWrapper: {marginStart: -20},
   text: {
     fontFamily: fonts.medium,
+    color: colors.black,
   },
 });

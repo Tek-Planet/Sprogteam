@@ -345,6 +345,7 @@ const LanguageScreen = ({navigation, route}) => {
               textAlign: 'center',
               lineHeight: 25,
               marginBottom: 10,
+              color: colors.black,
             }}>
             {t('common:account_completion')}
           </Text>

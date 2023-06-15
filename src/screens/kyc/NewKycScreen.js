@@ -15,6 +15,7 @@ import {fonts} from '../../assets/fonts';
 import {useTranslation} from 'react-i18next';
 import {uploadFIle} from '../../util/util';
 import {addDocToDb} from '../../data/data';
+import {colors} from '../../assets/colors';
 
 const NewKycScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -154,7 +155,6 @@ const NewKycScreen = ({navigation, route}) => {
                 styles.text,
                 {
                   fontFamily: fonts.bold,
-
                   margin: 10,
                 },
               ]}>
@@ -255,5 +255,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.medium,
+    color: colors.black,
   },
 });

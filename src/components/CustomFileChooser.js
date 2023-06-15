@@ -2,20 +2,32 @@ import React, {Component} from 'react';
 import {View, Modal, Platform, Alert, StyleSheet} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {normalizePath} from '../util/util';
+import {
+  normalizePath,
+  requestCameraPermission,
+  requestStoragePermission,
+} from '../util/util';
 import Button from './Button';
 import RNFetchBlob from 'rn-fetch-blob';
 
 const CustomFileChooser = props => {
   const {showImageOption, setShowImageOption, processImage} = props;
-  const choosePhotoFromLibrary = () => {
+  const choosePhotoFromLibrary = async () => {
+    if (Platform.OS === 'android') {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        alert('You need to enable storage permission to continue');
+        return;
+      }
+    }
     ImagePicker.openPicker({
       width: 500,
       height: 500,
       cropping: true,
+      multiple: false,
     })
       .then(async image => {
-        const path = await normalizePath(image.path);
+        const path = await normalizePath(image?.path);
 
         const pathToBase64 = await RNFetchBlob.fs.readFile(path, 'base64');
 
@@ -39,7 +51,15 @@ const CustomFileChooser = props => {
       });
   };
 
-  const takePhotoFromCamera = () => {
+  const takePhotoFromCamera = async () => {
+    if (Platform.OS === 'android') {
+      const hasPermission = await requestCameraPermission();
+      if (!hasPermission) {
+        alert('You need to enable storage permission to continue');
+        return;
+      }
+    }
+
     ImagePicker.openCamera({
       width: 500,
       height: 500,
