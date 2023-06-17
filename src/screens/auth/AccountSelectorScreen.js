@@ -1,17 +1,15 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 
 import TitleHeader from '../../components/TitleHeader';
 import Button from '../../components/Button';
 import ErrorMsg from '../../components/ErrorMsg';
-import {AuthContext} from '../../context/AuthProvider';
 import {useTranslation} from 'react-i18next';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {CustomCheckBox} from '../../components';
 
 const AccountSelectorScreen = ({navigation}) => {
-  const {userName} = useContext(AuthContext);
   const {t} = useTranslation();
 
   const [checkCustomer, setCheckedCustomer] = useState(false);
@@ -107,8 +105,15 @@ const AccountSelectorScreen = ({navigation}) => {
                   return;
                 }
                 setError(null);
-                if (checkCustomer) navigation.navigate('SignUp');
-                if (checkTranslator) navigation.navigate('SignUpTranslator');
+                if (checkCustomer)
+                  navigation.navigate('Email', {
+                    location: 'SignUp',
+                  });
+
+                if (checkTranslator)
+                  navigation.navigate('Email', {
+                    location: 'SignUpTranslator',
+                  });
               }}
               bGcolor={'#659ED6'}
               buttonTitle={t('common:continue')}

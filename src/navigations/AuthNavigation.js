@@ -11,6 +11,7 @@ import {AuthContext} from '../context/AuthProvider';
 import {NewKycScreen} from '../screens/kyc';
 import AccountSelectorScreen from '../screens/auth/AccountSelectorScreen';
 import SignUpTranslatorScreen from '../screens/auth/SignUpTranslatorScreen';
+import {EmailScreen, OTPScreen} from '../screens/auth';
 
 const RootStack = createNativeStackNavigator();
 
@@ -94,6 +95,22 @@ function AuthNavigation() {
         }}
         name="SignUpTranslator"
         component={SignUpTranslatorScreen}
+      />
+
+      <RootStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Email"
+        component={EmailScreen}
+      />
+
+      <RootStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="OTP"
+        component={OTPScreen}
       />
     </RootStack.Navigator>
   );

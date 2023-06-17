@@ -867,6 +867,10 @@ export async function requestCameraPermission() {
   }
 }
 
+export const generateOtp = () => {
+  return Math.floor(1000 + Math.random() * 9000);
+};
+
 export const logoUrl =
   'https://sprogteamdev.blob.core.windows.net/writtentask/16682253220128196-IMG_0020.PNG';
 
@@ -889,7 +893,7 @@ export const logoUrl =
 // https://sprofteamauthapi.onrender.com
 export const baseURL =
   mode === 'testing'
-    ? 'https://mobile.sweet-meitner.185-208-207-107.plesk.page'
+    ? 'http://127.0.0.1:8000'
     : 'https://mobileapi.sprogteam.dk';
 
 export const authBaseUrl =

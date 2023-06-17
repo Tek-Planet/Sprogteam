@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import Calendar from '../../components/Calendar';
-import TitleHeader from '../../components/TitleHeader';
 import {fonts} from '../../assets/fonts';
 import Button from '../../components/Button';
 import TextBox from '../../components/TextInput';
@@ -30,14 +29,13 @@ import {authBaseUrl, dimention, setHeaders} from '../../util/util';
 import {CountryPickerModal, SignUpHeader} from '../../components';
 import {colors} from '../../assets/colors';
 
-const SignUpTranslatorScreen = ({navigation}) => {
-  const {setUser, setAuth} = useContext(AuthContext);
+const SignUpTranslatorScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const [terms, setTerms] = useState(false);
 
   const [calendarVisible, setCalendarVisible] = useState(false);
 
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState(route?.params?.email);
   const [checkedMale, setCheckedMale] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [companyName, setCompanyName] = useState(null);
@@ -318,6 +316,8 @@ const SignUpTranslatorScreen = ({navigation}) => {
               name="mail-outline"
               onChangeText={val => setEmail(val.trim())}
               placeholderTextColor="#fafafa"
+              value={email}
+              editable={false}
             />
 
             {/* firsname */}

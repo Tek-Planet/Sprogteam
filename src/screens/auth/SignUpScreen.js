@@ -34,14 +34,15 @@ import {authBaseUrl, dimention, setHeaders} from '../../util/util';
 import {CountryPickerModal} from '../../components';
 import {colors} from '../../assets/colors';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({navigation, route}) => {
   const {setUser, setAuth} = useContext(AuthContext);
   const {t} = useTranslation();
   const [terms, setTerms] = useState(false);
 
   const [calendarVisible, setCalendarVisible] = useState(false);
 
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState(route?.params?.email);
+
   const [checkedMale, setCheckedMale] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [companyName, setCompanyName] = useState(null);
@@ -413,6 +414,8 @@ const SignUp = ({navigation}) => {
               name="mail-outline"
               onChangeText={val => setEmail(val.trim())}
               placeholderTextColor="#fafafa"
+              value={email}
+              editable={false}
             />
 
             {/* firsname */}
