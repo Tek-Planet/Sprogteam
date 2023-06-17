@@ -893,7 +893,7 @@ export const logoUrl =
 // https://sprofteamauthapi.onrender.com
 export const baseURL =
   mode === 'testing'
-    ? 'http://127.0.0.1:8000'
+    ? 'https://mobile.sweet-meitner.185-208-207-107.plesk.page'
     : 'https://mobileapi.sprogteam.dk';
 
 export const authBaseUrl =

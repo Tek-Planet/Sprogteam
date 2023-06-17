@@ -24,30 +24,37 @@ const EmailScreen = ({navigation, route}) => {
   const [error, setError] = useState(null);
 
   const processOpt = async () => {
-    if (userId === null) {
-      setError('email cannot be empty');
-      return;
+    try {
+      if (userId === null) {
+        setError('email cannot be empty');
+        return;
+      }
+      setLoading(true);
+      setError(null);
+      const tempOtp = await generateOtp();
+      const body = {
+        recipient: userId,
+        code: tempOtp,
+        location,
+        isCustomer: location === 'SignUp' ? true : false,
+        sentTime: new Date().toISOString(),
+      };
+
+      const res = await sendOtp(body);
+
+      console.log(res);
+
+      if (res.status !== 200) {
+        setError(res.message);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      navigation.navigate('OTP', {details: body});
+    } catch (error) {
+      setError('Unable to send verifcation email email');
+      setLoading(false);
     }
-    setLoading(true);
-    setError(null);
-    const tempOtp = await generateOtp();
-    const body = {
-      recipient: userId,
-      code: tempOtp,
-      location,
-      isCustomer: location === 'SignUp' ? true : false,
-      sentTime: new Date().toISOString(),
-    };
-
-    // const res = await sendOtp(body);
-
-    // if (res.status !== 200) {
-    //   setError(res.message);
-    //   setLoading(false);
-    //   return;
-    // }
-    setLoading(false);
-    navigation.navigate('OTP', {details: body});
   };
 
   return (
