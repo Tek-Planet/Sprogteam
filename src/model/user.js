@@ -22,3 +22,27 @@ export const sendOtp = async body => {
     return null;
   }
 };
+
+// file
+export const uploadDocument = async image => {
+  var fileUrl = null;
+  try {
+    const imageData = {
+      uri: image.path,
+      name: image?.filename,
+      type: 'image/jpeg',
+      originalname: image?.filename,
+    };
+
+    const res = await axios.post(`${baseURL}/auth/upload`, imageData);
+    // console.log(res.data);
+
+    if (res.data.code === 200) {
+      fileUrl = res.data.url;
+    }
+    return fileUrl;
+  } catch (error) {
+    console.log(error);
+    return fileUrl;
+  }
+};

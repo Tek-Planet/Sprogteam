@@ -205,13 +205,9 @@ const SignIn = ({navigation}) => {
               <Indicator color={'#659ED6'} show={loading} size={'large'} />
             ) : (
               <Button
-                onPress={() =>
-                  // navigation.navigate('Home', {
-                  //   screen: 'Home',
-                  //   params: {user: 'jane'},
-                  // })
-                  signIn()
-                }
+                onPress={() => {
+                  signIn();
+                }}
                 bGcolor={'#659ED6'}
                 buttonTitle={t('common:log_in')}
               />

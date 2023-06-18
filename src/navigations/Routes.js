@@ -5,7 +5,7 @@ import MainNavigation from './MainNavigation';
 import axios from 'axios';
 import {AuthContext} from '../context/AuthProvider';
 import VersionCheck from 'react-native-version-check';
-import {Linking} from 'react-native';
+import {Linking, StatusBar} from 'react-native';
 import {
   checkFirstLaunch,
   getAuthToken,
@@ -30,6 +30,7 @@ import {Alert, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {StripeKey} from '@env';
 import {StripeProvider} from '@stripe/stripe-react-native';
+import {colors} from '../assets/colors';
 
 axios.defaults.baseURL = baseURL + '/api';
 
@@ -305,11 +306,15 @@ const Routes = () => {
   } else {
     return (
       <StripeProvider publishableKey={StripeKey}>
-        <SafeAreaView style={{flex: 1}}>
-          <NavigationContainer>
+        <NavigationContainer>
+          <SafeAreaView style={{flex: 1}}>
+            <StatusBar
+              barStyle={'dark-content'}
+              backgroundColor={colors.white}
+            />
             <MainNavigation />
-          </NavigationContainer>
-        </SafeAreaView>
+          </SafeAreaView>
+        </NavigationContainer>
       </StripeProvider>
     );
   }

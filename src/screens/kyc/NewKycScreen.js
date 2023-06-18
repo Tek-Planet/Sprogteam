@@ -80,6 +80,7 @@ const NewKycScreen = ({navigation, route}) => {
       var imgUrl = await uploadFIle(image);
       if (imgUrl === null) {
         setError('unable to submit your document, Please try agains');
+        setLoading(false);
         return;
       }
 

@@ -44,7 +44,7 @@ const OTPScreen = ({navigation, route}) => {
   const [error, setError] = useState(null);
 
   const [active, setActive] = useState(0);
-  const [countdown, setCountdown] = useState(12);
+  const [countdown, setCountdown] = useState(120);
 
   const [sentTime, setSentTime] = useState(new Date(details.sentTime));
 
