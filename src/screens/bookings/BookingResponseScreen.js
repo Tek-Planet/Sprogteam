@@ -380,13 +380,13 @@ const BookingResponseScreen = ({navigation, route}) => {
               <Text style={[styles.text, {fontFamily: fonts.bold}]}>
                 {t('common:translated_from')} :
               </Text>
-              <Text style={styles.text}>Dansk</Text>
+              <Text style={styles.text}>{item?.FromLanguageName}</Text>
             </View>
             <View style={styles.row}>
               <Text style={[styles.text, {fontFamily: fonts.bold}]}>
                 {t('common:translated_to')} :
               </Text>
-              <Text style={styles.text}>{item.ToLanguageName}</Text>
+              <Text style={styles.text}>{item?.ToLanguageName}</Text>
             </View>
             {/* TaskTypeId */}
             <View style={styles.row}>

@@ -239,7 +239,7 @@ const SignIn = ({navigation}) => {
             }}>
             <TextBoxTitle showAsh={true} title={t('common:new_user') + '?'} />
             <TouchableOpacity
-              onPress={() => navigation.navigate('SignUpTranslator')}
+              onPress={() => navigation.navigate('AccountSelector')}
               style={{
                 borderBottomWidth: 1,
 
