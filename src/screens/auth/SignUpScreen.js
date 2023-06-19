@@ -31,7 +31,7 @@ import {
 } from '../../data/data';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {authBaseUrl, dimention, setHeaders} from '../../util/util';
-import {CountryPickerModal} from '../../components';
+import {SelectCountryModal} from '../../components';
 import {colors} from '../../assets/colors';
 
 const SignUp = ({navigation, route}) => {
@@ -507,22 +507,13 @@ const SignUp = ({navigation, route}) => {
 
             <View style={{}}>
               <TextBoxTitle title={t('common:country')} />
-              <View style={{flex: 1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <TextBox
-                    name="map-outline"
-                    value={country}
-                    placeholderTextColor="#fafafa"
-                  />
-                </View>
-                <CountryPickerModal
-                  showFlag={true}
-                  code={'DK'}
-                  setCountryCallingCode={setCountryCallingCode}
-                  setCountry={setCountry}
-                  visisble={false}
-                />
-              </View>
+              <SelectCountryModal
+                // showFlag={true}
+                code={'DK'}
+                setCountryCallingCode={setCountryCallingCode}
+                setCountry={setCountry}
+                visisble={false}
+              />
             </View>
 
             <TextBoxTitle title={t('common:zipcode')} />
@@ -541,6 +532,7 @@ const SignUp = ({navigation, route}) => {
                   margin: 5,
                   fontSize: 18,
                   marginTop: 10,
+                  color: colors.black,
                 }}>
                 {countryCallingCode}
               </Text>

@@ -41,7 +41,8 @@ function CustomLanguageDropDown(props) {
           justifyContent: 'space-between',
           margin: 5,
         }}>
-        <Text style={{fontFamily: fonts.medium, fontSize: 16}}>
+        <Text
+          style={{fontFamily: fonts.medium, fontSize: 16, color: colors.black}}>
           {value.label}
         </Text>
         <Icon
@@ -143,7 +144,11 @@ function CustomLanguageDropDown(props) {
                         margin: 5,
                       }}>
                       <Text
-                        style={{fontFamily: fonts.medium, margin: 5}}
+                        style={{
+                          fontFamily: fonts.medium,
+                          margin: 5,
+                          color: colors.black,
+                        }}
                         key={index}>
                         {item.label}
                       </Text>

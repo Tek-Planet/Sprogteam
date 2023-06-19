@@ -26,7 +26,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {getServerToken, storeUserName} from '../../data/data';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {authBaseUrl, dimention, setHeaders} from '../../util/util';
-import {CountryPickerModal, SignUpHeader} from '../../components';
+import {SelectCountryModal, SignUpHeader} from '../../components';
 import {colors} from '../../assets/colors';
 
 const SignUpTranslatorScreen = ({navigation, route}) => {
@@ -361,22 +361,13 @@ const SignUpTranslatorScreen = ({navigation, route}) => {
 
             <View style={{}}>
               <TextBoxTitle title={t('common:country')} />
-              <View style={{flex: 1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <TextBox
-                    name="map-outline"
-                    value={country}
-                    placeholderTextColor="#fafafa"
-                  />
-                </View>
-                <CountryPickerModal
-                  showFlag={true}
-                  code={'DK'}
-                  setCountryCallingCode={setCountryCallingCode}
-                  setCountry={setCountry}
-                  visisble={false}
-                />
-              </View>
+              <SelectCountryModal
+                // showFlag={true}
+                code={'DK'}
+                setCountryCallingCode={setCountryCallingCode}
+                setCountry={setCountry}
+                visisble={false}
+              />
             </View>
 
             <TextBoxTitle title={t('common:zipcode')} />
@@ -395,6 +386,7 @@ const SignUpTranslatorScreen = ({navigation, route}) => {
                   margin: 5,
                   fontSize: 18,
                   marginTop: 10,
+                  color: colors.black,
                 }}>
                 {countryCallingCode}
               </Text>

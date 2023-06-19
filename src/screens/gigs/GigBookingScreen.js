@@ -87,22 +87,17 @@ const GigBookingScreen = ({navigation, route}) => {
 
   const {returnToChat, customerInfo, translatorInfo} = route.params;
 
-  console.log(translatorInfo?.Email);
-
   const {
     checkVideo,
     checkPhone,
     checkAttendance,
     selectedPrice,
-    languageId,
     serviceId,
     selectedTask,
     toLanguageName,
-    languageName,
-    service,
+    languageID,
+    toLanguageID,
   } = otherItem;
-
-  // console.log(service);
 
   const [selectedGig, setSelectedGig] = useState({});
 
@@ -139,6 +134,8 @@ const GigBookingScreen = ({navigation, route}) => {
   const [address, setAddress] = useState(
     user?.profile?.Adresse + ' ' + user?.profile?.City + ' ',
   );
+
+  // console.log(languageName);
 
   const [tfare, setTfare] = useState(null);
 
@@ -336,8 +333,8 @@ const GigBookingScreen = ({navigation, route}) => {
         DateTimeStart: mergedDate.startTime,
         DateTimeEnd: mergedDate.endTime,
         TaskTypeId: taskTypeId,
-        FromLanguageID: languageName ? languageName : 'Danish',
-        ToLanguageID: languageId,
+        FromLanguageID: languageID ? languageID : 75,
+        ToLanguageID: toLanguageID ? toLanguageID : 75,
         ToLanguageString: toLanguageName ? toLanguageName : 'null',
         InterpreterID: selectedGig.userId,
         RekvirantID: isCustomer(user) ? user.profile.Email : customerInfo.Email,

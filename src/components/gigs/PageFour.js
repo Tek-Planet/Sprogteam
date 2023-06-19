@@ -30,12 +30,6 @@ const PageFour = props => {
   };
 
   const next = () => {
-    // if (image === null || imageTwo === null || imageThree === null) {
-    //   setError('Upload three image of your gig');
-    //   return;
-    // }
-    // setError(null);
-    //  create gig object
     nextPage('done');
   };
 

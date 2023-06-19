@@ -17,7 +17,7 @@ import Calendar from '../../components/Calendar';
 
 import {getUser, storeDetails} from '../../data/data';
 import {useTranslation} from 'react-i18next';
-import {CountryPickerModal} from '../../components';
+import {SelectCountryModal} from '../../components';
 import {colors} from '../../assets/colors';
 
 const SignUp = ({navigation}) => {
@@ -259,22 +259,14 @@ const SignUp = ({navigation}) => {
 
             <View style={{}}>
               <TextBoxTitle title={t('common:country')} />
-              <View style={{flex: 1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <TextBox
-                    name="map-outline"
-                    value={country}
-                    placeholderTextColor="#fafafa"
-                  />
-                </View>
-                <CountryPickerModal
-                  showFlag={true}
-                  code={'DK'}
-                  setCountryCallingCode={setCountryCallingCode}
-                  setCountry={setCountry}
-                  visisble={false}
-                />
-              </View>
+
+              <SelectCountryModal
+                // showFlag={true}
+                code={'DK'}
+                setCountryCallingCode={setCountryCallingCode}
+                setCountry={setCountry}
+                visisble={false}
+              />
             </View>
 
             <TextBoxTitle title={t('common:zipcode')} />

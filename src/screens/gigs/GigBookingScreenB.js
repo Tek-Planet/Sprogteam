@@ -92,11 +92,11 @@ const GigBookingScreenB = ({navigation, route}) => {
     checkPhone,
     checkAttendance,
     selectedPrice,
-    languageId,
     serviceId,
     selectedTask,
     toLanguageName,
-    languageName,
+    languageID,
+    toLanguageID,
   } = otherItem;
 
   const [selectedGig, setSelectedGig] = useState({});
@@ -246,8 +246,8 @@ const GigBookingScreenB = ({navigation, route}) => {
         DateTimeStart: mergedDate.startTime,
         DateTimeEnd: mergedDate.endTime,
         TaskTypeId: taskTypeId,
-        FromLanguageID: languageName ? languageName : 'Danish',
-        ToLanguageID: languageId,
+        FromLanguageID: languageID ? languageID : 75,
+        ToLanguageID: toLanguageID ? toLanguageID : 75,
         ToLanguageString: toLanguageName ? toLanguageName : 'null',
         InterpreterID: selectedGig.userId,
         RekvirantID: isCustomer(user) ? user.profile.Email : customerInfo.Email,

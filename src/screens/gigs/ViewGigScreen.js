@@ -44,9 +44,11 @@ const ViewGigScreen = ({route}) => {
     languageID,
     languageName,
     userId,
+    toLanguageID,
+    toLanguageName,
   } = item;
   var categories = item.package;
-  // console.log(item, languageName);
+  // console.log(languageID, 'vsdd', toLanguageID);
 
   var images = [{imgUrl: imgOne}, {imgUrl: imgTwo}, {imgUrl: imgThree}];
   const [showMore, setShowMore] = useState(false);
@@ -153,8 +155,11 @@ const ViewGigScreen = ({route}) => {
       checkVideo: checkedV,
       checkAttendance: checkedA,
       serviceId: serviceId,
-      languageId: languageID,
       selectedTask,
+      languageID,
+      toLanguageID,
+      toLanguageName,
+      languageName,
     };
 
     navigation.navigate(

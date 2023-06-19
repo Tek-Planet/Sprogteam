@@ -47,6 +47,7 @@ const PageThree = props => {
               borderRadius: 10,
               height: dimention.height * 0.3,
               lineHeight: 25,
+              color: colors.black,
             }}
             value={description}
             onChangeText={val => setDescription(val)}
@@ -76,6 +77,7 @@ const PageThree = props => {
               borderRadius: 10,
               height: dimention.height * 0.25,
               lineHeight: 25,
+              color: colors.black,
             }}
             value={FAQ}
             onChangeText={val => setFAQ(val)}

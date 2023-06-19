@@ -403,7 +403,7 @@ const BookingScreen = ({navigation, route}) => {
       DateTimeStart: mergedDate.startTime,
       DateTimeEnd: mergedDate.endTime,
       TaskTypeId: taskTypeId,
-      FromLanguageID: 'Danish',
+      FromLanguageID: 75,
       ToLanguageID: value.value,
       ToLanguageString: value.label,
       InterpreterID: info.Id || info.profile.Id,

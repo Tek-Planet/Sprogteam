@@ -27,6 +27,7 @@ import Calendar from './Calendar';
 import TranlatorsListDirect from './TranlatorsListDirect';
 import Loader from './Loader';
 import SignUpHeader from './SignUpHeader';
+import SelectCountryModal from './SelectCountryModal';
 
 export {
   Header,
@@ -58,4 +59,5 @@ export {
   TranlatorsListDirect,
   Loader,
   SignUpHeader,
+  SelectCountryModal,
 };

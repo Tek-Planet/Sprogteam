@@ -60,7 +60,7 @@ const BookingDetailsScreen = ({navigation, route}) => {
 
   const [item, setItem] = useState(route?.params?.item || null);
 
-  // console.log(item.DepartmentName);
+  // console.log(item.FromLanguageID);
 
   const getStatusName = (status, customer) => {
     const {t} = useTranslation();
@@ -946,7 +946,7 @@ const BookingDetailsScreen = ({navigation, route}) => {
                 <Text style={[styles.text, {fontFamily: fonts.bold}]}>
                   {t('common:translated_from')} :
                 </Text>
-                <Text style={styles.text}>Dansk</Text>
+                <Text style={styles.text}>{item?.FromLanguageName}</Text>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.text, {fontFamily: fonts.bold}]}>
