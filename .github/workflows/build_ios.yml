@@ -2,26 +2,21 @@ name: IOS Production Build
 
 on:
   push:
-  # workflow_dispatch:
-  # release:
-  # types: [published] # only run the workflow when a new release has been published
+    # workflow_dispatch:
+    # release:
+    # types: [published] # only run the workflow when a new release has been published
 
 jobs:
   ios-build:
     name: IOS Production Build
     runs-on: macOS-latest
-    defaults:
-      run:
-        working-directory: ios
-
     steps:
-      - name: Set Xcode Verison
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '13.1'
+      - uses: actions/checkout@v2
 
-      - name: Check out Git repository
-        uses: actions/checkout@v2
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.1' # Replace with the Xcode version you want
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
