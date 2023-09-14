@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import CustomDropDown from '../components/CustomDropDown';
 import {useTranslation} from 'react-i18next';
-import {Picker} from '@react-native-picker/picker';
 import {fonts} from '../assets/fonts';
 import {getStoredLanguage, storeLanguage} from '../util/util';
 
