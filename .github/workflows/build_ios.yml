@@ -54,6 +54,11 @@ jobs:
       - name: Install Pods
         run: pod install --repo-update
 
+      - name: Use Xcode version
+        uses: actions/setup-xcode@v2
+        with:
+          xcode-version: 13.1
+
       - name: Build IOS App
         uses: yukiarrr/ios-build-action@v1.4.0
         with:
