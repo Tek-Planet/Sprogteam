@@ -54,8 +54,6 @@ const SignIn = ({navigation}) => {
           user,
         );
 
-        console.log(res.data);
-
         if (res.data.status && res.data.status === 'error') {
           setError(res.data.message);
           setLoading(false);
