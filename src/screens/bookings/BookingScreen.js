@@ -296,41 +296,12 @@ const BookingScreen = ({navigation, route}) => {
       'post',
     );
 
-    // // token has expired get new token
-    // if (now.isSameOrAfter(expire)) {
-    //   console.log('created new token');
-    //   const token = await getToken();
-    //   if (token !== 'error') {
-    //     // token was created
-    //     meeting = await createMeetingLink(
-    //       startDate,
-    //       endDate,
-    //       token.token,
-    //       'post',
-    //     );
-    //   } else {
-    //     setError('Unable to submit your booking please try again');
-    //     setLoading(false);
-    //   }
-    // } else {
-    //   console.log('old token');
-    //   // book meeting with token esisting tokwn
-    //   meeting = await createMeetingLink(
-    //     startDate,
-    //     endDate,
-    //     token.token,
-    //     'post',
-    //   );
-    // }
-
     if (meeting !== 'error' && meeting !== null) {
       bookingObject(null, null, null, meeting, null);
     } else {
       setError('Unable to submit your booking please try again');
       setLoading(false);
     }
-
-    // console.log(new Date(token.expires_in) - new Date());
   };
 
   const saveBooking = async () => {
@@ -354,39 +325,7 @@ const BookingScreen = ({navigation, route}) => {
         checkToken();
       } else {
         bookingObject(null, null, null, null, null);
-        // let addres = useMyAddress
-        //   ? user.profile.Adresse + ' ' + user.profile.City
-        //   : address;
-
-        // let transaAddress = info.Adresse + ' ' + info.City;
-
-        // console.log(addres);
-
-        // we need to calculate distance
-
-        // convert provided address
-        // const res = await decodeLocationByName(addres);
-        // const resT = await decodeLocationByName(transaAddress);
-        // console.log(res);
-        // console.log(resT);
-        // setLoading(false);
-
-        // if (res !== null && resT !== null) {
-        //   addres = res[0];
-        //   transaAddress = resT[0];
-
-        //   calculatDistance(
-        //     transaAddress.formattedAddress,
-        //     addres.formattedAddress,
-        //   );
-        // } else {
-        //   setError('Connectivitys error please try again later');
-
-        //   setLoading(false);
-        // }
       }
-
-      // setLoading(true);
     }
   };
 

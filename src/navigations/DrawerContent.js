@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {View, Image, Linking, StyleSheet} from 'react-native';
-import {Avatar, Title, Drawer, Text} from 'react-native-paper';
+import {Title, Drawer, Text} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

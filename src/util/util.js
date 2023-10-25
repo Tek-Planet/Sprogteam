@@ -871,6 +871,14 @@ export const generateOtp = () => {
   return Math.floor(1000 + Math.random() * 9000);
 };
 
+export function isDateGreaterThanCurrentBy24Hours(targetDate) {
+  const currentMillis = dateToMilliSeconds(getCurrentDate()); // Get current date in milliseconds
+  const targetMillis = dateToMilliseconds(targetDate); // Convert target date to milliseconds
+  const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000;
+
+  return targetMillis > currentMillis + twentyFourHoursInMilliseconds;
+}
+
 export const logoUrl =
   'https://sprogteamdev.blob.core.windows.net/writtentask/16682253220128196-IMG_0020.PNG';
 

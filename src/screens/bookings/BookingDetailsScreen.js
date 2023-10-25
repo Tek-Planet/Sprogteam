@@ -31,6 +31,7 @@ import {
   calculatePrices,
   dimention,
   isCustomer,
+  isDateGreaterThanCurrentBy24Hours,
 } from '../../util/util';
 import {
   changeInterPreterToAnonymous,
@@ -1380,7 +1381,16 @@ const BookingDetailsScreen = ({navigation, route}) => {
                     dateToMilliSeconds(getCurrentDate()) && (
                     <View style={styles.buttonWrapper}>
                       <Button
-                        onPress={() => updateBookingStatus(4, item.BookingID)}
+                        onPress={() =>
+                          updateBookingStatus(
+                            isDateGreaterThanCurrentBy24Hours(
+                              item.DateTimeStart,
+                            )
+                              ? 4
+                              : 7,
+                            item.BookingID,
+                          )
+                        }
                         bGcolor={'red'}
                         buttonTitle={t('common:cancel')}
                       />
@@ -1451,7 +1461,12 @@ const BookingDetailsScreen = ({navigation, route}) => {
                     dateToMilliSeconds(getCurrentDate()) && (
                     <View style={styles.buttonWrapper}>
                       <Button
-                        onPress={() => updateBookingStatus(6, BookingID)}
+                        onPress={() =>
+                          updateBookingStatus(
+                            item.StatusName === 1 ? 6 : 9,
+                            BookingID,
+                          )
+                        }
                         bGcolor={'#800000'}
                         buttonTitle={
                           item.StatusName === 1
