@@ -12,7 +12,7 @@ brew install yarn
 # Install dependencies you manage with CocoaPods.
 yarn
 # fixes boolean issue 
-sed -i '' '2232s/|/||/g' /Volumes/workspace/repository/node_modules/react-native/ReactCommon/yoga/yoga/Yoga.cpp
+# sed -i '' '2232s/|/||/g' /Volumes/workspace/repository/node_modules/react-native/ReactCommon/yoga/yoga/Yoga.cpp
 pod install
 # remove accessibilyi
 # /Users/tek/Documents/Projects/ReactNative/NativeProjects/EaziInvest/ios/Pods/Pods.xcodeproj/xcuserdata/tek.xcuserdatad
