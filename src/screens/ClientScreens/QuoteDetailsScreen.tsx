@@ -112,6 +112,7 @@ const QuoteDetailsScreen = ({navigation, route}: Props) => {
   const [estimatedAmount, setEstimatedAmount] = useState<number>(0);
   const [quoteDetail, setQueteDetail] = useState<QuoteDetail>();
   const [uploading, setUploading] = useState<boolean>(false);
+  const [loadingFile, setLoadingFile] = useState<boolean>(false);
 
   const onAccept = async () => {
     const totalAmount = percentageCalculator(
@@ -257,6 +258,12 @@ const QuoteDetailsScreen = ({navigation, route}: Props) => {
     // calculate amount of translators
   }, [data]);
 
+  const initiateDownload = async (QuoteFile: string) => {
+    setLoadingFile(true);
+    const res = await startFileDownload(QuoteFile);
+    setLoadingFile(false);
+  };
+
   return (
     <View
       style={{
@@ -281,7 +288,7 @@ const QuoteDetailsScreen = ({navigation, route}: Props) => {
           />
         </View>
       )}
-      {(isSaving || uploading || isDeleting) && <CustomLoader />}
+      {(isSaving || uploading || isDeleting || loadingFile) && <CustomLoader />}
       <ScrollView>
         <View style={{padding: spacing.ten, flex: 1}}>
           {/* start time */}
@@ -402,7 +409,7 @@ const QuoteDetailsScreen = ({navigation, route}: Props) => {
                     alignItems: 'center',
                   }}
                   onPress={() => {
-                    startFileDownload(QuoteFile);
+                    if (!loadingFile) initiateDownload(QuoteFile);
                   }}>
                   <Text style={{...styles.title}}>
                     {getFileName(QuoteFile)?.substring(0, 30)}

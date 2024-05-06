@@ -87,6 +87,7 @@ function LocationSheet(props: LocationSheetProps) {
         setErrorMessage('');
         setUploading(true);
         let fileUrl = await uploadFile(selectedFile);
+
         if (fileUrl === null) {
           setErrorMessage('error uploading file');
           setUploading(false);

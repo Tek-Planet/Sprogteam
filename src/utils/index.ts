@@ -867,11 +867,11 @@ export const choosePhotoFromCamera = () => {
   });
 };
 
-export const downloadFile = (fileUrl: string) => {
+export const downloadFile = async (fileUrl: string) => {
   try {
     if (!fileUrl) {
       Alert.alert('Invalid URL', 'The file URL is empty or invalid.');
-      return;
+      return null;
     }
 
     let FILE_URL = fileUrl;
@@ -909,52 +909,34 @@ export const downloadFile = (fileUrl: string) => {
       },
     });
 
+    let completed = null;
+
     if (isIOS) {
-      config(configOptions)
-        .fetch('GET', FILE_URL)
-        .then(res => {
-          // this.setState({overLoader: false});
+      const res = await config(configOptions).fetch('GET', FILE_URL);
 
-          if (res.respInfo.status !== 404) {
-            setTimeout(() => {
-              // ReactNativeBlobUtil.ios.previewDocument('file://' + res.path());   //<---Property to display iOS option to save file
-              ReactNativeBlobUtil.ios.openDocument(res.data); //<---Property to display downloaded file on documaent viewer
-              // Alert.alert(CONSTANTS.APP_NAME,'File download successfully');
-            }, 5000);
-          } else Alert.alert('File not found');
-        })
-        .catch(errorMessage => {
-          Alert.alert(
-            errorMessage.message
-              ? errorMessage.message
-              : 'Unable to download file',
-          );
-          console.log(errorMessage, 'messgaes');
-        });
+      if (res.respInfo.status !== 404) {
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds
+        ReactNativeBlobUtil.ios.openDocument(res.data);
+        completed = 'done';
+      } else {
+        Alert.alert('File not found');
+      }
     } else {
-      config(configOptions)
-        .fetch('GET', FILE_URL)
-        .then(res => {
-          if (res.respInfo.status !== 404) {
-            ReactNativeBlobUtil.android.actionViewIntent(res.path(), '');
-            // this.setState({overLoader: false});
-            console.log('File download successfully', 2000);
-          } else Alert.alert('File not found');
-        })
-        .catch(errorMessage => {
-          Alert.alert(
-            errorMessage.message
-              ? errorMessage.message
-              : 'Unable to download file',
-          );
+      const res = await config(configOptions).fetch('GET', FILE_URL);
 
-          // this.setState({overLoader: false});
-          // this.refs.toast.show(errorMessage, 2000);
-        });
+      if (res.respInfo.status !== 404) {
+        ReactNativeBlobUtil.android.actionViewIntent(res.path(), '');
+        console.log('File download successfully');
+      } else {
+        Alert.alert('File not found');
+      }
     }
+
+    return completed;
   } catch (error: any) {
     Alert.alert('Error', 'An error occurred: ' + error.message);
     console.log(error);
+    return null;
   }
 };
 
@@ -976,10 +958,11 @@ const getFileExtention = (fileUrl: string) => {
 };
 
 export const startFileDownload = async (url: string) => {
-  if (Platform.OS === 'ios') {
-    downloadFile(url);
-  } else {
-    try {
+  try {
+    if (Platform.OS === 'ios') {
+      const res = await downloadFile(url);
+      return res;
+    } else {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       );
@@ -991,10 +974,10 @@ export const startFileDownload = async (url: string) => {
         // If permission denied then show alert
         Alert.alert('Error', 'Storage Permission Not Granted');
       }
-    } catch (err) {
-      // To handle permission related exception
-      console.log('++++' + err);
     }
+  } catch (err) {
+    // To handle permission related exception
+    console.log('++++' + err);
   }
 };
 
@@ -1057,10 +1040,10 @@ export const uploadFile = async (image: any) => {
 };
 
 export const getFileName = (url: string) => {
-  const startIndex = url.indexOf('writtentask/');
+  const startIndex = url.lastIndexOf('/');
   if (startIndex !== -1) {
-    const substring = url.substring(startIndex + 'writtentask/'.length);
-    return substring;
+    const documentName = url.substring(startIndex + 1);
+    return documentName;
   } else {
     return undefined; // or any other value to indicate that "writtentask/" was not found
   }
