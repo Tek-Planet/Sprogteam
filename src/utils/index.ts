@@ -33,7 +33,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import {checkAvailability} from '../rtk/features/user/userSlice';
 
-export const BASE_URL = APIENV.development;
+export const BASE_URL = APIENV.productionv2;
 export const AUTH_BASE_URL = AUTHAPIENV.development;
 
 export const {height, width} = Dimensions.get('screen');

@@ -130,6 +130,7 @@ export interface ENVIRONMENT {
   local: string;
   development: string;
   production: string;
+  productionv2: string;
 }
 
 export interface ChatModel {
