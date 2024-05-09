@@ -65,9 +65,9 @@ const Routes = () => {
   }
 
   useEffect(() => {
-    if (user && user !== null) {
-      getToken();
-    }
+    // if (user && user !== null) {
+    //   getToken();
+    // }
   }, [user]);
 
   const getToken = async () => {
