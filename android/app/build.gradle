@@ -1,5 +1,7 @@
+apply plugin: 'com.google.gms.google-services'
 apply plugin: "com.android.application"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
 
 
 import com.android.build.OutputFile
@@ -137,7 +139,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.sprogteam"
+        applicationId "com.aats"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

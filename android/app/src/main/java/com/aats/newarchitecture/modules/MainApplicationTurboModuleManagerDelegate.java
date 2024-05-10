@@ -1,4 +1,4 @@
-package com.sprogteam.newarchitecture.modules;
+package com.aats.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

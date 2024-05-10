@@ -23,7 +23,7 @@ const Routes = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    updateChecker();
+    // updateChecker();
     requestUserPermission();
     initialiseLanguage();
     authenticateUser();
@@ -65,9 +65,9 @@ const Routes = () => {
   }
 
   useEffect(() => {
-    // if (user && user !== null) {
-    //   getToken();
-    // }
+    if (user && user !== null) {
+      getToken();
+    }
   }, [user]);
 
   const getToken = async () => {
@@ -86,7 +86,7 @@ const Routes = () => {
 
       const response = await dispatch(registerDevice(body));
 
-      // console.log(response);
+      console.log(response);
     } catch (error) {
       console.log(error);
       Alert.alert(error.toString());
