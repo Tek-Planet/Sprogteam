@@ -23,7 +23,7 @@ const Routes = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // updateChecker();
+    updateChecker();
     requestUserPermission();
     initialiseLanguage();
     authenticateUser();
@@ -74,6 +74,12 @@ const Routes = () => {
     try {
       await messaging().registerDeviceForRemoteMessages();
 
+      Alert.alert('Pre token');
+
+      const to: any = await messaging().getAPNSToken();
+
+      Alert.alert(to, 'APN');
+
       const token = await messaging().getToken();
       // storetoken
       const body = {
@@ -86,7 +92,7 @@ const Routes = () => {
 
       const response = await dispatch(registerDevice(body));
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
       Alert.alert(error.toString());

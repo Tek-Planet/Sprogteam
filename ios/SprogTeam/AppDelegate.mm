@@ -33,6 +33,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 {
   [FIRApp configure];
 
+  [FIRApp configureWithName:@"secondaryFromNative" options:[FIROptions defaultOptions]];
+  // Add this line
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
+
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
