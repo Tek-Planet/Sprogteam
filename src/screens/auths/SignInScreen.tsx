@@ -60,8 +60,6 @@ const SignInScreen = ({navigation}: Props) => {
 
     var respose: any = await dispatch(loginUser(body));
 
-    console.log(respose);
-
     if (respose.payload?.message === 'lockout')
       setErrorMessage('Invalid credential');
     if (

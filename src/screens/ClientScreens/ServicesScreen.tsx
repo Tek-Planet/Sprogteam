@@ -30,6 +30,8 @@ const ServicesScreen = () => {
 
   const {data: services, error} = useGetServicesQuery('');
 
+  console.log(error);
+
   return (
     <View style={{...styles.container, ...baseStyles.padding}}>
       <Header

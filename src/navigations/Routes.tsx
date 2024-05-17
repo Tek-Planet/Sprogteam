@@ -64,11 +64,11 @@ const Routes = () => {
     }
   }
 
-  useEffect(() => {
-    if (user && user !== null) {
-      getToken();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user && user !== null) {
+  //     getToken();
+  //   }
+  // }, [user]);
 
   const getToken = async () => {
     try {
