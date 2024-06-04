@@ -31,7 +31,6 @@ function SubmitQuoteModal(props: SubmitQuoteModalProps) {
   const onFileSelected = async (imageFile: any) => {
     setselectedFile(imageFile);
   };
-  const styles = getStyles(colors);
 
   return (
     <Modal

@@ -801,24 +801,43 @@ export const testModeMeetingUrl = {
 
 export async function requestStoragePermission() {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      {
-        title: 'Storage Request',
-        message: 'Sprogteam want to access your storage',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'Ok',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can access storage');
-      return true;
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+      ]);
+
+      if (
+        granted['android.permission.READ_MEDIA_IMAGES'] ===
+        PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log('You can access storage');
+        return true;
+      } else {
+        console.log('Storage permission denied');
+        return false;
+      }
     } else {
-      console.log('storage permission denied');
-      return false;
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Request',
+          message: 'Sprogteam wants to access your storage',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'Ok',
+        },
+      );
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can access storage');
+        return true;
+      } else {
+        console.log('Storage permission denied');
+        return false;
+      }
     }
   } catch (error) {
     console.warn(error);
+    return false;
   }
 }
 
@@ -826,6 +845,7 @@ export async function requestStoragePermission() {
 
 export const choosePhotoFromLibrary = async () => {
   if (Platform.OS === 'android') {
+    console.log('Checking Perm');
     const hasPermission = await requestStoragePermission();
     if (!hasPermission) {
       Alert.alert('You need to enable storage permission to continue');
@@ -917,7 +937,6 @@ export const downloadFile = async (fileUrl: string) => {
       if (res.respInfo.status !== 404) {
         await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds
         ReactNativeBlobUtil.ios.openDocument(res.data);
-        completed = 'done';
       } else {
         Alert.alert('File not found');
       }
@@ -1269,7 +1288,10 @@ export const accountOptions = (): AccountType[] => {
   ];
 };
 
-export const supportId = 'e94fba7d-f669-49a7-a521-35e0ac3d2db2';
+export const supportId =
+  BASE_URL === APIENV.local || BASE_URL === APIENV.development
+    ? 'e94fba7d-f669-49a7-a521-35e0ac3d2db2'
+    : 'ff3ead7d-d613-4a60-861c-8d78fceaa8f2';
 
 export const getExtraRatingData = (): any[] => {
   const {t} = useTranslation();

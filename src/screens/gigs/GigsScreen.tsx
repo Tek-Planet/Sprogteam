@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, FlatList} from 'react-native';
 
 import {useTranslation} from 'react-i18next';
@@ -10,6 +10,7 @@ import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {CompositeScreenProps, useNavigation} from '@react-navigation/native';
 import {RootStackParams} from '../../navigations/MainNavigation';
 import {spacing} from '../../assets/spacing';
+import {getMinimalUserDetails} from '../../rtk/features/user/userSlice';
 
 // type Props = BottomTabScreenProps<TabParams>;
 
@@ -25,6 +26,15 @@ const GigsScreen = () => {
   const {data, error, isLoading} = useGetGigsQuery('', {
     refetchOnMountOrArgChange: true,
   });
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     var userRecord: any = await getMinimalUserDetails('info@aalts.dk');
+  //     console.log(userRecord);
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>

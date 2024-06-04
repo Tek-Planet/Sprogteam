@@ -16,13 +16,12 @@ import {AuthStackParams} from '../../navigations/AuthNavigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTheme} from '@react-navigation/native';
 import {colorTypes} from '../../assets/colors';
-import baseStyles from '../../assets/styles';
 import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
 import {useTranslation} from 'react-i18next';
 import {LoginModel} from '../../rtk';
 import {loginUser, getUserName} from '../../rtk/features/user/userSlice';
 import {Pressable} from 'react-native';
-import {height, width} from '../../utils';
+import {height} from '../../utils';
 
 type Props = NativeStackScreenProps<AuthStackParams>;
 

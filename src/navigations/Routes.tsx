@@ -64,23 +64,21 @@ const Routes = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (user && user !== null) {
-  //     getToken();
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user && user !== null) {
+      getToken();
+    }
+  }, [user]);
 
   const getToken = async () => {
     try {
       await messaging().registerDeviceForRemoteMessages();
 
-      Alert.alert('Pre token');
-
       const to: any = await messaging().getAPNSToken();
 
-      Alert.alert(to, 'APN');
-
       const token = await messaging().getToken();
+
+      // console.log(token);
       // storetoken
       const body = {
         token: token.toString(),
@@ -95,7 +93,6 @@ const Routes = () => {
       // console.log(response);
     } catch (error) {
       console.log(error);
-      Alert.alert(error.toString());
     }
   };
 

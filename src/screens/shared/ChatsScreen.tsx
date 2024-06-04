@@ -22,7 +22,7 @@ import {
 
 import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
 import {ChatModel} from '../../types';
-import {BASE_URL, height} from '../../utils';
+import {BASE_URL} from '../../utils';
 import {RootStackParams} from '../../navigations/MainNavigation';
 import io from 'socket.io-client';
 import {changeRoute} from '../../rtk/features/user/userSlice';
