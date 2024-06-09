@@ -31,6 +31,7 @@ import {TabParams} from './ClientNavigation';
 import {
   ChangePasswordScreen,
   ContactUsScreen,
+  DeleteAccountScreen,
   EditProfileScreen,
   EnterPasswordScreen,
   LanguageSelector,
@@ -96,6 +97,7 @@ export type RootStackParams = {
     info: any;
     userDetails: any;
   };
+  DeleteAccount: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
@@ -179,6 +181,7 @@ const MainNavigation = () => {
       <RootStack.Screen name="LanguageManager" component={LanguageManager} />
       <RootStack.Screen name="LanguageSelector" component={LanguageSelector} />
       <RootStack.Screen name="Addrating" component={AddRatingScreen} />
+      <RootStack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
     </RootStack.Navigator>
   );
 };

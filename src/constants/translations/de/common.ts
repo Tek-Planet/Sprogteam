@@ -430,4 +430,7 @@ export default {
   get_started: 'Loslegen',
   available_services: 'Verfügbare Dienstleistungen',
   team_colaboration: 'Teamzusammenarbeit',
+
+  deleteTitle: 'Er du sikker?',
+  deleteBody: 'Er du sikker på, at du vil slette din konto?',
 };

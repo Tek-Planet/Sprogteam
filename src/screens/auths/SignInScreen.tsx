@@ -59,15 +59,15 @@ const SignInScreen = ({navigation}: Props) => {
 
     var respose: any = await dispatch(loginUser(body));
 
+    console.log(respose);
+
     if (respose.payload?.message === 'lockout')
       setErrorMessage('Invalid credential');
     if (
       respose.payload?.message ===
       'You cannot login at this point as your account is under verifcation'
     )
-      setErrorMessage(
-        'You cannot login at this point as your account is under verifcation',
-      );
+      setErrorMessage('Invalid User name of password');
 
     if (!respose.payload) {
       if (respose.error.message === 'Request failed with status code 401')

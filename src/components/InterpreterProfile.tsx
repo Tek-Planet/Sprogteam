@@ -4,14 +4,14 @@ import ProfileItem from './ProfileItem';
 import {spacing} from '../assets/spacing';
 import {useTranslation} from 'react-i18next';
 import {useAppSelector} from '../rtk/hooks';
-
+import {useNavigation} from '@react-navigation/native';
 import {colors} from '../assets/colors';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import {fontSize, fonts} from '../assets/fonts';
 
 const InterpreterProfile = () => {
   const {t} = useTranslation();
   const {user} = useAppSelector(state => state.user);
+  const navigation: any = useNavigation();
 
   return (
     <ScrollView>
@@ -59,6 +59,20 @@ const InterpreterProfile = () => {
             />
           </Pressable>
         )} */}
+        <Pressable
+          onPress={() => {
+            navigation.navigate('DeleteAccount');
+          }}>
+          <Text
+            style={{
+              ...styles.title,
+              fontSize: fontSize.regular,
+              marginBottom: spacing.twenty,
+              color: colors.red,
+            }}>
+            {t('common:delete') + ' ' + t('common:account')}
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -67,7 +81,6 @@ const InterpreterProfile = () => {
 export default InterpreterProfile;
 
 const styles = StyleSheet.create({
-  container: {},
   title: {
     color: colors.black,
     fontSize: fontSize.regular,

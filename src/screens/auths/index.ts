@@ -18,3 +18,4 @@ export {default as AddServicesScreen} from './AddServicesScreen';
 export {default as AccountTypeScreen} from './AccountTypeScreen';
 export {default as ContactUsScreen} from './ContactUsScreen';
 export {default as CarrerScreen} from './CarrerScreen';
+export {default as DeleteAccountScreen} from './DeleteAccountScreen';

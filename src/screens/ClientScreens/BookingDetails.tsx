@@ -375,7 +375,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
       if (item.InterpreterID === 'Anonym') {
         // here we need to check the type of booking and wether this interpreter has salary set to determine final fee
-
+        console.log('Logging for anonymous');
         let taskTypeId = item.TaskTypeId;
 
         const mergedDate = await mergeDateTime(
@@ -429,6 +429,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
       }
 
       const res: any = await updateBooking(body);
+
+      console.log('Post booing operation', res);
       // kommune;
       if (res.data) {
         // getBookings(user);
@@ -559,7 +561,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         setLoading(false);
       }
     } catch (error: any) {
-      console.log(error, 'catch');
+      console.log('catch');
       toast('Unable to update status please try again ', 'error');
       setLoading(false);
     }

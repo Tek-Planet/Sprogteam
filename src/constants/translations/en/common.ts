@@ -534,4 +534,7 @@ export default {
   verified: 'Verified',
   prefered_sex: 'Prefer specific gender?',
   citizen_phone: "Citizen's telephone number",
+
+  deleteTitle: 'Are you sure?',
+  deleteBody: 'Are you sure you want delete your account?',
 };

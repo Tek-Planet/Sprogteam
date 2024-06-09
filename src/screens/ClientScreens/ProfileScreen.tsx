@@ -24,8 +24,6 @@ import {
   fetchUser,
 } from '../../rtk/features/user/userSlice';
 import baseStyles from '../../assets/styles';
-import {RegisterModel} from '../../types';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import {RootStackParams} from '../../navigations/MainNavigation';
 
 interface ProfileScreenProps {}
@@ -75,9 +73,6 @@ const ProfileScreen = (
     if (response.payload) {
       dispatch(fetchUser());
     }
-
-    console.log(response);
-
     setLoading(false);
   };
 
@@ -210,6 +205,6 @@ const getStyles = (colors: colorTypes) =>
     profileText: {
       fontSize: fontSize.medium,
       fontFamily: fonts.medium,
-      color: colors.black,
+      color: colors.red,
     },
   });

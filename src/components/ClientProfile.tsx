@@ -1,15 +1,19 @@
 import * as React from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Pressable, Text} from 'react-native';
 import ProfileItem from './ProfileItem';
 import {spacing} from '../assets/spacing';
 import {useTranslation} from 'react-i18next';
 import {useAppSelector} from '../rtk/hooks';
+import {colors} from '../assets/colors';
+import {useNavigation} from '@react-navigation/native';
+import {fontSize, fonts} from '../assets/fonts';
 
 interface ClientProfileProps {}
 
 const ClientProfile = (props: ClientProfileProps) => {
   const {t} = useTranslation();
   const {user} = useAppSelector(state => state.user);
+  const navigation: any = useNavigation();
 
   return (
     <ScrollView>
@@ -52,6 +56,21 @@ const ClientProfile = (props: ClientProfileProps) => {
             <ProfileItem value={user?.CVR} title={t('CVR')} />
           </View>
         )}
+
+        <Pressable
+          onPress={() => {
+            navigation.navigate('DeleteAccount');
+          }}>
+          <Text
+            style={{
+              ...styles.title,
+              fontSize: fontSize.regular,
+              marginBottom: spacing.twenty,
+              color: colors.red,
+            }}>
+            {t('common:delete') + ' ' + t('common:account')}
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -60,5 +79,9 @@ const ClientProfile = (props: ClientProfileProps) => {
 export default ClientProfile;
 
 const styles = StyleSheet.create({
-  container: {},
+  title: {
+    color: colors.black,
+    fontSize: fontSize.regular,
+    fontFamily: fonts.medium,
+  },
 });
