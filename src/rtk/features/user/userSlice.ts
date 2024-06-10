@@ -340,7 +340,7 @@ export const getUserDetails = async (id: string) => {
 export const deleteMyAccount = async (id: string) => {
   try {
     const response = await axios.delete(`${BASE_URL}${suffix}users/${id}`);
-    console.log(response.data);
+
     return response.data.msg;
   } catch (error) {
     console.log(error);

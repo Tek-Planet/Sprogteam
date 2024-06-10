@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {Text, Image, View, StyleSheet} from 'react-native';
-import {deleteaccount, passwordicon} from '../../assets/images';
+import {deleteaccount} from '../../assets/images';
 import {
   CustomButton,
   CustomError,
-  CustomInput,
   CustomLoader,
   Header,
 } from '../../components';
@@ -16,14 +15,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTheme} from '@react-navigation/native';
 import {colorTypes} from '../../assets/colors';
 import baseStyles from '../../assets/styles';
-
-import {LoginModel} from '../../rtk';
 import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
-import {
-  deleteMyAccount,
-  logoutUser,
-  verifyPassword,
-} from '../../rtk/features/user/userSlice';
+import {deleteMyAccount, logoutUser} from '../../rtk/features/user/userSlice';
 import {RootStackParams} from '../../navigations/MainNavigation';
 import {width} from '../../utils';
 
@@ -45,8 +38,6 @@ const DeleteAccountScreen = ({navigation}: Props) => {
 
   const onDeleteAccount = async () => {
     let response: any = await deleteMyAccount(user.Email);
-
-    console.log(response, 'from delete');
 
     if (response === 'deleted') {
       setAccountDeleted(true);
@@ -93,6 +84,8 @@ const DeleteAccountScreen = ({navigation}: Props) => {
             }}>
             {t('common:deleteBody')}
           </Text>
+
+          {erroMessage.length > 0 && <CustomError message={erroMessage} />}
 
           {/* action buttond  */}
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
