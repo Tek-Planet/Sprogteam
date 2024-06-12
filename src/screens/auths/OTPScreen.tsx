@@ -15,7 +15,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTheme} from '@react-navigation/native';
 import {useAppDispatch} from '../../rtk/hooks';
 import {sendOTP, sendPasswordResetOTP} from '../../rtk/features/user/userSlice';
-import {generateOtp} from '../../utils';
+import {generateOtp, height} from '../../utils';
 import {logo} from '../../assets/images';
 import {OTPModel} from '../../types';
 import baseStyles from '../../assets/styles';
@@ -316,9 +316,11 @@ const getStyles = (colors: colorTypes) =>
       borderColor: colors.main,
     },
     image: {
-      height: 100,
-      width: 100,
-      marginBottom: spacing.twenty * 2,
+      height: height * 0.15,
+      width: height * 0.15,
+      marginBottom: height * 0.03,
       alignSelf: 'center',
+      marginTop: spacing.ten,
+      borderRadius: 200,
     },
   });

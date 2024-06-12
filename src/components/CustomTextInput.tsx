@@ -27,6 +27,7 @@ interface CustomTextInputProps {
   value?: string;
   onEnterPress?: Function;
   label?: string;
+  keyBoardType?: any;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -43,6 +44,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   leftIconName,
   value,
   label,
+  keyBoardType,
   ...rest
 }) => {
   const [secure, setSecure] = useState(isSecure);
@@ -103,6 +105,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           onSubmitEditing={() => {
             if (onEnterPress) onEnterPress();
           }}
+          keyboardType={keyBoardType ? keyBoardType : 'default'}
         />
 
         {isSecure && (

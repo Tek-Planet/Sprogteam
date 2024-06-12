@@ -306,6 +306,7 @@ const SignUpScreen = ({navigation, route}: Props) => {
               placeholder={t('common:zipcode')}
               onTextChange={setZipCode}
               value={zipcode}
+              keyBoardType={'number-pad'}
             />
 
             <CountryPicker

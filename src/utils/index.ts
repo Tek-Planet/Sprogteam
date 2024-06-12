@@ -571,7 +571,7 @@ export const callNumber = (phone: string) => {
     .catch(err => console.log(err));
 };
 export const aalborgMail =
-  BASE_URL === APIENV.production
+  BASE_URL === APIENV.production || APIENV.productionv2
     ? 'tolkningsupport@aalborg.dk'
     : 'hsn@sprogteam.dk';
 
@@ -599,7 +599,7 @@ export const sendNotificaion = async (body: any) => {
     const res = await axios.post(`${BASE_URL}/mails/notification`, body);
     console.log(res.data);
   } catch (error) {
-    console.log(error);
+    console.log(error, 'notification error');
   }
 };
 

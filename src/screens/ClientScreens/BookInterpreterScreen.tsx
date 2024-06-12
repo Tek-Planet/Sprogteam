@@ -54,7 +54,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
   const [createBooking, {error: bookingError, isLoading}] =
     useCreateBookingMutation();
   const userId: string = interpreter.Id;
-  const email: string = interpreter.Id;
+  const email: string = interpreter.Email;
   const [skip, setSkip] = useState<boolean>(true);
 
   const {data} = useGetTranlatorLanguagesQuery(
@@ -405,7 +405,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
   return (
     <View style={{...styles.container, ...baseStyles.padding}}>
       <Header
-        headerTitle={t('common:order') + ' ' + t('an') + ' ' + t('interpreter')}
+        headerTitle={t('common:order') + ' ' + t('interpreter')}
         showleftIcon
         showRightIcon
       />

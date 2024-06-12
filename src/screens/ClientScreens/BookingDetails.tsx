@@ -258,6 +258,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
   const requesterMail = isUser ? RekvirantID : aalborgMail;
 
+  // console.log(requesterDetails);
+
   const rekvirant = CompanyName;
 
   const address =

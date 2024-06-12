@@ -19,7 +19,7 @@ import {
   DatePicker,
   Header,
 } from '../../components';
-import {SelectOptionType, TabItem} from '../../types';
+import {SelectOptionType} from '../../types';
 import {useGetLanguagesQuery} from '../../rtk/services/language';
 import {initialLanguage} from '../../utils';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
