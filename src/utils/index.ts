@@ -571,7 +571,7 @@ export const callNumber = (phone: string) => {
     .catch(err => console.log(err));
 };
 export const aalborgMail =
-  BASE_URL === APIENV.production || APIENV.productionv2
+  BASE_URL === APIENV.production || BASE_URL == APIENV.productionv2
     ? 'tolkningsupport@aalborg.dk'
     : 'hsn@sprogteam.dk';
 
@@ -1210,7 +1210,6 @@ export const getStoredLanguage = async () => {
     if (jsonValue !== null) {
       return JSON.parse(jsonValue);
     } else {
-      console.log('empty');
       return {code: 'en', label: 'English'};
     }
   } catch (e) {

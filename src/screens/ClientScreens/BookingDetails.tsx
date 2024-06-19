@@ -982,7 +982,26 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   <Text style={[styles.text, {opacity: 0.6}]}>
                     {t('common:end_time')} :
                   </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (userDetails === null) {
+                        toast('loading user details', 'info');
+                        return;
+                      }
 
+                      setEditTimeModalVisible(true);
+                    }}
+                    style={{
+                      marginStart: 10,
+                      width: 30,
+                      height: 30,
+                      borderRadius: 100,
+                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Ionicons name="pencil" size={20} color="#659ED6" />
+                  </TouchableOpacity>
                   <View style={{flexDirection: 'row'}}>
                     {!owner &&
                       item?.StatusName === 2 &&

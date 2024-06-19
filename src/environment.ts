@@ -1,7 +1,7 @@
 import {ENVIRONMENT} from './types';
 
 export const APIENV: ENVIRONMENT = {
-  local: 'http://127.0.0.1:8000/',
+  local: 'http://192.168.0.184:8000/',
   development: 'https://test.sweet-meitner.185-208-207-107.plesk.page/', //'https://mobile.sweet-meitner.185-208-207-107.plesk.page/',
   production: 'https://mobileapi.sprogteam.dk/',
   productionv2: 'https://nodejs.sprogteam.dk/',
