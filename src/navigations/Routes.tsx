@@ -17,6 +17,12 @@ import {StripeProvider} from '@stripe/stripe-react-native';
 import {getStoredLanguage} from '../utils';
 import messaging from '@react-native-firebase/messaging';
 import VersionCheck from 'react-native-version-check';
+import {
+  areNotificationsEnabled,
+  openNotificationSettings,
+} from '../../NotificationHelper';
+
+import NotificationManagerCompat from '@react-native-firebase/messaging';
 
 const Routes = () => {
   const {token, loading, user} = useAppSelector(state => state.user);
@@ -61,7 +67,7 @@ const Routes = () => {
   }
 
   useEffect(() => {
-    if (user && user !== null) {
+    if (user && user !== null && user !== undefined) {
       getToken();
     }
   }, [user]);
@@ -103,6 +109,31 @@ const Routes = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const checkNotificationPermission = async () => {
+      const enabled = await areNotificationsEnabled();
+      if (!enabled) {
+        Alert.alert(
+          'Enable Notifications',
+          'Please enable notifications in the settings to stay updated.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Open Settings',
+              onPress: openNotificationSettings,
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+    };
+
+    checkNotificationPermission();
+  }, []);
 
   const MyTheme: ExtendedTheme = {
     dark: false,
