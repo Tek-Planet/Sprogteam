@@ -432,7 +432,6 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
       const res: any = await updateBooking(body);
 
-      console.log('Post booing operation', res);
       // kommune;
       if (res.data) {
         // getBookings(user);
@@ -472,7 +471,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             meetingPoint: address,
             link: meeting,
 
-            recipient: [requesterDetails.Emai],
+            recipient: [requesterDetails.Email],
             bcc: ['noreply@sprogteam.dk'],
             isUser: isUser,
             rekvirant: rekvirant,

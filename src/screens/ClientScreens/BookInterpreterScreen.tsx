@@ -361,17 +361,19 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
     try {
       let response: any = await createBooking(newBooking);
 
+      console.log(response);
+
       if (response.data) {
         toast('Booking completed', 'success');
         navigation.replace('AwaitingApproval');
       } else {
-        setError('Uable to complete booking');
+        setError('Unable to complete booking');
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
       console.log(error);
-      setError('Uable to complete booking');
+      setError('Unable to complete booking');
       toast('unable to complete booking', 'error');
     }
   };
@@ -390,7 +392,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
       endTime,
       interpreter.Id,
     );
-    // console.log(isFree);
+
     setIsFree(isFree);
   };
 
@@ -402,6 +404,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
     if (data && data.length > 0) setLanguages(data);
   }, [data]);
 
+  // console.log('isFree');
   return (
     <View style={{...styles.container, ...baseStyles.padding}}>
       <Header

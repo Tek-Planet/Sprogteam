@@ -252,7 +252,7 @@ const BookingListItem = (props: Props) => {
             meetingPoint: address, //splitAddress === 'null' ? 'Nil' : splitAddress[0],
             link: item.VideoApi,
             recipient: [requesterDetails.Email],
-            bcc: ['noreply@sprogteam.dk'],
+            bcc: ['noreply@sprogteam.dk', 'techplanet49@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: StatusName,

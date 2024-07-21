@@ -594,7 +594,6 @@ export const defaultPrices = {
 };
 
 export const sendNotificaion = async (body: any) => {
-  console.log(body);
   try {
     const res = await axios.post(`${BASE_URL}/mails/notification`, body);
     console.log(res.data);
