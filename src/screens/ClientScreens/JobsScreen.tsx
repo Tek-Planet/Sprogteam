@@ -186,7 +186,7 @@ const JobsScreen = ({navigation, route}: Props) => {
             }}
             keyExtractor={item => item.BookingID.toString()}
             data={openBookings ? openBookings : []}
-            renderItem={({item, index}) => {
+            renderItem={({item}) => {
               if (item.BookingID.toString().includes(filter))
                 return (
                   <BookingListItem

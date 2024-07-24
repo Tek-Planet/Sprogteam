@@ -243,7 +243,6 @@ const BookingListItem = (props: Props) => {
             startDate: startTime.date,
             startTime: startTime.time,
             endTime: endTime.time,
-
             fromLanguage: 'Danish',
             toLanguage: item.ToLanguageName,
             interpreterName: user.FirstName + ' ' + user.LastName,
@@ -251,7 +250,9 @@ const BookingListItem = (props: Props) => {
             customerMail: requesterMail,
             meetingPoint: address, //splitAddress === 'null' ? 'Nil' : splitAddress[0],
             link: item.VideoApi,
-            recipient: [requesterDetails.Email],
+            recipient: isUser
+              ? [requesterDetails.Email]
+              : [requesterDetails.Email, 'noreply@sprogteam.dk'],
             bcc: ['noreply@sprogteam.dk', 'techplanet49@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,

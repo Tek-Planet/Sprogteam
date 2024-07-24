@@ -326,7 +326,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         setDeviceId(user.Id);
       } else {
         setUserDetails(res);
-        setDeviceId(res);
+        setDeviceId(res.Id);
       }
 
       // get the requester details
@@ -470,8 +470,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             customerMail: requesterDetails.Email,
             meetingPoint: address,
             link: meeting,
-
-            recipient: [requesterDetails.Email],
+            recipient: isUser
+              ? [requesterDetails.Email]
+              : [requesterDetails.Email, 'noreply@sprogteam.dk'],
             bcc: ['noreply@sprogteam.dk'],
             isUser: isUser,
             rekvirant: rekvirant,
@@ -494,7 +495,6 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           );
         }
 
-        console.log('Pass 1');
         if (status === 6 || status === 9) {
           console.log('Pass 2');
 
@@ -552,6 +552,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           text: 'The Status of your booking has been changed',
           bookingId: BookingID.toString(),
         };
+
+        console.log('Body of notification', body);
         sendNotificaion(body);
 
         toast('Done', 'success');
@@ -562,7 +564,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         setLoading(false);
       }
     } catch (error: any) {
-      console.log('catch');
+      console.log(error);
       toast('Unable to update status please try again ', 'error');
       setLoading(false);
     }
