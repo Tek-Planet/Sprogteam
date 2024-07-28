@@ -24,6 +24,7 @@ import {
   isTranslatorFree,
   mergeDateTime,
   msToTime,
+  noreplyemail,
   priceCalculator,
   sendNotificaion,
   timeDifferenceInMilliseconds,
@@ -252,8 +253,8 @@ const BookingListItem = (props: Props) => {
             link: item.VideoApi,
             recipient: isUser
               ? [requesterDetails.Email]
-              : [requesterDetails.Email, 'noreply@sprogteam.dk'],
-            bcc: ['noreply@sprogteam.dk', 'techplanet49@gmail.com'],
+              : [requesterDetails.Email, noreplyemail],
+            bcc: [noreplyemail],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: StatusName,
@@ -321,7 +322,7 @@ const BookingListItem = (props: Props) => {
             interpreterName: user.FirstName + ' ' + user.LastName,
             interpreterTelephone: user.PhoneNumber,
             customerMail: requesterMail,
-            recipient: ['noreply@sprogteam.dk'],
+            recipient: [noreplyemail],
             bcc: [],
             RekvirantID: RekvirantID,
           };

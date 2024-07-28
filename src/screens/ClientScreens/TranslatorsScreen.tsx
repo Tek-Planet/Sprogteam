@@ -39,7 +39,7 @@ const TranslatorsScreen = ({route, navigation}: Props) => {
     },
   );
 
-  // console.log(data?.length);
+  console.log(data?.length);
 
   const {t} = useTranslation();
   const {colors} = useTheme();

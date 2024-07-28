@@ -5,7 +5,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTheme} from '@react-navigation/native';
 import {colorTypes} from '../../assets/colors';
 import baseStyles from '../../assets/styles';
-import {useAppSelector} from '../../rtk/hooks';
+import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
 import {useTranslation} from 'react-i18next';
 import {spacing} from '../../assets/spacing';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -45,9 +45,10 @@ import {
   useCreateBookingMutation,
   useGetLanguagesQuery,
 } from '../../rtk/services';
-import {TabItem, SelectOptionType} from '../../types';
+import {TabItem, SelectOptionType, BookingModel} from '../../types';
 import {RootStackParams} from '../../navigations/MainNavigation';
 import {APIENV} from '../../environment';
+import {sendAnonymousEmail} from '../../rtk/features/user/generalSlices';
 
 type Props = NativeStackScreenProps<
   RootStackParams,
@@ -56,6 +57,7 @@ type Props = NativeStackScreenProps<
 
 const OrderInterpreterAnonymous = ({navigation}: Props) => {
   const {data, isLoading: isLoadingLanguage} = useGetLanguagesQuery('');
+  const dispatch = useAppDispatch();
 
   const {user, currency} = useAppSelector(state => state.user);
   const [createBooking, {error: bookingError, isLoading}] =
@@ -82,6 +84,18 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
     title: t('common:booking_for_self'),
   };
 
+  const dbody = {
+    bookingId: 5959,
+    country: user.Country ? user.Country : 'Denmark',
+    endTime: '17:00',
+    languageId: 14,
+    startDate: '31-07-2024',
+    startTime: '16:00',
+    taskType: 'Fremmøde',
+    taskTypeId: 1,
+    toLanguage: 'Fransk',
+  };
+  // dispatch(sendAnonymousEmail(dbody));
   const [error, setError] = useState<string>('');
   const [language, setLanguage] = useState<SelectOptionType>(initialLanguage);
   const [sex, setSex] = useState<SelectOptionType>(initialSex);
@@ -247,7 +261,7 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
     const endTimeLocal = timeToString(endTime || new Date());
     let taskTypeId = selected.value ? parseInt(selected.value) : 1;
 
-    const newBooking = {
+    const newBooking: any = {
       OrderNumber: SSN,
       CreateBy: user.Id,
       DateTimeStart: mergedDate.startTime,
@@ -332,9 +346,25 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
     setLoading(true);
     try {
       let response: any = await createBooking(newBooking);
-
+      console.log(response.data, 'booking data');
       if (response.data) {
         toast('Booking completed', 'success');
+
+        // send out email notification
+        const mailBody: any = {
+          bookingId: response.data.BookingID, //"5955"
+          languageId: newBooking.ToLanguageID,
+          country: user.Country ? user.Country : 'Denmark',
+          startDate: moment.utc(newBooking.DateTimeStart).format('DD-MM-YYYY'),
+          endTime: moment.utc(newBooking.DateTimeEnd).format('HH:mm'),
+          startTime: moment.utc(newBooking.DateTimeStart).format('HH:mm'),
+          taskTypeId: newBooking.TaskTypeId,
+          taskType: newBooking.taskType,
+          toLanguage: language.label,
+        };
+
+        dispatch(sendAnonymousEmail(mailBody));
+
         navigation.replace('AwaitingApproval');
       } else {
         setError('Uable to complete booking');

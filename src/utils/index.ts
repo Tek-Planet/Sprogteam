@@ -33,7 +33,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import {checkAvailability} from '../rtk/features/user/userSlice';
 
-export const BASE_URL = APIENV.development;
+export const BASE_URL = APIENV.local;
 export const AUTH_BASE_URL = AUTHAPIENV.development;
 
 export const {height, width} = Dimensions.get('screen');
@@ -574,6 +574,8 @@ export const aalborgMail =
   BASE_URL === APIENV.production || BASE_URL == APIENV.productionv2
     ? 'tolkningsupport@aalborg.dk'
     : 'hsn@sprogteam.dk';
+
+export const noreplyemail = 'noreply@sprogteam.dk';
 
 export function isDateGreaterThanCurrentBy24Hours(targetDate: string) {
   const currentMillis = dateToMilliSeconds(getCurrentDate().toISOString()); // Get current date in milliseconds

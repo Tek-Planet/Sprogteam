@@ -34,6 +34,7 @@ import {
   getServices,
   mergeDateTime,
   isTranslatorFree,
+  noreplyemail,
 } from '../../utils';
 
 import {useTranslation} from 'react-i18next';
@@ -215,7 +216,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   }, [route.params?.reload]);
 
   useEffect(() => {
-    if (item !== null) {
+    if (item !== null && item.InterpreterID !== 'Anonym') {
       getSingleUserInfo();
     }
   }, [item]);
@@ -319,6 +320,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         // then get the booking owner detaisl for the interpreter to see
         id = requesterMail;
       }
+
+      console.log(id);
 
       var res = await getUserDetails(id);
       if (!res) {
@@ -458,11 +461,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
               item?.OrdreNumber === null || item?.OrdreNumber === 'null'
                 ? 'Nil'
                 : item?.OrdreNumber, //item?.OrdreNumber,
-
             startDate: startTime.date,
             startTime: startTime.time,
             endTime: endTime.time,
-
             fromLanguage: 'Danish',
             toLanguage: item?.ToLanguageName,
             interpreterName: user.FirstName + ' ' + user.LastName,
@@ -472,8 +473,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             link: meeting,
             recipient: isUser
               ? [requesterDetails.Email]
-              : [requesterDetails.Email, 'noreply@sprogteam.dk'],
-            bcc: ['noreply@sprogteam.dk'],
+              : [requesterDetails.Email, noreplyemail],
+            bcc: [noreplyemail],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: rejected ? 1 : 0,
@@ -536,7 +537,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             interpreterName: user.FirstName + ' ' + user.LastName,
             interpreterTelephone: user.PhoneNumber,
             customerMail: requesterMail,
-            recipient: ['noreply@sprogteam.dk'],
+            recipient: [noreplyemail],
             bcc: [],
             RekvirantID: RekvirantID,
           };

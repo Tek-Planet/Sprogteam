@@ -66,7 +66,7 @@ const LanguageManager = ({route, navigation}: Props) => {
 
   const [language, setLanguage] = useState<SelectOptionType>(initialLanguage);
 
-  // console.log(userLanguages);
+  console.log(userLanguages);
 
   const {t} = useTranslation();
   const {colors} = useTheme();
@@ -216,7 +216,7 @@ const LanguageManager = ({route, navigation}: Props) => {
                       borderRadius: spacing.ten,
                     }}>
                     <Feather name="x" size={18} color={colors.red} />
-                    <Text style={styles.info}>{item.label.trim()}</Text>
+                    <Text style={styles.info}>{item?.label?.trim()}</Text>
                   </TouchableOpacity>
                 );
               })}
