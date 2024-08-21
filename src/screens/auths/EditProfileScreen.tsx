@@ -19,6 +19,7 @@ import {colorTypes} from '../../assets/colors';
 import {fetchUser, updateUserRecord} from '../../rtk/features/user/userSlice';
 import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
 import {RootStackParams} from '../../navigations/MainNavigation';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 type Props = NativeStackScreenProps<RootStackParams, 'EditProfile'>;
 
@@ -96,8 +97,6 @@ const EditProfileScreen = ({navigation}: Props) => {
     setLoading(true);
     var response = await dispatch(updateUserRecord(body));
 
-    console.log(response);
-
     if (response.payload) {
       setMessage(t('common:record') + ' ' + t('common:updated'));
       setModalVisible(true);
@@ -118,135 +117,139 @@ const EditProfileScreen = ({navigation}: Props) => {
         headerTitle={t('common:edit') + ' ' + t('common:profile')}
       />
       {loading && <CustomLoader color={colors.main} />}
-      <View
-        style={{
-          flex: 1,
-          padding: spacing.ten,
-          justifyContent: 'space-between',
-        }}>
-        <ScrollView>
-          <View style={{flex: 1}}>
-            <CustomInput
-              placeholder={t('common:first') + ' ' + t('common:name')}
-              label={t('common:first') + ' ' + t('common:name')}
-              onTextChange={setFirstName}
-              value={firstName}
-            />
-
-            <CustomInput
-              placeholder={t('common:last') + ' ' + t('common:name')}
-              label={t('common:last') + ' ' + t('common:name')}
-              onTextChange={setLastName}
-              value={lastName}
-            />
-
-            <CustomInput
-              placeholder={t('common:address')}
-              label={t('common:address')}
-              onTextChange={setAddress}
-              value={address}
-            />
-
-            <CustomInput
-              placeholder={t('common:city')}
-              label={t('common:city')}
-              onTextChange={setCity}
-              value={city}
-            />
-
-            <CustomInput
-              placeholder={t('common:state')}
-              label={t('common:state')}
-              onTextChange={setState}
-              value={state}
-            />
-
-            <CustomInput
-              placeholder={t('common:zip') + ' ' + t('common:code')}
-              label={t('common:zip') + ' ' + t('common:code')}
-              onTextChange={setZipCode}
-              value={zipcode}
-            />
-
-            <CountryPicker
-              code={'DK'}
-              setCountryCallingCode={setCountryCallingCode}
-              setCountry={setCountry}
-              country={country}
-            />
-
-            <CustomInput
-              placeholder={t('common:phone') + ' ' + t('common:number')}
-              label={t('common:phone') + ' ' + t('common:number')}
-              onTextChange={setTelephone}
-              value={telephone}
-            />
-
-            {(user?.CompanyStatus === 'Private' ||
-              user?.CompanyStatus === 'Public') && (
-              <View>
+      <ScrollView>
+        <KeyboardAwareScrollView>
+          <View
+            style={{
+              flex: 1,
+              padding: spacing.ten,
+              justifyContent: 'space-between',
+            }}>
+            <ScrollView>
+              <View style={{flex: 1}}>
                 <CustomInput
-                  placeholder={t('company') + ' ' + t('name')}
-                  label={t('company') + ' ' + t('name')}
-                  onTextChange={setCompanyName}
-                  value={companyName}
+                  placeholder={t('common:first') + ' ' + t('common:name')}
+                  label={t('common:first') + ' ' + t('common:name')}
+                  onTextChange={setFirstName}
+                  value={firstName}
                 />
 
                 <CustomInput
-                  placeholder={t('common:cvr')}
-                  label={t('common:cvr')}
-                  onTextChange={setCvr}
-                  value={cvr}
+                  placeholder={t('common:last') + ' ' + t('common:name')}
+                  label={t('common:last') + ' ' + t('common:name')}
+                  onTextChange={setLastName}
+                  value={lastName}
                 />
 
                 <CustomInput
-                  placeholder={t('common:eaa')}
-                  label={t('common:ean')}
-                  onTextChange={setEAN}
-                  value={EAN}
+                  placeholder={t('common:address')}
+                  label={t('common:address')}
+                  onTextChange={setAddress}
+                  value={address}
                 />
+
+                <CustomInput
+                  placeholder={t('common:city')}
+                  label={t('common:city')}
+                  onTextChange={setCity}
+                  value={city}
+                />
+
+                {/* <CustomInput
+                  placeholder={t('common:state')}
+                  label={t('common:state')}
+                  onTextChange={setState}
+                  value={state}
+                /> */}
+
+                <CustomInput
+                  placeholder={t('common:zip') + ' ' + t('common:code')}
+                  label={t('common:zip') + ' ' + t('common:code')}
+                  onTextChange={setZipCode}
+                  value={zipcode}
+                />
+
+                <CountryPicker
+                  code={'DK'}
+                  setCountryCallingCode={setCountryCallingCode}
+                  setCountry={setCountry}
+                  country={country}
+                />
+
+                <CustomInput
+                  placeholder={t('common:phone') + ' ' + t('common:number')}
+                  label={t('common:phone') + ' ' + t('common:number')}
+                  onTextChange={setTelephone}
+                  value={telephone}
+                />
+
+                {(user?.CompanyStatus === 'Private' ||
+                  user?.CompanyStatus === 'Public') && (
+                  <View>
+                    <CustomInput
+                      placeholder={t('company') + ' ' + t('name')}
+                      label={t('company') + ' ' + t('name')}
+                      onTextChange={setCompanyName}
+                      value={companyName}
+                    />
+
+                    <CustomInput
+                      placeholder={t('common:cvr')}
+                      label={t('common:cvr')}
+                      onTextChange={setCvr}
+                      value={cvr}
+                    />
+
+                    <CustomInput
+                      placeholder={t('common:eaa')}
+                      label={t('common:ean')}
+                      onTextChange={setEAN}
+                      value={EAN}
+                    />
+                  </View>
+                )}
+
+                {/* interpreter */}
+                {user?.CompanyStatus !== 'Private' &&
+                  user?.CompanyStatus !== 'Public' && (
+                    <View>
+                      <CustomInput
+                        height={100}
+                        placeholder={t('about')}
+                        label={t('about')}
+                        onTextChange={setAbout}
+                        value={about}
+                      />
+                    </View>
+                  )}
               </View>
+            </ScrollView>
+
+            <View>
+              {<CustomError message={erroMessage} />}
+
+              <CustomButton
+                buttonTitle={t('common:update') + ' ' + t('common:record')}
+                onTap={() => {
+                  onSubmit();
+                }}
+              />
+            </View>
+
+            {modalVisible && (
+              <SuccessModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                message={message}
+                closeModal={() => {
+                  setModalVisible(false);
+                  navigation.goBack();
+                }}
+              />
             )}
-
-            {/* interpreter */}
-            {user?.CompanyStatus !== 'Private' &&
-              user?.CompanyStatus !== 'Public' && (
-                <View>
-                  <CustomInput
-                    height={100}
-                    placeholder={t('about')}
-                    label={t('about')}
-                    onTextChange={setAbout}
-                    value={about}
-                  />
-                </View>
-              )}
           </View>
-        </ScrollView>
-
-        <View>
-          {<CustomError message={erroMessage} />}
-
-          <CustomButton
-            buttonTitle={t('common:update') + ' ' + t('common:record')}
-            onTap={() => {
-              onSubmit();
-            }}
-          />
-        </View>
-
-        {modalVisible && (
-          <SuccessModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            message={message}
-            closeModal={() => {
-              setModalVisible(false);
-              navigation.goBack();
-            }}
-          />
-        )}
-      </View>
+        </KeyboardAwareScrollView>
+      </ScrollView>
     </View>
   );
 };

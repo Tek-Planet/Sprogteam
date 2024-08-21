@@ -45,7 +45,6 @@ export function DrawerContent(props: any) {
   const {navigation} = props;
   const {t} = useTranslation();
   const [showMenu, setShowMenu] = useState(false);
-  const [showWrittenMenu, setShowWrittenMenu] = useState(false);
   const [showQuoteMenu, setShowQuoteMenu] = useState(false);
   const [showGigMenu, setShowGigMenu] = useState(false);
 

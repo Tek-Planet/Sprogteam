@@ -7,7 +7,7 @@ import {UserModel} from '../types';
 import {CustomButton} from '.';
 import {useTranslation} from 'react-i18next';
 import {gender, location, placeholder, user} from '../assets/images';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import {width} from '../utils';
 import Feather from 'react-native-vector-icons/Ionicons';
 

@@ -227,7 +227,7 @@ const BookingListItem = (props: Props) => {
 
           // send acceptance mail to customer
 
-          const body = {
+          let body = {
             customerName: requesterDetails
               ? requesterDetails.FirstName !== null &&
                 requesterDetails.FirstName + ' ' + requesterDetails.LastName !==
@@ -254,7 +254,7 @@ const BookingListItem = (props: Props) => {
             recipient: isUser
               ? [requesterDetails.Email]
               : [requesterDetails.Email, noreplyemail],
-            bcc: [noreplyemail],
+            bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: StatusName,
@@ -266,6 +266,12 @@ const BookingListItem = (props: Props) => {
           };
 
           axios.post(`${BASE_URL}mails/confirmbooking`, body);
+
+          body.customerName = user.FirstName + ' ' + user.LastName;
+          body.isCustomer = false;
+          body.recipient = [user.Email];
+
+          axios.post(`${BASE_URL}mails/confirmbookingtranslator`, body);
         }
 
         if (status === 3) {

@@ -451,7 +451,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
           axios.put(`/orders/BellStatus/1/${bookingId}`);
 
-          const body = {
+          let body = {
             customerName: isUser
               ? requesterDetails?.FirstName + ' ' + requesterDetails.LastName
               : rekvirant,
@@ -474,7 +474,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             recipient: isUser
               ? [requesterDetails.Email]
               : [requesterDetails.Email, noreplyemail],
-            bcc: [noreplyemail],
+            bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: rejected ? 1 : 0,
@@ -485,7 +485,14 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             translatorEmail: user.Email,
           };
 
+          // customern mail
           axios.post(`${BASE_URL}mails/confirmbooking`, body);
+          // translator mail
+          body.customerName = user.FirstName + ' ' + user.LastName;
+          body.isCustomer = false;
+          body.recipient = [user.Email];
+
+          axios.post(`${BASE_URL}mails/confirmbookingtranslator`, body);
           // console.log('Mail Response', mailResponse.data);
         }
 

@@ -17,3 +17,18 @@ export const sendAnonymousEmail = createAsyncThunk(
     }
   },
 );
+
+export const sendConfirmbookingEmail = createAsyncThunk(
+  'mail/confirmbooking',
+  async (body: any) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}${mailSuffix}confirmbooking`,
+        body,
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+);

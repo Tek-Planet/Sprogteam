@@ -16,7 +16,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useTheme} from '@react-navigation/native';
 import {colorTypes} from '../../assets/colors';
 import baseStyles from '../../assets/styles';
-import {useAppSelector} from '../../rtk/hooks';
+import {useAppDispatch, useAppSelector} from '../../rtk/hooks';
 import {useTranslation} from 'react-i18next';
 import {spacing} from '../../assets/spacing';
 import {SelectOptionType, TabItem} from '../../types';
@@ -45,6 +45,7 @@ import {useCreateBookingMutation} from '../../rtk/services/bookings';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {APIENV} from '../../environment';
 import {useGetTranlatorLanguagesQuery} from '../../rtk/services';
+import {sendConfirmbookingEmail} from '../../rtk/features/user/generalSlices';
 
 type Props = NativeStackScreenProps<RootStackParams, 'BookInterpreter'>;
 
@@ -56,6 +57,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
   const userId: string = interpreter.Id;
   const email: string = interpreter.Email;
   const [skip, setSkip] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
 
   const {data} = useGetTranlatorLanguagesQuery(
     {userId, email},
@@ -341,7 +343,7 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
       interpreterTelephone: interpreter.PhoneNumber,
       recipient: [interpreter.Email],
       caseNumber: self ? null : SSN,
-      toLanguage: selected.title,
+      toLanguage: language.label,
       meetingPoint:
         taskTypeId === 1
           ? useMyAddress
@@ -361,7 +363,11 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
     try {
       let response: any = await createBooking(newBooking);
 
-      console.log(response);
+      newBooking.bookingId = response.data.BookingID;
+
+      console.log(newBooking, 'with newID');
+
+      dispatch(sendConfirmbookingEmail(newBooking));
 
       if (response.data) {
         toast('Booking completed', 'success');
