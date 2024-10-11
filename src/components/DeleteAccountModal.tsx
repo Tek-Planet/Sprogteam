@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, View, StyleSheet, Pressable, Image} from 'react-native';
+import {Text, View, StyleSheet, Pressable} from 'react-native';
 import {Modal, ModalContent, ScaleAnimation} from 'react-native-modals';
 
 import {fontSize, fonts} from '../assets/fonts';
-import {deleteicon} from '../assets/images';
+
 import {colorTypes} from '../assets/colors';
 import Feather from 'react-native-vector-icons/Feather';
 import {spacing} from '../assets/spacing';
@@ -15,10 +15,23 @@ import {CustomButton} from '.';
 interface DeleteAccountModalProps {
   isModalVisible: boolean;
   setModalVisible: (val: boolean) => void;
+  title: string;
+  question: string;
+  cancelText: string;
+  continueText: string;
+  onContinue: () => void;
 }
 
 function DeleteAccountModal(props: DeleteAccountModalProps) {
-  const {isModalVisible, setModalVisible} = props;
+  const {
+    isModalVisible,
+    setModalVisible,
+    title,
+    question,
+    cancelText,
+    continueText,
+    onContinue,
+  } = props;
 
   const {colors} = useTheme();
   const styles = getStyles(colors);
@@ -57,23 +70,10 @@ function DeleteAccountModal(props: DeleteAccountModalProps) {
               fontSize: fontSize.regular,
               textAlign: 'center',
             }}>
-            {t('common:delete') + ' ' + t('common:account')}
+            {title}
           </Text>
 
-          <Image style={styles.image} source={deleteicon} />
-
           <View>
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                marginBottom: spacing.fiften,
-                color: colors.black,
-                fontSize: fontSize.regular,
-                textAlign: 'center',
-              }}>
-              {t('common:deleteTitle')}
-            </Text>
-
             <Text
               style={{
                 opacity: 0.6,
@@ -83,7 +83,7 @@ function DeleteAccountModal(props: DeleteAccountModalProps) {
                 fontSize: fontSize.regular,
                 textAlign: 'center',
               }}>
-              {t('common:deleteBody')}
+              {question}
             </Text>
 
             {/* action buttond  */}
@@ -91,10 +91,10 @@ function DeleteAccountModal(props: DeleteAccountModalProps) {
               style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
               <View style={{width: width * 0.3}}>
                 <CustomButton
-                  buttonTitle={t('common:cancel')}
+                  buttonTitle={cancelText}
                   textSize={fontSize.light}
                   onTap={() => {
-                    console.log('Welcome Home');
+                    setModalVisible(false);
                   }}
                   bGcolor={colors.white}
                   testColor={colors.main}
@@ -103,10 +103,10 @@ function DeleteAccountModal(props: DeleteAccountModalProps) {
               </View>
               <View style={{width: width * 0.3}}>
                 <CustomButton
-                  buttonTitle={t('common:delete')}
+                  buttonTitle={continueText}
                   textSize={fontSize.light}
                   onTap={() => {
-                    console.log('Welcome Home');
+                    onContinue();
                   }}
                 />
               </View>

@@ -35,12 +35,14 @@ import {
   mergeDateTime,
   isTranslatorFree,
   noreplyemail,
+  width,
 } from '../../utils';
 
 import {useTranslation} from 'react-i18next';
 import {
   CustomButton,
   CustomLoader,
+  DeleteAccountModal,
   EditTimeModal,
   Header,
   SuccessModal,
@@ -229,6 +231,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   const [deviceId, setDeviceId] = useState<string>();
   const [rejected, setRejected] = useState(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [cancelModalVisible, setCancelModalVisible] = useState<boolean>(false);
+
   const [editTimeModalVisible, setEditTimeModalVisible] =
     useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
@@ -321,7 +325,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         id = requesterMail;
       }
 
-      console.log(id);
+      // console.log(id);
 
       var res = await getUserDetails(id);
       if (!res) {
@@ -725,6 +729,19 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         <CustomLoader color={colors.main} />
       )}
 
+      <DeleteAccountModal
+        isModalVisible={cancelModalVisible}
+        setModalVisible={setCancelModalVisible}
+        title={'Cancel Booking'}
+        question={'Are you sure you want to cancel this booking'}
+        cancelText={t('common:cancel')}
+        continueText={t('common:continue')}
+        onContinue={() => {
+          setModalVisible(false);
+          updateBookingStatus(9, BookingID);
+        }}
+      />
+
       <View
         style={{
           marginTop: 1,
@@ -733,7 +750,29 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           padding: 10,
         }}>
         <ScrollView>
+          {/* new cancelled button for approved tasks */}
           <View style={styles.view}>
+            {(item.StatusName === 8 ||
+              item.StatusName === 1 ||
+              item.StatusName === 2) &&
+              item.InterpreterID !== 'Anonym' &&
+              item.StatusName === 2 &&
+              !owner &&
+              (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
+              dateToMilliSeconds(item.DateTimeEnd) >
+                dateToMilliSeconds(getCurrentDate().toISOString()) && (
+                <View style={{alignItems: 'flex-end'}}>
+                  <CustomButton
+                    onTap={() => {
+                      setCancelModalVisible(true);
+                    }}
+                    bGcolor={'#800000'}
+                    buttonTitle={t('common:cancel')}
+                    padding={-5}
+                  />
+                </View>
+              )}
+
             <View style={styles.row}>
               <Text style={[styles.text, {opacity: 0.6}]}>BookingID :</Text>
               <Text style={[styles.text, {color: 'green'}]}>{BookingID}</Text>
@@ -973,6 +1012,15 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   </Text>
                   <Text style={styles.text}> {item?.CitizenName}</Text>
                 </View>
+
+                {item?.CompanyName && (
+                  <View style={styles.row}>
+                    <Text style={[styles.text, {opacity: 0.6}]}>
+                      {t('common:company')} :
+                    </Text>
+                    <Text style={styles.text}> {item?.CompanyName}</Text>
+                  </View>
+                )}
               </View>
             )}
             {ServiceId === null || ServiceId === 2 || ServiceId === 3 ? (
@@ -1444,30 +1492,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                       />
                     </View>
                   )}
-                  {/* booking negotiation button for customer 2 */}
-                  {(OfferStage === 'initial' || OfferStage === 'negotiating') &&
-                    (IsBookingCompleted === 2 ? (
-                      <View style={styles.buttonWrapper}>
-                        <CustomButton
-                          onTap={
-                            () => {}
-                            // navigation.navigate('OtherNav', {
-                            //   screen: 'BookingResponse',
-                            //   params: {item: item, path: 'BookingDetails'},
-                            // })
-                          }
-                          bGcolor={'green'}
-                          buttonTitle={t('common:respond')}
-                        />
-                      </View>
-                    ) : (
-                      <View style={styles.buttonWrapper}>
-                        <Text
-                          style={[styles.text, {color: 'red', marginTop: 10}]}>
-                          {t('common:awaiting') + ' ' + t('common:response')}
-                        </Text>
-                      </View>
-                    ))}
+
                   <View style={styles.buttonWrapper}>
                     {/* offer cancel button for customer 3 */}
                     <CustomButton
@@ -1504,44 +1529,6 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                 </View>
               )}
 
-            {/* translator buttons section*/}
-
-            {dateToMilliSeconds(item.DateTimeStart) >
-              dateToMilliSeconds(getCurrentDate().toISOString()) &&
-              !isCustomer(user) &&
-              IsBookingCompleted > 0 &&
-              (StatusName === 8 || StatusName === 1) && (
-                <View style={styles.buttonWrapper}>
-                  {(OfferStage === 'initial' || OfferStage === 'negotiating') &&
-                  IsBookingCompleted === 1 ? (
-                    // booking respond button for interpreter 4
-                    <CustomButton
-                      onTap={
-                        () => {}
-                        // navigation.navigate('OtherNav', {
-                        //   screen: 'BookingResponse',
-                        //   params: {item: item, path: 'BookingDetails'},
-                        // })
-                      }
-                      bGcolor={'green'}
-                      buttonTitle={t('common:respond')}
-                    />
-                  ) : (
-                    <Text style={[styles.text, {color: 'red', marginTop: 10}]}>
-                      {t('common:awaiting') + ' ' + t('common:response')}
-                    </Text>
-                  )}
-                </View>
-              )}
-
-            {/* show waiting test for interpreter */}
-
-            {/* <CustomButton
-                onTap={() => updateBookingStatus(1, BookingID)}
-                bGcolor={'green'}
-                buttonTitle={t('common:accept')}
-              /> */}
-
             {(StatusName === 1 || StatusName === 8 || StatusName === 9) &&
               !owner &&
               dateToMilliSeconds(item.DateTimeEnd) >
@@ -1562,6 +1549,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             {(item.StatusName === 8 ||
               item.StatusName === 1 ||
               item.StatusName === 2) &&
+              item.StatusName === 1 &&
               item.InterpreterID !== 'Anonym' &&
               !owner &&
               (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
@@ -1569,18 +1557,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                 dateToMilliSeconds(getCurrentDate().toISOString()) && (
                 <View style={styles.buttonWrapper}>
                   <CustomButton
-                    onTap={() =>
-                      updateBookingStatus(
-                        item.StatusName === 1 ? 6 : 9,
-                        BookingID,
-                      )
-                    }
+                    onTap={() => updateBookingStatus(6, BookingID)}
                     bGcolor={'#800000'}
-                    buttonTitle={
-                      item.StatusName === 1
-                        ? t('common:reject')
-                        : t('common:cancel')
-                    }
+                    buttonTitle={t('common:reject')}
                   />
                 </View>
               )}
@@ -1681,10 +1660,7 @@ const styles = StyleSheet.create({
   },
   view: {
     borderColor: '#659ED6',
-    marginTop: 10,
-
     borderRadius: 10,
-    paddingTop: 10,
     paddingBottom: 10,
   },
   row: {flexDirection: 'row', justifyContent: 'space-between'},
