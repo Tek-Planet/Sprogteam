@@ -33,7 +33,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import {checkAvailability} from '../rtk/features/user/userSlice';
 
+export const isIOS = Platform.OS === 'ios' ? true : false;
+
 export const BASE_URL = APIENV.development;
+
 export const AUTH_BASE_URL = AUTHAPIENV.development;
 
 export const {height, width} = Dimensions.get('screen');
@@ -757,7 +760,6 @@ export const getUserType: any = () => {
 };
 
 export const isIpad = width >= 768 ? true : false;
-export const isIOS = Platform.OS === 'ios' ? true : false;
 
 export const initialSelect = (): SelectOptionType => {
   return {

@@ -2,6 +2,6 @@
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "files.autoSaveDelay": 10000,
-  "java.compile.nullAnalysis.mode": "automatic"
+  "files.autoSaveDelay": 1000,
+ 
 }

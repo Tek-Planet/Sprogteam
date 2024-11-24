@@ -80,7 +80,6 @@ const Routes = () => {
 
       const token = await messaging().getToken();
 
-      // console.log(token);
       // storetoken
       const body = {
         token: token.toString(),

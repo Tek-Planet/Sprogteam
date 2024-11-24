@@ -150,7 +150,7 @@ const BookingListItem = (props: Props) => {
       }
 
       const body: any = {
-        StatusNameId: status,
+        StatusNameId: owner ? status : status === 6 || status === 9 ? 1 : status,
         recordId: bookingId,
       };
 
@@ -229,10 +229,10 @@ const BookingListItem = (props: Props) => {
 
           let body = {
             customerName: requesterDetails
-              ? requesterDetails.FirstName !== null &&
-                requesterDetails.FirstName + ' ' + requesterDetails.LastName !==
+              ? requesterDetails?.FirstName !== null &&
+                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
                   null &&
-                requesterDetails.LastName
+                requesterDetails?.LastName
               : '',
             bookingId: item.BookingID,
             taskType: getTaskName(item.TaskTypeId),
@@ -252,8 +252,8 @@ const BookingListItem = (props: Props) => {
             meetingPoint: address, //splitAddress === 'null' ? 'Nil' : splitAddress[0],
             link: item.VideoApi,
             recipient: isUser
-              ? [requesterDetails.Email]
-              : [requesterDetails.Email, noreplyemail],
+              ? [requesterDetails?.Email]
+              : [requesterDetails?.Email, noreplyemail],
             bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,
@@ -308,10 +308,10 @@ const BookingListItem = (props: Props) => {
           const body = {
             bookingId: item.BookingID,
             customerName: requesterDetails
-              ? requesterDetails.FirstName !== null &&
-                requesterDetails.FirstName + ' ' + requesterDetails.LastName !==
+              ? requesterDetails?.FirstName !== null &&
+                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
                   null &&
-                requesterDetails.LastName
+                requesterDetails?.LastName
               : '',
             taskType: getTaskName(item.TaskTypeId),
             caseNumber:
@@ -345,7 +345,7 @@ const BookingListItem = (props: Props) => {
         }
 
         const body = {
-          userId: requesterDetails.Id,
+          userId: requesterDetails?.Id,
           title: 'Booking Notification',
           text: 'The Status of your booking has been changed',
           bookingId: BookingID.toString(),

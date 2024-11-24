@@ -33,6 +33,9 @@ export const loginUser = createAsyncThunk(
 
       if (!response) return 'Authentication Error';
 
+      if (response?.user?.InActive) return 'InActive';
+
+
       await setHeaders(response);
       storeAuthToken(response);
       storeUserName(body.UserName);
@@ -318,6 +321,7 @@ export const getServerToken = async (email: string, secret: string) => {
     const authTokens = {
       secret,
       token: response.data.token,
+      user: response.data.user,
     };
 
     return authTokens;

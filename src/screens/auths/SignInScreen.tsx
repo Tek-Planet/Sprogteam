@@ -58,24 +58,34 @@ const SignInScreen = ({navigation}: Props) => {
     setErrorMessage('');
 
     var respose: any = await dispatch(loginUser(body));
-
-    if (respose.payload?.message === 'lockout')
-      setErrorMessage('Invalid credential');
-    if (
-      respose.payload?.message ===
-      'You cannot login at this point as your account is under verifcation'
-    )
-      setErrorMessage('Invalid User name of password');
-
-    if (respose.payload?.token === undefined)
-      setErrorMessage('unable to connect to server');
+    console.log(respose.payload)
 
     if (!respose.payload) {
       if (respose.error.message === 'Request failed with status code 401')
         setErrorMessage('Invalid username or password');
       else setErrorMessage('Error loggin you in');
     }
-    if (respose) setLoading(false);
+
+    else{
+
+    if (respose?.payload === 'InActive')
+      setErrorMessage('Your account is on hold. Contact admin for get access');
+
+else  if (respose.payload?.message === 'lockout')
+    setErrorMessage('Invalid credential');
+else   if (
+    respose.payload?.message ===
+    'You cannot login at this point as your account is under verifcation'
+  )
+    setErrorMessage('Invalid User name of password');
+
+  else   if (respose.payload?.token === undefined)
+    setErrorMessage('unable to connect to server');
+    }
+
+ 
+ //   if (respose)
+  setLoading(false);
   };
 
   useEffect(() => {

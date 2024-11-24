@@ -26,8 +26,8 @@ export const bookingApi = createApi({
       providesTags: ['Booking'],
     }),
 
-    getOpenBookings: builder.query<BookingModel[], {userLanguages: string}>({
-      query: userLanguages => `orders/open/${userLanguages}`,
+    getOpenBookings: builder.query<BookingModel[], {userLanguagesToTuple: string, genderId:number}>({
+      query: ({userLanguagesToTuple, genderId}) => `orders/open/${userLanguagesToTuple}/${genderId}`,
       providesTags: ['OpenBooking'],
     }),
 

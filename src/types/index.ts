@@ -80,6 +80,7 @@ export interface UserModel {
   userId?: any;
   DOB?: any;
   EAN?: any;
+  InActive?:boolean
   languages: SelectOptionType[];
   CompanyStatus?: 'Public' | 'Private' | 'Person';
 }

@@ -17,7 +17,7 @@ const CustomError = (props: CustomErrorProps) => {
         alignItems: 'center',
         zIndex: 2,
       }}>
-      <Text style={{fontFamily: fonts.bold, color: 'red'}}>{message}</Text>
+      <Text style={{fontFamily: fonts.bold, color: 'red', textAlign:"center"}}>{message}</Text>
     </View>
   );
 };

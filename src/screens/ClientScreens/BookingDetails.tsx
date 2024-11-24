@@ -76,6 +76,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   const [changeNewTimeStatus, {isLoading: changeTimeLoading}] =
     useChangeNewTimeStatusMutation();
 
+// console.log(user.Id)
+
   const [skip, setskip] = useState<boolean>(true);
   const [reloadBookingId, setReloadBookingId] = useState<any>();
 
@@ -378,7 +380,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
       }
 
       const body: any = {
-        StatusNameId: status,
+        // this was added to to set booking status to waitng when a translator cancel or reject a booking
+        StatusNameId: owner ? status : status === 6 || status === 9 ? 1 : status,
         recordId: bookingId,
       };
 
@@ -457,7 +460,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
           let body = {
             customerName: isUser
-              ? requesterDetails?.FirstName + ' ' + requesterDetails.LastName
+              ? requesterDetails?.FirstName + ' ' + requesterDetails?.LastName
               : rekvirant,
             bookingId: BookingID,
             taskType: getTaskName(item.TaskTypeId),
@@ -472,12 +475,12 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             toLanguage: item?.ToLanguageName,
             interpreterName: user.FirstName + ' ' + user.LastName,
             interpreterTelephone: user.PhoneNumber,
-            customerMail: requesterDetails.Email,
+            customerMail: requesterDetails?.Email,
             meetingPoint: address,
             link: meeting,
             recipient: isUser
-              ? [requesterDetails.Email]
-              : [requesterDetails.Email, noreplyemail],
+              ? [requesterDetails?.Email]
+              : [requesterDetails?.Email, noreplyemail],
             bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
             isUser: isUser,
             rekvirant: rekvirant,
@@ -508,7 +511,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         }
 
         if (status === 6 || status === 9) {
-          console.log('Pass 2');
+          
 
           // update a column
           const rejecedBody = {
@@ -522,6 +525,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           let body: any = {
             InterpreterID: 'Anonym',
             BookingID,
+            StatusName:1
           };
 
           changeInterpreterToAnonymous(body);
@@ -530,10 +534,10 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             title: status === 6 ? 'Booking Rejected' : 'Booking Cancelation',
             bookingId: BookingID,
             customerName: requesterDetails
-              ? requesterDetails.FirstName !== null &&
-                requesterDetails.FirstName + ' ' + requesterDetails.LastName !==
+              ? requesterDetails?.FirstName !== null &&
+                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
                   null &&
-                requesterDetails.LastName
+                requesterDetails?.LastName
               : '',
             taskType: getTaskName(item?.TaskTypeId),
             caseNumber:
@@ -758,9 +762,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
               item.InterpreterID !== 'Anonym' &&
               item.StatusName === 2 &&
               !owner &&
-              (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
-              dateToMilliSeconds(item.DateTimeEnd) >
-                dateToMilliSeconds(getCurrentDate().toISOString()) && (
+              (!CreateByApp || (CreateByApp )) &&
+             ( dateToMilliSeconds(item.DateTimeStart) -
+                dateToMilliSeconds(getCurrentDate().toISOString()) > 259200000) && (
                 <View style={{alignItems: 'flex-end'}}>
                   <CustomButton
                     onTap={() => {
@@ -1039,26 +1043,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   <Text style={[styles.text, {opacity: 0.6}]}>
                     {t('common:end_time')} :
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (userDetails === null) {
-                        toast('loading user details', 'info');
-                        return;
-                      }
-
-                      setEditTimeModalVisible(true);
-                    }}
-                    style={{
-                      marginStart: 10,
-                      width: 30,
-                      height: 30,
-                      borderRadius: 100,
-                      backgroundColor: '#fff',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Ionicons name="pencil" size={20} color="#659ED6" />
-                  </TouchableOpacity>
+              
                   <View style={{flexDirection: 'row'}}>
                     {!owner &&
                       item?.StatusName === 2 &&

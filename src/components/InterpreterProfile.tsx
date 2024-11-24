@@ -23,6 +23,7 @@ const InterpreterProfile = () => {
         }}>
         <ProfileItem value={user?.FirstName} title={t('common:name')} />
         <ProfileItem value={user?.Email} title={t('email')} />
+        { user?.GenderId && (user?.GenderId === 1 || user?.GenderId === 2) && <ProfileItem value={user?.GenderId === 1? t('male') : t('female')} title={t('gender')} />}
         <ProfileItem
           value={user?.PhoneNumber}
           title={t('common:phone') + ' ' + t('common:number')}

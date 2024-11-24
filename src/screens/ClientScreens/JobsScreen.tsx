@@ -70,10 +70,11 @@ const JobsScreen = ({navigation, route}: Props) => {
   let tuple = userLanguages ? userLanguages?.map(obj => obj.value) : [];
 
   // let tuple = [10, 12, 21]
-  let tupleString: any =
+  let userLanguagesToTuple: any =
     tuple.length > 0 ? '(' + tuple?.join(', ') + ')' : 'non';
+  let genderId : number = user?.GenderId ? user?.GenderId : 0
 
-  const {data: openBookings, error} = useGetOpenBookingsQuery(tupleString, {
+  const {data: openBookings, error} = useGetOpenBookingsQuery({userLanguagesToTuple, genderId}, {
     pollingInterval: 60000,
     refetchOnMountOrArgChange: true,
   });
