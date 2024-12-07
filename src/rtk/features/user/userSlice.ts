@@ -88,6 +88,8 @@ export const registerUser = createAsyncThunk(
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
   try {
     const response = await axios.get(`${BASE_URL}${suffix}users`);
+    
+    
     return response.data;
   } catch (error) {
     if (error) throw error;
@@ -240,9 +242,15 @@ const userSlice = createSlice({
     builder.addCase(
       fetchUser.fulfilled,
       (state, action: PayloadAction<UserModel>) => {
+        console.log('fulfiled')
+        if(action.payload?.InActive) {
+         
+        state.error =  'Your account is inactive';
+        state.authenticated = false;}
+        else{
         state.user = action.payload;
         state.error = '';
-        state.authenticated = true;
+        state.authenticated = true;}
         state.loading = false;
       },
     );

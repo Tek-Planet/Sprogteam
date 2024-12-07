@@ -59,7 +59,7 @@ const ClientNavigation = () => {
         }}
       />
 
-      {user.interpreter && (
+      {user?.interpreter && (
         <BottomNav.Screen
           name="Gigs"
           component={GigsScreen}
@@ -72,7 +72,7 @@ const ClientNavigation = () => {
         />
       )}
 
-      {user.interpreter && (
+      {user?.interpreter && (
         <BottomNav.Screen
           name="Jobs"
           component={JobsScreen}
@@ -95,7 +95,7 @@ const ClientNavigation = () => {
           tabBarLabel: t('common:quote'),
         }}
       />
-      {!user.interpreter && (
+      {!user?.interpreter && (
         <BottomNav.Screen
           name="Services"
           component={ServicesScreen}
@@ -107,7 +107,7 @@ const ClientNavigation = () => {
           }}
         />
       )}
-      {!user.interpreter && (
+      {!user?.interpreter && (
         <BottomNav.Screen
           name="Search"
           component={SearchScreen}

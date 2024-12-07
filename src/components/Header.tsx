@@ -95,9 +95,9 @@ const Header: React.FC<HeaderProps> = ({
       {showRightIcon && authenticated && (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {location &&
-            user.Role &&
-            user.Role !== 'PrivateCustomer' &&
-            !user.interpreter && (
+            user?.Role &&
+            user?.Role !== 'PrivateCustomer' &&
+            !user?.interpreter && (
               <TouchableOpacity onPress={() => navigation.navigate(location)}>
                 <MaterialIcons
                   name="add-circle-outline"
@@ -108,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({
               </TouchableOpacity>
             )}
 
-          {location === 'CreateGig' && user.interpreter && (
+          {location === 'CreateGig' && user?.interpreter && (
             <TouchableOpacity
               onPress={() => navigation.navigate('GigNav', {screen: location})}>
               <MaterialIcons
