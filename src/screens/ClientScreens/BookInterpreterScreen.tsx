@@ -416,7 +416,6 @@ const BookInterpreterScreen = ({navigation, route}: Props) => {
       <Header
         headerTitle={t('common:order') + ' ' + t('interpreter')}
         showleftIcon
-        showRightIcon
       />
       {(isLoading || loading) && <CustomLoader />}
 

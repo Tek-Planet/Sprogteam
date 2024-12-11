@@ -76,7 +76,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   const [changeNewTimeStatus, {isLoading: changeTimeLoading}] =
     useChangeNewTimeStatusMutation();
 
-// console.log(user.Id)
+  // console.log(user.Id)
 
   const [skip, setskip] = useState<boolean>(true);
   const [reloadBookingId, setReloadBookingId] = useState<any>();
@@ -381,7 +381,11 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
       const body: any = {
         // this was added to to set booking status to waitng when a translator cancel or reject a booking
-        StatusNameId: owner ? status : status === 6 || status === 9 ? 1 : status,
+        StatusNameId: owner
+          ? status
+          : status === 6 || status === 9
+          ? 1
+          : status,
         recordId: bookingId,
       };
 
@@ -511,8 +515,6 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         }
 
         if (status === 6 || status === 9) {
-          
-
           // update a column
           const rejecedBody = {
             InterpreterID: user.Id,
@@ -525,7 +527,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           let body: any = {
             InterpreterID: 'Anonym',
             BookingID,
-            StatusName:1
+            StatusName: 1,
           };
 
           changeInterpreterToAnonymous(body);
@@ -535,7 +537,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             bookingId: BookingID,
             customerName: requesterDetails
               ? requesterDetails?.FirstName !== null &&
-                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
+                requesterDetails?.FirstName +
+                  ' ' +
+                  requesterDetails?.LastName !==
                   null &&
                 requesterDetails?.LastName
               : '',
@@ -729,6 +733,79 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         headerTitle={t('common:booking') + ' ' + t('common:details')}
       />
 
+      {/* edit booking */}
+
+      {/* {(item.StatusName === 8 ||
+        item.StatusName === 1 ||
+        item.StatusName === 2) &&
+        owner &&
+        (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
+        dateToMilliSeconds(item.DateTimeStart) >
+          dateToMilliSeconds(getCurrentDate().toISOString()) && (
+          <View style={{position: 'absolute', right: 78, top: -5}}>
+            <CustomButton
+              onTap={() =>
+                updateBookingStatus(
+                  isDateGreaterThanCurrentBy24Hours(item.DateTimeStart) ? 4 : 7,
+                  item.BookingID,
+                )
+              }
+              bGcolor={colors.main}
+              buttonTitle={t('common:edit')}
+              padding={-5}
+              textSize={12}
+            />
+          </View>
+        )} */}
+
+      {/* cancel button for client */}
+
+      {(item.StatusName === 8 ||
+        item.StatusName === 1 ||
+        item.StatusName === 2) &&
+        owner &&
+        (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
+        dateToMilliSeconds(item.DateTimeStart) >
+          dateToMilliSeconds(getCurrentDate().toISOString()) && (
+          <View style={{position: 'absolute', right: 8, top: -5}}>
+            <CustomButton
+              onTap={() =>
+                updateBookingStatus(
+                  isDateGreaterThanCurrentBy24Hours(item.DateTimeStart) ? 4 : 7,
+                  item.BookingID,
+                )
+              }
+              bGcolor={'red'}
+              buttonTitle={t('common:cancel')}
+              padding={-5}
+              textSize={12}
+            />
+          </View>
+        )}
+      {/* new cancelled button for approved tasks */}
+      {(item.StatusName === 8 ||
+        item.StatusName === 1 ||
+        item.StatusName === 2) &&
+        item.InterpreterID !== 'Anonym' &&
+        item.StatusName === 2 &&
+        !owner &&
+        (!CreateByApp || CreateByApp) &&
+        dateToMilliSeconds(item.DateTimeStart) -
+          dateToMilliSeconds(getCurrentDate().toISOString()) >
+          259200000 && (
+          <View style={{position: 'absolute', right: 8, top: -5}}>
+            <CustomButton
+              onTap={() => {
+                setCancelModalVisible(true);
+              }}
+              bGcolor={'#800000'}
+              buttonTitle={t('common:cancel')}
+              padding={-5}
+              textSize={12}
+            />
+          </View>
+        )}
+
       {(isLoading || isLoadingBookingStatus) && (
         <CustomLoader color={colors.main} />
       )}
@@ -754,29 +831,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           padding: 10,
         }}>
         <ScrollView>
-          {/* new cancelled button for approved tasks */}
           <View style={styles.view}>
-            {(item.StatusName === 8 ||
-              item.StatusName === 1 ||
-              item.StatusName === 2) &&
-              item.InterpreterID !== 'Anonym' &&
-              item.StatusName === 2 &&
-              !owner &&
-              (!CreateByApp || (CreateByApp )) &&
-             ( dateToMilliSeconds(item.DateTimeStart) -
-                dateToMilliSeconds(getCurrentDate().toISOString()) > 259200000) && (
-                <View style={{alignItems: 'flex-end'}}>
-                  <CustomButton
-                    onTap={() => {
-                      setCancelModalVisible(true);
-                    }}
-                    bGcolor={'#800000'}
-                    buttonTitle={t('common:cancel')}
-                    padding={-5}
-                  />
-                </View>
-              )}
-
             <View style={styles.row}>
               <Text style={[styles.text, {opacity: 0.6}]}>BookingID :</Text>
               <Text style={[styles.text, {color: 'green'}]}>{BookingID}</Text>
@@ -831,7 +886,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   }}
                   style={[
                     styles.filterBox,
-                    {backgroundColor: '#659ED6', marginTop: 5},
+                    {backgroundColor: colors.main, marginTop: 5},
                   ]}>
                   <Text style={[styles.filterText, {color: colors.white}]}>
                     {t('common:book') + ' ' + t('common:again')}
@@ -1043,7 +1098,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   <Text style={[styles.text, {opacity: 0.6}]}>
                     {t('common:end_time')} :
                   </Text>
-              
+
                   <View style={{flexDirection: 'row'}}>
                     {!owner &&
                       item?.StatusName === 2 &&
@@ -1077,12 +1132,14 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   </View>
                 </View>
 
-                <View style={styles.row}>
-                  <Text style={[styles.text, {opacity: 0.6}]}>
-                    {t('common:duration')} :
-                  </Text>
-                  <Text style={styles.text}>{item?.Duration} Timer </Text>
-                </View>
+                {item?.Duration && (
+                  <View style={styles.row}>
+                    <Text style={[styles.text, {opacity: 0.6}]}>
+                      {t('common:duration')} :
+                    </Text>
+                    <Text style={styles.text}>{item?.Duration} Timer </Text>
+                  </View>
+                )}
               </View>
             ) : (
               <View>
@@ -1185,7 +1242,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   }
                   style={[
                     styles.filterBox,
-                    {backgroundColor: '#659ED6', marginTop: 5},
+                    {backgroundColor: colors.main, marginTop: 5},
                   ]}>
                   <Text style={[styles.filterText, {color: colors.white}]}>
                     {t('common:get_direction')}
@@ -1251,7 +1308,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                     width: 30,
                     height: 30,
                     borderRadius: 100,
-                    backgroundColor: '#659ED6',
+                    backgroundColor: colors.main,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
@@ -1289,6 +1346,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
               </TouchableOpacity>
             )}
           </View>
+          {/* cancel button for user */}
 
           {item?.TaskTypeId === 1 && (
             <View style={styles.view}>
@@ -1341,7 +1399,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                           width: 30,
                           height: 30,
                           borderRadius: 100,
-                          backgroundColor: '#659ED6',
+                          backgroundColor: colors.main,
                           alignItems: 'center',
                           justifyContent: 'center',
                         }}>
@@ -1406,7 +1464,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                       }
                       addFavourite();
                     }}
-                    bGcolor={'#659ED6'}
+                    bGcolor={colors.main}
                     buttonTitle={t('common:add_to_favourite')}
                   />
                 </View>
@@ -1426,24 +1484,13 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                           userDetails: userDetails,
                         });
                       }}
-                      bGcolor={'#659ED6'}
+                      bGcolor={colors.main}
                       buttonTitle={t('common:rate')}
                     />
                   </View>
                 )}
               </View>
             )}
-
-          {/* <CustomButton
-            onPress={() =>
-              navigation.navigate('OtherNav', {
-                screen: 'LandingPage',
-                params: {item: item, from: 1},
-              })
-            }
-            bGcolor={'green'}
-            buttonTitle={t('common:proceed')}
-          /> */}
 
           <View
             style={{
@@ -1490,29 +1537,6 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
               )}
 
             {/* cancel button for customer  web booking */}
-
-            {(item.StatusName === 8 ||
-              item.StatusName === 1 ||
-              item.StatusName === 2) &&
-              owner &&
-              (!CreateByApp || (CreateByApp && IsBookingCompleted === 0)) &&
-              dateToMilliSeconds(item.DateTimeStart) >
-                dateToMilliSeconds(getCurrentDate().toISOString()) && (
-                <View style={styles.buttonWrapper}>
-                  <CustomButton
-                    onTap={() =>
-                      updateBookingStatus(
-                        isDateGreaterThanCurrentBy24Hours(item.DateTimeStart)
-                          ? 4
-                          : 7,
-                        item.BookingID,
-                      )
-                    }
-                    bGcolor={'red'}
-                    buttonTitle={t('common:cancel')}
-                  />
-                </View>
-              )}
 
             {(StatusName === 1 || StatusName === 8 || StatusName === 9) &&
               !owner &&
@@ -1644,7 +1668,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   view: {
-    borderColor: '#659ED6',
+    borderColor: colors.main,
     borderRadius: 10,
     paddingBottom: 10,
   },

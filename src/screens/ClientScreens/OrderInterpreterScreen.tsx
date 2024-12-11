@@ -66,7 +66,6 @@ const OrderInterpreterScreen = ({navigation}: Props) => {
       <Header
         headerTitle={t('common:order') + ' ' + t('interpreter')}
         showleftIcon
-        showRightIcon
       />
       {isLoading ? (
         <CustomLoader />

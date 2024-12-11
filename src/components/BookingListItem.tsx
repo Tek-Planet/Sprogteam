@@ -150,7 +150,11 @@ const BookingListItem = (props: Props) => {
       }
 
       const body: any = {
-        StatusNameId: owner ? status : status === 6 || status === 9 ? 1 : status,
+        StatusNameId: owner
+          ? status
+          : status === 6 || status === 9
+          ? 1
+          : status,
         recordId: bookingId,
       };
 
@@ -230,7 +234,9 @@ const BookingListItem = (props: Props) => {
           let body = {
             customerName: requesterDetails
               ? requesterDetails?.FirstName !== null &&
-                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
+                requesterDetails?.FirstName +
+                  ' ' +
+                  requesterDetails?.LastName !==
                   null &&
                 requesterDetails?.LastName
               : '',
@@ -309,7 +315,9 @@ const BookingListItem = (props: Props) => {
             bookingId: item.BookingID,
             customerName: requesterDetails
               ? requesterDetails?.FirstName !== null &&
-                requesterDetails?.FirstName + ' ' + requesterDetails?.LastName !==
+                requesterDetails?.FirstName +
+                  ' ' +
+                  requesterDetails?.LastName !==
                   null &&
                 requesterDetails?.LastName
               : '',
@@ -518,11 +526,13 @@ const BookingListItem = (props: Props) => {
               </View>
 
               {/*duration */}
-              <View style={{...styles.row}}>
-                <Text style={{...styles.title}}>{t('common:duration')}</Text>
+              {Duration && (
+                <View style={{...styles.row}}>
+                  <Text style={{...styles.title}}>{t('common:duration')}</Text>
 
-                <Text style={{...styles.text}}>{Duration}</Text>
-              </View>
+                  <Text style={{...styles.text}}>{Duration}</Text>
+                </View>
+              )}
 
               {/* price section */}
 
