@@ -756,12 +756,14 @@ const BookingListItem = (props: Props) => {
                 </Text>
               </View>
 
-              {TaskTypeId === 1 && (
-                <View style={styles.row}>
-                  <Text style={[styles.title]}>{t('common:address')} : </Text>
-                  <Text style={[styles.text]}>{address}</Text>
-                </View>
-              )}
+              {TaskTypeId === 1 &&
+                address !== 'null' &&
+                address !== 'null null null' && (
+                  <View style={styles.row}>
+                    <Text style={[styles.title]}>{t('common:address')} : </Text>
+                    <Text style={[styles.text]}>{address}</Text>
+                  </View>
+                )}
 
               {ServiceId !== null && ServiceId !== 2 && ServiceId !== 3 && (
                 <View style={[styles.row, {justifyContent: 'space-between'}]}>

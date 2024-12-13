@@ -93,7 +93,7 @@ export function GuestDrawerContent(props: any) {
             </View>
 
             {/* written booking section */}
-            <View style={styles.wrapper}>
+            {/* <View style={styles.wrapper}>
               <DrawerItem
                 icon={() => <Image source={gservice} />}
                 label={() => (
@@ -105,7 +105,7 @@ export function GuestDrawerContent(props: any) {
                   navigation.navigate('GuestServices');
                 }}
               />
-            </View>
+            </View> */}
 
             {/* career page */}
             <View style={styles.wrapper}>

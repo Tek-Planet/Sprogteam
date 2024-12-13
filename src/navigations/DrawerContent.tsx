@@ -93,7 +93,7 @@ export function DrawerContent(props: any) {
                   <Pressable
                     onPress={() => {
                       navigation.navigate(
-                        user.interpreter ? 'Jobs' : 'OrderInterpreter',
+                        user.interpreter ? 'Jobs' : 'OrderInterpreterAnonymous',
                       );
                     }}
                     style={styles.button}>

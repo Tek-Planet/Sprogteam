@@ -39,14 +39,14 @@ const JobsScreen = ({navigation, route}: Props) => {
 
   const [filter, setFilter] = useState<string>('');
 
-  const {
-    data: quoteData,
-    isLoading,
-    isFetching,
-  } = useGetQuotesQuery('', {
-    pollingInterval: 60000,
-    refetchOnMountOrArgChange: true,
-  });
+  // const {
+  //   data: quoteData,
+  //   isLoading,
+  //   isFetching,
+  // } = useGetQuotesQuery('', {
+  //   pollingInterval: 60000,
+  //   refetchOnMountOrArgChange: true,
+  // });
 
   const [filterQuoteData, setFilterQuoteData] = useState<QuoteType[]>([]);
 
@@ -72,12 +72,15 @@ const JobsScreen = ({navigation, route}: Props) => {
   // let tuple = [10, 12, 21]
   let userLanguagesToTuple: any =
     tuple.length > 0 ? '(' + tuple?.join(', ') + ')' : 'non';
-  let genderId : number = user?.GenderId ? user?.GenderId : 0
+  let genderId: number = user?.GenderId ? user?.GenderId : 0;
 
-  const {data: openBookings, error} = useGetOpenBookingsQuery({userLanguagesToTuple, genderId}, {
-    pollingInterval: 60000,
-    refetchOnMountOrArgChange: true,
-  });
+  const {data: openBookings, error} = useGetOpenBookingsQuery(
+    {userLanguagesToTuple, genderId},
+    {
+      pollingInterval: 60000,
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   const [filterData, setFilterData] = useState<BookingModel[]>([]);
 
@@ -94,19 +97,19 @@ const JobsScreen = ({navigation, route}: Props) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (quoteData) {
-      const filteredData = quoteData.filter(
-        item =>
-          item.QuoteStatusId === 1 &&
-          item.CreateBy !== user.Id &&
-          dateToMilliSeconds(getCurrentDate().toISOString()) <
-            dateToMilliSeconds(item.DeadlineDate),
-      );
+  // useEffect(() => {
+  //   if (quoteData) {
+  //     const filteredData = quoteData.filter(
+  //       item =>
+  //         item.QuoteStatusId === 1 &&
+  //         item.CreateBy !== user.Id &&
+  //         dateToMilliSeconds(getCurrentDate().toISOString()) <
+  //           dateToMilliSeconds(item.DeadlineDate),
+  //     );
 
-      setFilterQuoteData(filteredData);
-    }
-  }, [quoteData]);
+  //     setFilterQuoteData(filteredData);
+  //   }
+  // }, [quoteData]);
 
   return (
     <View style={{...styles.container, ...baseStyles.padding}}>
@@ -132,12 +135,12 @@ const JobsScreen = ({navigation, route}: Props) => {
           {/* {filterData?.length === 0 && !isLoading && <CustomEmptyList />} */}
 
           {/* for all quotes */}
-          <Text style={styles.title}>
+          {/* <Text style={styles.title}>
             {t('common:quotes') + ' ' + t('common:jobs')}{' '}
             {filterQuoteData?.length}
-          </Text>
+          </Text> */}
 
-          <FlatList
+          {/* <FlatList
             keyExtractor={item => item.QuoteID.toString()}
             data={filterQuoteData ? filterQuoteData : []}
             renderItem={({item, index}) => {
@@ -152,7 +155,7 @@ const JobsScreen = ({navigation, route}: Props) => {
                 );
               else return null;
             }}
-          />
+          /> */}
 
           <Text style={styles.title}>
             {t('common:direct') + ' ' + t('common:booking')}{' '}

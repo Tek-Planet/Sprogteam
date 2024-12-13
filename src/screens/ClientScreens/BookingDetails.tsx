@@ -269,8 +269,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
   const rekvirant = CompanyName;
 
-  const address =
-    Address || OtherAdress || DeptAdresse + ' ' + DeptZipcode + ' ' + DeptCity;
+  let [address, setAddress] = useState(
+    Address || OtherAdress || DeptAdresse + ' ' + DeptZipcode + ' ' + DeptCity,
+  );
 
   // function to add translatorF
   const miniFavourite = async () => {
@@ -694,6 +695,13 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     if (data) setItem(data);
   }, [data]);
+
+  // requester
+  useEffect(() => {
+    if (requesterDetails)
+      if (address === 'null' || address === 'null null null')
+        setAddress(requesterDetails?.Adresse);
+  }, [requesterDetails]);
 
   // method to change entime
 
@@ -1181,9 +1189,11 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   : getServices([ServiceId - 1])?.label}
               </Text>
             </View>
-            {item?.TaskTypeId === 1 && address !== null && (
-              <View>
-                {/* <View style={styles.row}>
+            {item?.TaskTypeId === 1 &&
+              address !== null &&
+              address !== 'null null null' && (
+                <View>
+                  {/* <View style={styles.row}>
                 <Text
                   style={[styles.text, {fontFamily: fonts.bold, width: 100}]}>
                   Translator Location :
@@ -1192,64 +1202,64 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   {address.origin_addresses}
                 </Text>
               </View> */}
-                <View style={styles.row}>
-                  <Text style={[styles.text, {opacity: 0.6}]}>
-                    {t('common:address')} :
-                  </Text>
-                  <Text style={[styles.text, {flex: 1}]}>{address}</Text>
-                </View>
-                {item?.kmTilTask !== null && item?.kmTilTask > 0 && (
                   <View style={styles.row}>
                     <Text style={[styles.text, {opacity: 0.6}]}>
-                      {t('common:distance')} :{' '}
+                      {t('common:address')} :
                     </Text>
-                    {item?.kmTilTask !== null ? (
-                      <Text style={styles.text}>
-                        {item?.kmTilTask} km ({parseInt(item?.kmTilTask) / 2}
-                        {' ' + t('common:multiply_by')} 2)
-                      </Text>
-                    ) : (
-                      <Text style={styles.text}>0</Text>
-                    )}
+                    <Text style={[styles.text, {flex: 1}]}>{address}</Text>
                   </View>
-                )}
+                  {item?.kmTilTask !== null && item?.kmTilTask > 0 && (
+                    <View style={styles.row}>
+                      <Text style={[styles.text, {opacity: 0.6}]}>
+                        {t('common:distance')} :{' '}
+                      </Text>
+                      {item?.kmTilTask !== null ? (
+                        <Text style={styles.text}>
+                          {item?.kmTilTask} km ({parseInt(item?.kmTilTask) / 2}
+                          {' ' + t('common:multiply_by')} 2)
+                        </Text>
+                      ) : (
+                        <Text style={styles.text}>0</Text>
+                      )}
+                    </View>
+                  )}
 
-                <TouchableOpacity
-                  onPress={() =>
-                    // navigation.navigate('OtherNav', {
-                    //   screen: 'Direction',
-                    //   params: {info: item},
-                    // })
-                    {
-                      const openInMap = () => {
-                        const scheme = Platform.select({
-                          ios: 'maps:0,0?q=',
-                          android: 'geo:0,0?q=',
-                        });
-                        const url = Platform.select({
-                          ios: `${scheme}${address}`,
-                          android: `${scheme}${address}`,
+                  <TouchableOpacity
+                    onPress={() =>
+                      // navigation.navigate('OtherNav', {
+                      //   screen: 'Direction',
+                      //   params: {info: item},
+                      // })
+                      {
+                        const openInMap = () => {
+                          const scheme = Platform.select({
+                            ios: 'maps:0,0?q=',
+                            android: 'geo:0,0?q=',
+                          });
+                          const url = Platform.select({
+                            ios: `${scheme}${address}`,
+                            android: `${scheme}${address}`,
 
-                          //  ios: `${scheme}://?center=${latitude},${longitude}&q=${latitude},${longitude}&zoom=14&views=traffic"`,
-                          // android: `geo://?q=${latitude},${longitude}`,
-                        });
+                            //  ios: `${scheme}://?center=${latitude},${longitude}&q=${latitude},${longitude}&zoom=14&views=traffic"`,
+                            // android: `geo://?q=${latitude},${longitude}`,
+                          });
 
-                        Linking.openURL(url + '');
-                      };
+                          Linking.openURL(url + '');
+                        };
 
-                      openInMap();
+                        openInMap();
+                      }
                     }
-                  }
-                  style={[
-                    styles.filterBox,
-                    {backgroundColor: colors.main, marginTop: 5},
-                  ]}>
-                  <Text style={[styles.filterText, {color: colors.white}]}>
-                    {t('common:get_direction')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+                    style={[
+                      styles.filterBox,
+                      {backgroundColor: colors.main, marginTop: 5},
+                    ]}>
+                    <Text style={[styles.filterText, {color: colors.white}]}>
+                      {t('common:get_direction')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             {Remark !== null && Remark.length > 0 && (
               <View style={styles.row}>
                 <Text style={[styles.text, {opacity: 0.6}]}>

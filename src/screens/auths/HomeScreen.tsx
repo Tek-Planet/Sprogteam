@@ -152,7 +152,7 @@ const HomeScreen = ({route, navigation}: Props) => {
 
               {/* sefives section */}
 
-              <Text
+              {/* <Text
                 style={{
                   ...styles.title,
                   color: colors.black,
@@ -161,9 +161,9 @@ const HomeScreen = ({route, navigation}: Props) => {
                   marginBottom: spacing.ten,
                 }}>
                 {t('common:available_services')}
-              </Text>
+              </Text> */}
 
-              <FlatList
+              {/* <FlatList
                 numColumns={2}
                 contentContainerStyle={{}}
                 keyExtractor={item => item.value}
@@ -196,7 +196,7 @@ const HomeScreen = ({route, navigation}: Props) => {
                     </TouchableOpacity>
                   );
                 }}
-              />
+              /> */}
             </View>
 
             {/* profesinal team section */}

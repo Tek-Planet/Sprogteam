@@ -165,13 +165,13 @@ function EditTimeModal(props: EditTimeModalProps) {
             <Text style={styles.text}>{duration} </Text>
           </View>
 
-          <View style={styles.row}>
+          {/* <View style={styles.row}>
             <Text style={[styles.text, {opacity: 0.6}]}>
               {t('common:price')}:
             </Text>
 
             <Text style={[styles.text]}>{price && price + ' kr'}</Text>
-          </View>
+          </View> */}
           {erroMessage !== '' && <CustomError message={erroMessage} />}
           <CustomButton
             buttonTitle={t('common:done')}

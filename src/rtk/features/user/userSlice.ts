@@ -29,7 +29,10 @@ export const loginUser = createAsyncThunk(
       }
       // get server token
 
-      response = await getServerToken(body.UserName, response.data?.token);
+      response = await getServerToken(
+        'barenemt8@gmail.com',
+        response.data?.token,
+      );
 
       if (!response) return 'Authentication Error';
 

@@ -59,7 +59,7 @@ const ClientNavigation = () => {
         }}
       />
 
-      {user?.interpreter && (
+      {/* {user?.interpreter && (
         <BottomNav.Screen
           name="Gigs"
           component={GigsScreen}
@@ -70,7 +70,7 @@ const ClientNavigation = () => {
             tabBarLabel: t('common:gig'),
           }}
         />
-      )}
+      )} */}
 
       {user?.interpreter && (
         <BottomNav.Screen
@@ -95,7 +95,7 @@ const ClientNavigation = () => {
           tabBarLabel: t('common:quote'),
         }}
       />
-      {!user?.interpreter && (
+      {/* {!user?.interpreter && (
         <BottomNav.Screen
           name="Services"
           component={ServicesScreen}
@@ -106,7 +106,7 @@ const ClientNavigation = () => {
             tabBarLabel: t('common:services'),
           }}
         />
-      )}
+      )} */}
       {!user?.interpreter && (
         <BottomNav.Screen
           name="Search"
