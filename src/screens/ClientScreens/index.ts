@@ -23,3 +23,4 @@ export {default as ProfileScreen} from './ProfileScreen';
 export {default as CreateWritenScreen} from './CreateWritenScreen';
 export {default as WrittenBookingDetails} from './WrittenBookingDetails';
 export {default as AddRatingScreen} from './AddRatingScreen';
+export {default as EditBookingScreen} from './EditBookingScreen';

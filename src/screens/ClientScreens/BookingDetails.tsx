@@ -743,7 +743,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
       {/* edit booking */}
 
-      {/* {(item.StatusName === 8 ||
+      {(item.StatusName === 8 ||
         item.StatusName === 1 ||
         item.StatusName === 2) &&
         owner &&
@@ -752,19 +752,16 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           dateToMilliSeconds(getCurrentDate().toISOString()) && (
           <View style={{position: 'absolute', right: 78, top: -5}}>
             <CustomButton
-              onTap={() =>
-                updateBookingStatus(
-                  isDateGreaterThanCurrentBy24Hours(item.DateTimeStart) ? 4 : 7,
-                  item.BookingID,
-                )
-              }
+              onTap={() => {
+                navigation.replace('EditBooking', {item});
+              }}
               bGcolor={colors.main}
               buttonTitle={t('common:edit')}
               padding={-5}
               textSize={12}
             />
           </View>
-        )} */}
+        )}
 
       {/* cancel button for client */}
 

@@ -22,10 +22,17 @@ import {
   CreateWritenScreen,
   WrittenBookingDetails,
   AddRatingScreen,
+  EditBookingScreen,
 } from '../screens/ClientScreens';
 import AwaitingWrittenTranslationScreen from '../screens/ClientScreens/AwaitingWrittenTranslationScreen';
 import AcceptableBehaviourScreen from '../screens/ClientScreens/AcceptableBehaviourScreen';
-import {QuoteType, SelectOptionType, UserModel, WrittenBooking} from '../types';
+import {
+  BookingModel,
+  QuoteType,
+  SelectOptionType,
+  UserModel,
+  WrittenBooking,
+} from '../types';
 import {ChatsScreen, InboxScreen} from '../screens/shared';
 import {TabParams} from './ClientNavigation';
 import {
@@ -98,13 +105,15 @@ export type RootStackParams = {
     userDetails: any;
   };
   DeleteAccount: undefined;
+  EditBooking: {
+    item: BookingModel;
+  };
 };
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
 const MainNavigation = () => {
   const {gigState, currentRoute} = useAppSelector(state => state.user);
-  const dispatch = useAppDispatch();
 
   // if (user?.role === 'jobseeker') return <JobSeekerNavigation />;
   // else if (user.role === 'customer') return <CustomerNavigation />;
@@ -182,6 +191,7 @@ const MainNavigation = () => {
       <RootStack.Screen name="LanguageSelector" component={LanguageSelector} />
       <RootStack.Screen name="Addrating" component={AddRatingScreen} />
       <RootStack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+      <RootStack.Screen name="EditBooking" component={EditBookingScreen} />
     </RootStack.Navigator>
   );
 };

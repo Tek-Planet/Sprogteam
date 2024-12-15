@@ -80,7 +80,7 @@ export interface UserModel {
   userId?: any;
   DOB?: any;
   EAN?: any;
-  InActive?:boolean
+  InActive?: boolean;
   languages: SelectOptionType[];
   CompanyStatus?: 'Public' | 'Private' | 'Person';
 }
@@ -193,6 +193,9 @@ export interface BookingModel {
   ToLanguageName?: string;
   VideoApi?: null | string;
   kmTilTask: null | number;
+  GenderID: string;
+  RemarkBell: null | string;
+  RemarkAdmin: null | string;
 }
 
 export interface currency {
