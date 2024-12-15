@@ -361,8 +361,10 @@ const BookingListItem = (props: Props) => {
         sendNotificaion(body);
         setLoading(false);
       } else {
-        console.log(res.error);
-        toast('issue to update status please try again ', 'error');
+        const errorMsg = res?.error?.data?.message
+          ? res?.error?.data?.message
+          : 'Unable to update status please try again ';
+        toast(errorMsg, 'error');
         setLoading(false);
       }
     } catch (error: any) {

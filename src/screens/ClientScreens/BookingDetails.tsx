@@ -581,7 +581,10 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         // navigation.replace('Tab', {screen: 'Home'});
         navigation.goBack();
       } else {
-        toast('Unable to update status please try again ', 'error');
+        const errorMsg = res?.error?.data?.message
+          ? res?.error?.data?.message
+          : 'Unable to update status please try again ';
+        toast(errorMsg, 'error');
         setLoading(false);
       }
     } catch (error: any) {
@@ -823,8 +826,9 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
         cancelText={t('common:cancel')}
         continueText={t('common:continue')}
         onContinue={() => {
-          setModalVisible(false);
           updateBookingStatus(9, BookingID);
+          // setModalVisible(false);
+          setTimeout(() => setModalVisible(false), 300);
         }}
       />
 
