@@ -18,4 +18,4 @@ pod install
 # /Users/tek/Documents/Projects/ReactNative/NativeProjects/EaziInvest/ios/Pods/Pods.xcodeproj/xcuserdata/tek.xcuserdatad
 # rm -r /Volumes/workspace/repository/ios/Podszoj/xcuserdata/tek.xcuserdatad/React-Core-AccessibilityResources
 # the sed command from RN cant find the file... so we have to run it ourselves
-sed -i -e  $'s/ && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0)//' /Volumes/workspace/repository/ios/Pods/RCT-Folly/folly/portability/Time.h
+# sed -i -e  $'s/ && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_10_0)//' /Volumes/workspace/repository/ios/Pods/RCT-Folly/folly/portability/Time.h
