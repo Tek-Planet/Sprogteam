@@ -64,9 +64,6 @@ jobs:
       - name: Install Pods
         run: pod install --repo-update
 
-      - name: Reinstall Pods (Apply Fix)
-        run: pod install --repo-update
-
       - name: Build IOS App
         uses: yukiarrr/ios-build-action@v1.4.0
         with:
