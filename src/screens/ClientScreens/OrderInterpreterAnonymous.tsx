@@ -84,17 +84,6 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
     title: t('common:booking_for_self'),
   };
 
-  const dbody = {
-    bookingId: 5959,
-    country: user.Country ? user.Country : 'Denmark',
-    endTime: '17:00',
-    languageId: 14,
-    startDate: '31-07-2024',
-    startTime: '16:00',
-    taskType: 'Fremmøde',
-    taskTypeId: 1,
-    toLanguage: 'Fransk',
-  };
   // dispatch(sendAnonymousEmail(dbody));
   const [error, setError] = useState<string>('');
   const [language, setLanguage] = useState<SelectOptionType>(initialLanguage);
@@ -254,6 +243,8 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
   };
 
   const bookingObject = (meeting: any) => {
+    // console.log(body, 'vs', JSON.stringify(body));
+    const modifiedBody = body.replace(/'/g, "''");
     const mergedDate = mergeDateTime(date, startTime, endTime);
 
     const startTimeLocal = timeToString(startTime || new Date());
@@ -297,7 +288,7 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
       PricesCustomer: priceCustomer,
       Tfare: null,
       TfareCustomer: null,
-      Remark: body,
+      Remark: modifiedBody,
       RemarkBell: billNote ? billNote : null,
       RemarkAdmin: possibleName ? possibleName : null,
       OnlineMeeting: taskTypeId === 1 ? null : meeting.joinUrl,

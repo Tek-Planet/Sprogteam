@@ -1,10 +1,9 @@
 name: IOS Production Build
 
 on:
-  # push:
   workflow_dispatch:
   release:
-    types: [published] # only run the workflow when a new release has been published
+    types: [published]
 
 jobs:
   ios-build:
@@ -16,17 +15,17 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_ENV
 
       - name: Restore node_modules from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: ${{ env.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -41,7 +40,7 @@ jobs:
           bundler-cache: true
 
       - name: Restore Pods cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ios/Pods
@@ -51,7 +50,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
+      - name: Fix Boost Podspec URL
+        run: |
+          BOOST_FILE="../node_modules/react-native/third-party-podspecs/boost.podspec"
+          if [ -f "$BOOST_FILE" ]; then
+            echo "✅ Found boost.podspec, applying fix..."
+            sed -i '' "s|boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2|archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.bz2|" "$BOOST_FILE"
+          else
+            echo "⚠️ Warning: boost.podspec not found!"
+            exit 1
+          fi
+
       - name: Install Pods
+        run: pod install --repo-update
+
+      - name: Reinstall Pods (Apply Fix)
         run: pod install --repo-update
 
       - name: Build IOS App

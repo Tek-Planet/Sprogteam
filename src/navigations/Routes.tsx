@@ -76,8 +76,6 @@ const Routes = () => {
     try {
       await messaging().registerDeviceForRemoteMessages();
 
-      const to: any = await messaging().getAPNSToken();
-
       const token = await messaging().getToken();
 
       // storetoken

@@ -24,6 +24,8 @@ export const loginUser = createAsyncThunk(
   async (body: LoginModel) => {
     try {
       let response: any = await axios.post(`${AUTH_BASE_URL}login`, body);
+
+      console.log(response, 'from server 1');
       if (!response.data?.token) {
         return response.data;
       }
