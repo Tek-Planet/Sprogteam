@@ -25,7 +25,6 @@ export const loginUser = createAsyncThunk(
     try {
       let response: any = await axios.post(`${AUTH_BASE_URL}login`, body);
 
-      console.log(response, 'from server 1');
       if (!response.data?.token) {
         return response.data;
       }
@@ -38,11 +37,26 @@ export const loginUser = createAsyncThunk(
       if (response?.user?.InActive) return 'InActive';
 
       await setHeaders(response);
+
       storeAuthToken(response);
+
       storeUserName(body.UserName);
 
       return response;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response) {
+        // Server responded with a status outside 2xx range
+        console.log('Response Data:', error.response.data);
+        console.log('Response Status:', error.response.status);
+        console.log('Response Headers:', error.response.headers);
+      } else if (error.request) {
+        // Request was made, but no response received
+        console.log('Request Data:', error.request);
+      } else {
+        // Something else happened while setting up the request
+        console.log('Error Message:', error.message);
+      }
+      console.log('Config:', error.config);
       throw error;
     }
   },
@@ -91,7 +105,21 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
     const response = await axios.get(`${BASE_URL}${suffix}users`);
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response) {
+      // Server responded with a status outside 2xx range
+      console.log('Response Data:', error.response.data);
+      console.log('Response Status:', error.response.status);
+      console.log('Response Headers:', error.response.headers);
+    } else if (error.request) {
+      // Request was made, but no response received
+      console.log('Request Data:', error.request);
+    } else {
+      // Something else happened while setting up the request
+      console.log('Error Message:', error.message);
+    }
+    console.log('Config:', error.config);
+    console.log(error, 'Getting User Error');
     if (error) throw error;
     else {
       return null;

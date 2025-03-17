@@ -52,6 +52,7 @@ const Routes = () => {
       //   console.log('fetching user');
       //   dispatch(fetchUser());
       // }, delay);
+      console.log('Getting user');
       dispatch(fetchUser());
 
       // Cleanup the timer to prevent any potential memory leaks
