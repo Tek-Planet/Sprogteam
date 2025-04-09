@@ -486,7 +486,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             recipient: isUser
               ? [requesterDetails?.Email]
               : [requesterDetails?.Email, noreplyemail],
-            bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
+            bcc: [noreplyemail],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: rejected ? 1 : 0,
@@ -567,15 +567,17 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
           // console.log('mail response', mailResponse.data);
         }
 
-        const body = {
-          userId: deviceId,
-          title: 'Booking Notification',
-          text: 'The Status of your booking has been changed',
-          bookingId: BookingID.toString(),
-        };
+        // this ensure notification is not sent for anonymous booking
+        if (deviceId && deviceId !== undefined) {
+          const body = {
+            userId: deviceId,
+            title: 'Booking Notification',
+            text: 'The Status of your booking has been changed',
+            bookingId: BookingID.toString(),
+          };
 
-        console.log('Body of notification', body);
-        sendNotificaion(body);
+          sendNotificaion(body);
+        }
 
         toast('Done', 'success');
         // navigation.replace('Tab', {screen: 'Home'});

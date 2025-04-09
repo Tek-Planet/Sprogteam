@@ -22,8 +22,6 @@ import {
   openNotificationSettings,
 } from '../../NotificationHelper';
 
-import NotificationManagerCompat from '@react-native-firebase/messaging';
-
 const Routes = () => {
   const {token, loading, user} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
@@ -52,7 +50,7 @@ const Routes = () => {
       //   console.log('fetching user');
       //   dispatch(fetchUser());
       // }, delay);
-      console.log('Getting user');
+
       dispatch(fetchUser());
 
       // Cleanup the timer to prevent any potential memory leaks
@@ -88,7 +86,7 @@ const Routes = () => {
         email: user.Id,
       };
 
-      const response = await dispatch(registerDevice(body));
+      await dispatch(registerDevice(body));
 
       // console.log(response);
     } catch (error) {

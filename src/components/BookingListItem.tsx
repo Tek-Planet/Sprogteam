@@ -260,7 +260,7 @@ const BookingListItem = (props: Props) => {
             recipient: isUser
               ? [requesterDetails?.Email]
               : [requesterDetails?.Email, noreplyemail],
-            bcc: [noreplyemail, 'oluwabishefiu@gmail.com'],
+            bcc: [noreplyemail],
             isUser: isUser,
             rekvirant: rekvirant,
             StatusName: StatusName,
