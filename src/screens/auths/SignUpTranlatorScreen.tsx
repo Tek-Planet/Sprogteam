@@ -222,6 +222,7 @@ const SignUpTranlatorScreen = ({navigation, route}: Props) => {
               placeholder={t('common:email')}
               onTextChange={setEmail}
               value={email}
+              editable={false}
             />
             <CustomInput
               showleftIcon

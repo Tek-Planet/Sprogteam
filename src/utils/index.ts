@@ -35,9 +35,9 @@ import {checkAvailability} from '../rtk/features/user/userSlice';
 
 export const isIOS = Platform.OS === 'ios' ? true : false;
 
-export const BASE_URL = APIENV.production;
+export const BASE_URL = APIENV.development;
 
-export const AUTH_BASE_URL = AUTHAPIENV.production;
+export const AUTH_BASE_URL = AUTHAPIENV.local;
 
 export const {height, width} = Dimensions.get('screen');
 

@@ -68,6 +68,8 @@ const EmailVerificationScreen = ({route, navigation}: Props) => {
 
       response = await dispatch(sendPasswordResetOTP(body));
 
+      console.log(response, 'from sending OTP');
+
       if (!response.payload) {
         setErrorMessage('Unable to reset your account at this point');
         setLoading(false);
@@ -97,7 +99,7 @@ const EmailVerificationScreen = ({route, navigation}: Props) => {
 
       response = await dispatch(sendOTP(body));
 
-      // console.log(response);
+      console.log(response, 'issue sending OTP');
 
       if (!response.payload) {
         setErrorMessage('error setting up your account');
