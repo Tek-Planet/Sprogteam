@@ -28,7 +28,7 @@ import {
   translator,
 } from '../assets/images';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import DocumentPicker from 'react-native-document-picker';
+import { pick, keepLocalCopy, errorCodes, isErrorWithCode } from '@react-native-documents/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import {checkAvailability} from '../rtk/features/user/userSlice';
@@ -1003,37 +1003,58 @@ export const startFileDownload = async (url: string) => {
   }
 };
 
+
 export const chooseDocument = async () => {
-  return new Promise(async (resolve, reject) => {
+  try {
     if (Platform.OS === 'android') {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
         Alert.alert('You need to enable storage permission to continue');
-        reject(new Error('Storage permission not granted'));
-        return;
+        throw new Error('Storage permission not granted');
       }
     }
 
-    try {
-      const file = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
+    const [file] = await pick({
+      allowMultiSelection: false,
+      type: ['*/*'], // or specific MIME types
+    });
 
-      let localfile;
-      if (Array.isArray(file)) localfile = file[0];
-      else localfile = file;
+    const [localCopy] = await keepLocalCopy({
+      files: [
+        {
+          uri: file.uri,
+          fileName: file.name ?? 'fallbackName',
+        },
+      ],
+      destination: 'documentDirectory',
+    });
 
-      resolve(localfile);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-        reject(new Error('Document picker was canceled'));
-      } else {
-        reject(err);
+    return localCopy;
+  } catch (err) {
+    if (isErrorWithCode(err)) {
+      switch (err.code) {
+        case errorCodes.IN_PROGRESS:
+          console.warn('Picker already in progress');
+          break;
+        case errorCodes.UNABLE_TO_OPEN_FILE_TYPE:
+          Alert.alert('Unable to open file type');
+          break;
+        case errorCodes.OPERATION_CANCELED:
+          // User canceled — silently ignore or notify
+          break;
+        default:
+          console.error('Unhandled error:', err);
+          Alert.alert('Error', String(err));
       }
+    } else {
+      console.error('Unknown error:', err);
+      Alert.alert('Error', String(err));
     }
-  });
+
+    throw err;
+  }
 };
+
 
 export const uploadFile = async (image: any) => {
   const path = await normalizePath(image.path);

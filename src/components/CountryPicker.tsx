@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import CountryPicker, {
-  Country,
-  CountryCode,
-} from 'react-native-country-picker-modal'; // Make sure to import 'Country' type
+import  {
+  CountryPicker
+} from 'react-native-country-codes-picker'; // Make sure to import 'Country' type
 import {fonts} from '../assets/fonts';
 import {colors} from '../assets/colors';
 
@@ -15,7 +14,7 @@ interface SelectCountryModalProps {
   country?: string;
   showFLags?: boolean;
   setCountryCallingCode?: (code: string) => void;
-  code?: CountryCode;
+  code?: any;
 }
 
 export default function SelectCountryModal(props: SelectCountryModalProps) {
@@ -28,7 +27,7 @@ export default function SelectCountryModal(props: SelectCountryModalProps) {
     code,
   } = props;
 
-  const [countryCode, setCountryCode] = useState<CountryCode>(
+  const [countryCode, setCountryCode] = useState<any>(
     code ? code : 'DK',
   );
   const [withCountryNameButton, setWithCountryNameButton] = useState(true);
@@ -80,26 +79,27 @@ export default function SelectCountryModal(props: SelectCountryModalProps) {
       )}
     </View>
   ) : (
-    <TouchableOpacity
-      onPress={() => {}}
-      style={[styles.container, {}]} // Type assertion to fix the typing issue
-    >
-      <CountryPicker
-        countryCode={countryCode}
-        withFilter={withFilter}
-        withFlag={withFlag}
-        withCountryNameButton={withCountryNameButton}
-        withAlphaFilter={withAlphaFilter}
-        withCallingCode={withCallingCode}
-        withEmoji={withEmoji}
-        onSelect={onSelect}
-        visible={show}
-      />
-      {/* Other content */}
-      <View style={{position: 'absolute', right: 10, zIndex: -10}}>
-        <Feather name={'chevron-down'} size={25} color={colors.lightGray} />
-      </View>
-    </TouchableOpacity>
+    <></>
+    // <TouchableOpacity
+    //   onPress={() => {}}
+    //   style={[styles.container, {}]} // Type assertion to fix the typing issue
+    // >
+    //   <CountryPicker
+    //     countryCode={countryCode}
+    //     withFilter={withFilter}
+    //     withFlag={withFlag}
+    //     withCountryNameButton={withCountryNameButton}
+    //     withAlphaFilter={withAlphaFilter}
+    //     withCallingCode={withCallingCode}
+    //     withEmoji={withEmoji}
+    //     onSelect={onSelect}
+    //     visible={show}
+    //   />
+    //   {/* Other content */}
+    //   <View style={{position: 'absolute', right: 10, zIndex: -10}}>
+    //     <Feather name={'chevron-down'} size={25} color={colors.lightGray} />
+    //   </View>
+    // </TouchableOpacity>
   );
 }
 

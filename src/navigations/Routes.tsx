@@ -143,7 +143,9 @@ const Routes = () => {
 
   return (
     <StripeProvider publishableKey={StripeKey}>
-      <NavigationContainer theme={MyTheme}>
+      <NavigationContainer 
+      // theme={MyTheme}
+      >
         <View style={{flex: 1}}>
           <CustomStatusBar />
           <BaseNavigation />

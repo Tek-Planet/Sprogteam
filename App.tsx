@@ -5,7 +5,7 @@ import React from 'react';
 import Providers from './src/navigations/Providers';
 import {LogBox} from 'react-native';
 
-LogBox.ignoreAllLogs(true);
+// LogBox.ignoreAllLogs(true);
 
 const App = () => {
   return <Providers />;
