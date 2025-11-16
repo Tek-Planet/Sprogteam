@@ -1,4 +1,4 @@
-package com.sprogteam
+package com.aalts
 
 import android.app.Application
 import com.facebook.react.PackageList
