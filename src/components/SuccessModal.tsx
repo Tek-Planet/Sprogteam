@@ -1,13 +1,19 @@
 import React, {useEffect} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
-import {Modal, ModalContent, ScaleAnimation} from 'react-native-modals';
+import {
+  Modal,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
 import {fontSize, fonts} from '../assets/fonts';
 import {check} from '../assets/images';
 import {colorTypes} from '../assets/colors';
 import {spacing} from '../assets/spacing';
-import {useTheme} from '@react-navigation/native';
-
 import {height, width} from '../utils';
 
 interface SuccessModalProps {
@@ -19,56 +25,32 @@ interface SuccessModalProps {
 
 function SuccessModal(props: SuccessModalProps) {
   const {modalVisible, setModalVisible, message, closeModal} = props;
-
   const {colors} = useTheme();
   const styles = getStyles(colors);
 
   useEffect(() => {
-    const delay = 1500; // 5 seconds in milliseconds
-
-    const timeoutId = setTimeout(() => {
-      closeModal();
-    }, delay);
-    // Clear the timeout if the component unmounts to prevent memory leaks
-    return () => clearTimeout(timeoutId);
-  }, []);
+    if (modalVisible) {
+      const timeoutId = setTimeout(() => {
+        closeModal();
+      }, 1500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [modalVisible]);
 
   return (
     <Modal
+      animationType="fade"
+      transparent={true}
       visible={modalVisible}
-      modalAnimation={
-        new ScaleAnimation({
-          // initialValue: 1,
-          useNativeDriver: true,
-        })
-      }
-      // modalTitle={<ModalTitle title={props.title} />}
-      onTouchOutside={() => {
-        setModalVisible(false);
-      }}>
-      <ModalContent
-        style={{
-          width: width * 0.9,
-          maxHeight: height * 0.9,
-        }}>
-        <View style={{position: 'relative'}}>
-          <Image style={styles.image} source={check} />
-
-          <View>
-            <Text
-              style={{
-                opacity: 0.6,
-                fontFamily: fonts.regular,
-                marginBottom: spacing.fiften,
-                color: colors.black,
-                fontSize: fontSize.regular,
-                textAlign: 'center',
-              }}>
-              {message}
-            </Text>
+      onRequestClose={() => setModalVisible(false)}>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <View style={styles.overlay}>
+          <View style={styles.modalView}>
+            <Image style={styles.image} source={check} />
+            <Text style={styles.message}>{message}</Text>
           </View>
         </View>
-      </ModalContent>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -77,24 +59,37 @@ export default SuccessModal;
 
 const getStyles = (colors: colorTypes) =>
   StyleSheet.create({
-    profileText: {
-      fontSize: fontSize.regular,
-      fontFamily: fonts.medium,
-      color: colors.black,
-      marginStart: spacing.twenty,
-    },
-    iconBg: {
-      height: 45,
-      width: 45,
-      backgroundColor: colors.ash,
-      borderRadius: 10,
-      alignItems: 'center',
+    overlay: {
+      flex: 1,
       justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.4)',
+    },
+    modalView: {
+      width: width * 0.9,
+      maxHeight: height * 0.9,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 30,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
     },
     image: {
       marginBottom: spacing.twenty * 2,
-      alignSelf: 'center',
       height: 100,
       width: 100,
+      alignSelf: 'center',
+    },
+    message: {
+      opacity: 0.6,
+      fontFamily: fonts.regular,
+      marginBottom: spacing.fiften,
+      color: colors.black,
+      fontSize: fontSize.regular,
+      textAlign: 'center',
     },
   });

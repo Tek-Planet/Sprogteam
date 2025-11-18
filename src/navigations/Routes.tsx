@@ -9,7 +9,7 @@ import {
   setDefaultLanguage,
 } from '../rtk/features/user/userSlice';
 import {BaseNavigation} from './';
-import {ExtendedTheme, NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, ExtendedTheme, NavigationContainer} from '@react-navigation/native';
 import {Alert, Linking, Platform, View} from 'react-native';
 import {colors} from '../assets/colors';
 import {CustomStatusBar} from '../components';
@@ -131,9 +131,15 @@ const Routes = () => {
     checkNotificationPermission();
   }, []);
 
-  const MyTheme: ExtendedTheme = {
-    dark: false,
-    colors: colors,
+  // const MyTheme: ExtendedTheme = {
+  //   dark: false,
+  //   colors: colors,
+  // };
+
+
+  const MyTheme = {
+    ...DefaultTheme,
+    colors:colors,
   };
 
   if (loading) return <SplashScreen />;
@@ -144,9 +150,9 @@ const Routes = () => {
   return (
     <StripeProvider publishableKey={StripeKey}>
       <NavigationContainer 
-      // theme={MyTheme}
+       theme={MyTheme}
       >
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor:"#000000"}}>
           <CustomStatusBar />
           <BaseNavigation />
         </View>

@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
-import {Modal, ScaleAnimation} from 'react-native-modals';
+
 
 import {fontSize, fonts} from '../assets/fonts';
 import {colorTypes} from '../assets/colors';

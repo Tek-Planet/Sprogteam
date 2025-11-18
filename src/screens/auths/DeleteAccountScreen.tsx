@@ -26,7 +26,7 @@ const DeleteAccountScreen = ({navigation}: Props) => {
   const {user} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [password, setPassword] = useState<string>('');
+ 
   const [loading, setLoading] = useState<boolean>(false);
 
   const {t} = useTranslation();

@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import  {
-  CountryPicker
-} from 'react-native-country-codes-picker'; // Make sure to import 'Country' type
-import {fonts} from '../assets/fonts';
-import {colors} from '../assets/colors';
+import { useState } from "react";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {CountryPicker} from "react-native-country-codes-picker";
 
-import Feather from 'react-native-vector-icons/Feather';
-import {spacing} from '../assets/spacing';
+import { colors } from "../assets/colors";
+import { height } from "../utils";
+import Feather from "react-native-vector-icons/Feather";
+import { fonts } from "../assets/fonts";
+import { spacing } from "../assets/spacing";
 
 interface SelectCountryModalProps {
   setCountry: (country: string) => void;
@@ -18,38 +17,17 @@ interface SelectCountryModalProps {
 }
 
 export default function SelectCountryModal(props: SelectCountryModalProps) {
-  const {
-    setCountry,
-    country,
-    showFLags,
+  const {country, setCountry, setCountryCallingCode} = props;
+  const [show, setShow] = useState(false);
+  const [countryFlag, setCountryFlag] = useState('');
 
-    setCountryCallingCode,
-    code,
-  } = props;
 
-  const [countryCode, setCountryCode] = useState<any>(
-    code ? code : 'DK',
-  );
-  const [withCountryNameButton, setWithCountryNameButton] = useState(true);
-  const [withFlag, setWithFlag] = useState(true);
-  const [withEmoji, setWithEmoji] = useState(true);
-  const [withFilter, setWithFilter] = useState(true);
-  const [withAlphaFilter, setWithAlphaFilter] = useState(true);
-  const [withCallingCode, setWithCallingCode] = useState(false);
-
-  const [show, showPicker] = useState(showFLags ? true : false);
-
-  const onSelect = (country: Country) => {
-    setCountry(country.name + '');
-    setCountryCode(country.cca2);
-    setCountryCallingCode && setCountryCallingCode('+' + country.callingCode);
-  };
-
-  return !show ? (
+  return (
     <View style={styles.container}>
+    
       <TouchableOpacity
         onPress={() => {
-          showPicker(true);
+          setShow(true);
         }}
         style={{
           flexDirection: 'row',
@@ -62,7 +40,7 @@ export default function SelectCountryModal(props: SelectCountryModalProps) {
             fontSize: 16,
             color: colors.black,
           }}>
-          {country}
+        {country}
         </Text>
         <Feather name={'chevron-down'} size={25} color={colors.lightGray} />
       </TouchableOpacity>
@@ -77,29 +55,48 @@ export default function SelectCountryModal(props: SelectCountryModalProps) {
           required
         </Text>
       )}
+
+      {/* // For showing picker just put show state to show prop */}
+      <CountryPicker
+        lang="en"
+        show={show}
+        searchMessage={'search'}
+        inputPlaceholder={'Inpurt'}
+        // when picker button press you will get the country object with dial code
+        pickerButtonOnPress={(item) => {
+          setCountry(item.name.en)
+         if(setCountryCallingCode) setCountryCallingCode(item.dial_code+"");
+          setCountryFlag(item.flag)
+          setShow(false);    
+        }}
+
+        style={{
+          // Styles for whole modal [View]
+          modal: {
+              height: height*0.8,
+             
+          },
+          // Styles for modal backdrop [View]
+          backdrop: {
+          
+          },
+          // Styles for bottom input line [View]
+          line: {
+          
+          },
+          // Styles for list of countries [FlatList]
+        
+          // Styles for input [TextInput]
+          textInput: {
+                height: 50,
+                borderRadius: 0,
+          },
+          // Styles for country button [TouchableOpacity]
+        
+  
+      }}
+      />
     </View>
-  ) : (
-    <></>
-    // <TouchableOpacity
-    //   onPress={() => {}}
-    //   style={[styles.container, {}]} // Type assertion to fix the typing issue
-    // >
-    //   <CountryPicker
-    //     countryCode={countryCode}
-    //     withFilter={withFilter}
-    //     withFlag={withFlag}
-    //     withCountryNameButton={withCountryNameButton}
-    //     withAlphaFilter={withAlphaFilter}
-    //     withCallingCode={withCallingCode}
-    //     withEmoji={withEmoji}
-    //     onSelect={onSelect}
-    //     visible={show}
-    //   />
-    //   {/* Other content */}
-    //   <View style={{position: 'absolute', right: 10, zIndex: -10}}>
-    //     <Feather name={'chevron-down'} size={25} color={colors.lightGray} />
-    //   </View>
-    // </TouchableOpacity>
   );
 }
 

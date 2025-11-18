@@ -1,74 +1,67 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Modal, ModalContent, ScaleAnimation} from 'react-native-modals';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {fontSize, fonts} from '../assets/fonts';
 import {colorTypes} from '../assets/colors';
 import {spacing} from '../assets/spacing';
-import {useTheme} from '@react-navigation/native';
-
 import {height, width} from '../utils';
 import {CustomButton, CustomError, FilePickerModal} from '.';
-import {useTranslation} from 'react-i18next';
 
 interface SubmitQuoteModalProps {
   modalVisible: boolean;
   setModalVisible: (val: boolean) => void;
-
   closeModal: () => void;
   onSubmit: (val: any) => void;
 }
 
 function SubmitQuoteModal(props: SubmitQuoteModalProps) {
   const {t} = useTranslation();
-
   const {modalVisible, setModalVisible, onSubmit} = props;
-
   const {colors} = useTheme();
-  const [selectedFile, setselectedFile] = useState<any>(null);
+  const styles = getStyles(colors);
+
+  const [selectedFile, setSelectedFile] = useState<any>(null);
   const [erroMessage, setErrorMessage] = useState<string>('');
 
   const onFileSelected = async (imageFile: any) => {
-    setselectedFile(imageFile);
+    setSelectedFile(imageFile);
   };
 
   return (
     <Modal
+      animationType="fade"
+      transparent={true}
       visible={modalVisible}
-      modalAnimation={
-        new ScaleAnimation({
-          // initialValue: 1,
-          useNativeDriver: true,
-        })
-      }
-      // modalTitle={<ModalTitle title={props.title} />}
-      onTouchOutside={() => {
-        setModalVisible(false);
-      }}>
-      <ModalContent
-        style={{
-          width: width * 0.9,
-          maxHeight: height * 0.9,
-        }}>
-        <View>
-          <FilePickerModal
-            choosenFile={selectedFile}
-            onFileSelected={onFileSelected}
-          />
-          {erroMessage !== '' && <CustomError message={erroMessage} />}
-          <CustomButton
-            buttonTitle={t('common:done')}
-            onTap={() => {
-              if (selectedFile === null) {
-                setErrorMessage('select file to continue');
-                return;
-              }
-              setErrorMessage('');
-              onSubmit(selectedFile);
-            }}
-          />
+      onRequestClose={() => setModalVisible(false)}>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <View style={styles.overlay}>
+          <View style={styles.modalView}>
+            <FilePickerModal
+              choosenFile={selectedFile}
+              onFileSelected={onFileSelected}
+            />
+            {erroMessage !== '' && <CustomError message={erroMessage} />}
+            <CustomButton
+              buttonTitle={t('common:done')}
+              onTap={() => {
+                if (selectedFile === null) {
+                  setErrorMessage('select file to continue');
+                  return;
+                }
+                setErrorMessage('');
+                onSubmit(selectedFile);
+              }}
+            />
+          </View>
         </View>
-      </ModalContent>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -77,6 +70,24 @@ export default SubmitQuoteModal;
 
 const getStyles = (colors: colorTypes) =>
   StyleSheet.create({
+    overlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.4)',
+    },
+    modalView: {
+      width: width * 0.9,
+      maxHeight: height * 0.9,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
     profileText: {
       fontSize: fontSize.regular,
       fontFamily: fonts.medium,

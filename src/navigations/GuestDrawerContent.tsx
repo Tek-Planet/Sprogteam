@@ -62,10 +62,10 @@ export function GuestDrawerContent(props: any) {
           </View>
 
           <View>
-            {/* booking section */}
+         
             <View style={styles.wrapper}>
               <DrawerItem
-                icon={() => <Image source={home} />}
+                icon={() => <Image style={styles.menuIcon} source={home}  />}
                 label={() => (
                   <View style={styles.menuDrawetItem}>
                     <Text style={styles.menuTitle}>{t('common:home')}</Text>
@@ -80,7 +80,7 @@ export function GuestDrawerContent(props: any) {
             {/* menu */}
             <View style={styles.wrapper}>
               <DrawerItem
-                icon={() => <Image source={info} />}
+                icon={() => <Image style={styles.menuIcon} source={info} />}
                 label={() => (
                   <View style={styles.menuDrawetItem}>
                     <Text style={styles.menuTitle}>{t('common:about')}</Text>
@@ -92,26 +92,13 @@ export function GuestDrawerContent(props: any) {
               />
             </View>
 
-            {/* written booking section */}
-            {/* <View style={styles.wrapper}>
-              <DrawerItem
-                icon={() => <Image source={gservice} />}
-                label={() => (
-                  <View style={styles.menuDrawetItem}>
-                    <Text style={styles.menuTitle}>{t('common:services')}</Text>
-                  </View>
-                )}
-                onPress={() => {
-                  navigation.navigate('GuestServices');
-                }}
-              />
-            </View> */}
+           
 
             {/* career page */}
             <View style={styles.wrapper}>
               <DrawerItem
                 icon={() => (
-                  <Image style={{width: 25, height: 25}} source={career} />
+                  <Image style={styles.menuIcon} source={career} />
                 )}
                 label={() => (
                   <View style={styles.menuDrawetItem}>
@@ -123,63 +110,13 @@ export function GuestDrawerContent(props: any) {
                 }}
               />
             </View>
-            {/* interpreter handbook */}
-            {/* <View style={styles.wrapper}>
-              <DrawerItem
-                icon={() => <Image source={faq} />}
-                label={() => (
-                  <View style={styles.menuDrawetItem}>
-                    <Text style={styles.menuTitle}>
-                      {t('common:faq').toUpperCase()}
-                    </Text>
-                  </View>
-                )}
-                onPress={() => {
-                  navigation.navigate('FAQ');
-                }}
-              />
-            </View> */}
+          
 
-            {/* gig section for interpreter */}
-
-            {/* end of gig section */}
-            {/* <View style={styles.wrapper}>
-              <DrawerItem
-                icon={() => <Image source={blog} />}
-                label={() => (
-                  <View style={styles.menuDrawetItem}>
-                    <Text style={styles.menuTitle}>{t('common:blog')}</Text>
-                  </View>
-                )}
-                onPress={() => {
-                  navigation.navigate('Blog');
-                }}
-              />
-            </View> */}
-
-            {/* Acceptable behaviou */}
-
-            {/* Privacy policy */}
-
-            {/* <View style={styles.wrapper}>
-              <DrawerItem
-                icon={() => <Image source={cservice} />}
-                label={() => (
-                  <View style={styles.menuDrawetItem}>
-                    <Text style={styles.menuTitle}>
-                      {t('common:contact') + ' ' + t('common:us')}
-                    </Text>
-                  </View>
-                )}
-                onPress={() => {
-                  navigation.navigate('ContactUs');
-                }}
-              />
-            </View> */}
+          
 
             <View style={styles.wrapper}>
               <DrawerItem
-                icon={() => <Image source={language} />}
+                icon={() => <Image style={styles.menuIcon} source={language} />}
                 label={() => (
                   <View style={styles.menuDrawetItem}>
                     <Text style={styles.menuTitle}>{t('common:language')}</Text>
@@ -191,22 +128,7 @@ export function GuestDrawerContent(props: any) {
               />
             </View>
 
-            {/* <Pressable
-              onPress={() => {
-                navigation.navigate('OrderInterpreter');
-              }}
-              style={styles.button}>
-              <Feather name="home" color={colors.white} size={22} />
-
-              <Text
-                style={{
-                  ...styles.title,
-                  marginStart: spacing.twenty,
-                  color: colors.white,
-                }}>
-                {t('common:home')}
-              </Text>
-            </Pressable> */}
+          
           </View>
 
           {/* submenu item */}
@@ -288,6 +210,8 @@ const getStyles = (colors: colorTypes) =>
       marginLeft: -spacing.twenty,
     },
     subMenuView: {marginStart: spacing.twenty * 1.8},
-    subMenuDrawerItem: {marginTop: -spacing.twenty + 2},
+   
     wrapper: {marginBottom: -spacing.ten},
+
+    menuIcon: {height: 20, width: 20, marginRight:spacing.fiften},
   });

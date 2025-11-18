@@ -11,9 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   acceptable,
   archive,
-  archive_written,
   awaiting_approval,
-  awaiting_written,
   booking,
   booking_d,
   create_quote,
@@ -29,7 +27,6 @@ import {
   privacy,
   quote,
   support,
-  written_trans,
 } from '../assets/images';
 import {spacing} from '../assets/spacing';
 
@@ -562,7 +559,7 @@ export function DrawerContent(props: any) {
 
             <View style={styles.wrapper}>
               <DrawerItem
-                icon={() => <Image source={language} />}
+                icon={() => <Image source={language} style={styles.menuIcon} />}
                 label={() => (
                   <View style={styles.menuDrawetItem}>
                     <Text style={styles.menuTitle}>{t('common:language')}</Text>
@@ -579,7 +576,7 @@ export function DrawerContent(props: any) {
 
           <View>
             <DrawerItem
-              icon={() => <Image source={logout} />}
+              icon={() => <Image source={logout} style={styles.menuIcon} />}
               label={() => (
                 <View style={styles.menuDrawetItem}>
                   <Text style={{...styles.menuTitle, color: colors.main}}>
@@ -650,6 +647,6 @@ const getStyles = (colors: colorTypes) =>
     subMenuView: {marginStart: spacing.twenty * 1.8},
     subMenuDrawerItem: {marginTop: -spacing.twenty + 2},
     wrapper: {marginBottom: -spacing.fiften + 2},
-    subMenuIcon: {height: 18, width: 18},
-    menuIcon: {height: 20, width: 20},
+    subMenuIcon: {height: 18, width: 18, marginRight:spacing.fiften},
+    menuIcon: {height: 20, width: 20, marginRight:spacing.fiften},
   });

@@ -10,7 +10,7 @@ import {
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
-import Swiper from 'react-native-swiper';
+
 
 import {colorTypes} from '../assets/colors';
 import {fontSize, fonts} from '../assets/fonts';

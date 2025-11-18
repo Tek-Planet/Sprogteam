@@ -108,7 +108,7 @@ const getStyles = (colors: colorTypes) =>
   StyleSheet.create({
     container: {
       paddingTop: 1,
-      backgroundColor: colors.white,
+      backgroundColor: 'colors.white',
       justifyContent: 'space-between',
     },
     button: {

@@ -1,14 +1,19 @@
 import React from 'react';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
-import {Modal, ModalContent, ScaleAnimation} from 'react-native-modals';
-
-import {fontSize, fonts} from '../assets/fonts';
-
-import {colorTypes} from '../assets/colors';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import {spacing} from '../assets/spacing';
 import {useTheme} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+
+import {fontSize, fonts} from '../assets/fonts';
+import {colorTypes} from '../assets/colors';
+import {spacing} from '../assets/spacing';
 import {height, width} from '../utils';
 import {CustomButton} from '.';
 
@@ -39,81 +44,45 @@ function DeleteAccountModal(props: DeleteAccountModalProps) {
 
   return (
     <Modal
+      animationType="fade"
+      transparent={true}
       visible={isModalVisible}
-      modalAnimation={
-        new ScaleAnimation({
-          // initialValue: 1,
-          useNativeDriver: true,
-        })
-      }
-      // modalTitle={<ModalTitle title={props.title} />}
-      onTouchOutside={() => {
-        setModalVisible(false);
-      }}>
-      <ModalContent
-        style={{
-          width: width * 0.9,
-          maxHeight: height * 0.9,
-        }}>
-        <View style={{position: 'relative'}}>
-          <Pressable
-            onPress={() => setModalVisible(false)}
-            style={{position: 'absolute', right: 5, zIndex: 10}}>
-            <Feather color={colors.main} name={'x-circle'} size={25} />
-          </Pressable>
+      onRequestClose={() => setModalVisible(false)}>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <View style={styles.overlay}>
+          <View style={styles.modalView}>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={styles.closeIcon}>
+              <Feather color={colors.main} name={'x-circle'} size={25} />
+            </Pressable>
 
-          <Text
-            style={{
-              fontFamily: fonts.medium,
-              marginBottom: spacing.fiften,
-              color: colors.black,
-              fontSize: fontSize.regular,
-              textAlign: 'center',
-            }}>
-            {title}
-          </Text>
+            <Text style={styles.title}>{title}</Text>
 
-          <View>
-            <Text
-              style={{
-                opacity: 0.6,
-                fontFamily: fonts.regular,
-                marginBottom: spacing.fiften,
-                color: colors.black,
-                fontSize: fontSize.regular,
-                textAlign: 'center',
-              }}>
-              {question}
-            </Text>
+            <Text style={styles.question}>{question}</Text>
 
-            {/* action buttond  */}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <View style={{width: width * 0.3}}>
+            <View style={styles.buttonRow}>
+              <View style={styles.buttonWrapper}>
                 <CustomButton
                   buttonTitle={cancelText}
                   textSize={fontSize.light}
-                  onTap={() => {
-                    setModalVisible(false);
-                  }}
+                  onTap={() => setModalVisible(false)}
                   bGcolor={colors.white}
                   testColor={colors.main}
                   borderWidth={1}
                 />
               </View>
-              <View style={{width: width * 0.3}}>
+              <View style={styles.buttonWrapper}>
                 <CustomButton
                   buttonTitle={continueText}
                   textSize={fontSize.light}
-                  onTap={() => {
-                    onContinue();
-                  }}
+                  onTap={onContinue}
                 />
               </View>
             </View>
           </View>
         </View>
-      </ModalContent>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -122,22 +91,51 @@ export default DeleteAccountModal;
 
 const getStyles = (colors: colorTypes) =>
   StyleSheet.create({
-    profileText: {
-      fontSize: fontSize.regular,
-      fontFamily: fonts.medium,
-      color: colors.black,
-      marginStart: spacing.twenty,
-    },
-    iconBg: {
-      height: 45,
-      width: 45,
-      backgroundColor: colors.ash,
-      borderRadius: 10,
-      alignItems: 'center',
+    overlay: {
+      flex: 1,
       justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.4)',
     },
-    image: {
-      marginBottom: spacing.twenty * 2,
-      alignSelf: 'center',
+    modalView: {
+      width: width * 0.9,
+      maxHeight: height * 0.9,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 20,
+      paddingTop: 40,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    closeIcon: {
+      position: 'absolute',
+      right: 5,
+      top: 5,
+      zIndex: 10,
+    },
+    title: {
+      fontFamily: fonts.medium,
+      marginBottom: spacing.fiften,
+      color: colors.black,
+      fontSize: fontSize.regular,
+      textAlign: 'center',
+    },
+    question: {
+      opacity: 0.6,
+      fontFamily: fonts.regular,
+      marginBottom: spacing.fiften,
+      color: colors.black,
+      fontSize: fontSize.regular,
+      textAlign: 'center',
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+    },
+    buttonWrapper: {
+      width: width * 0.3,
     },
   });

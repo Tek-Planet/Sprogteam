@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
-import {Modal, ModalContent, ScaleAnimation} from 'react-native-modals';
-
+import {
+  Modal,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {fontSize, fonts} from '../assets/fonts';
 import {colorTypes} from '../assets/colors';
 import Feather from 'react-native-vector-icons/Feather';
@@ -24,10 +29,8 @@ import {
 } from '.';
 
 import {useAppSelector} from '../rtk/hooks';
-
 import {QuoteType} from '../types';
 import {useCreateQuoteDetailsMutation} from '../rtk/services';
-
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface ChangeRequestModalProps {
@@ -43,15 +46,14 @@ function ChangeRequestModal(props: ChangeRequestModalProps) {
     useCreateQuoteDetailsMutation();
   const {user} = useAppSelector(state => state.user);
 
-  const {modalVisible, onPress, item, setMessage} = props;
+  const {modalVisible, setModalVisible, onPress, item, setMessage} = props;
 
   const {colors} = useTheme();
   const styles = getStyles(colors);
   const {t} = useTranslation();
+
   const [comment, setComment] = useState<string>('');
-
   const [erroMessage, setErrorMessage] = useState<string>('');
-
   const [deadlineDate, setDeadlineDate] = useState<Date | undefined | 'error'>(
     undefined,
   );
@@ -76,7 +78,7 @@ function ChangeRequestModal(props: ChangeRequestModalProps) {
       return;
     }
 
-    let body: any = {
+    const body : any = {
       QuoteId: item?.QuoteID,
       CreateDate: getCurrentDate().toDate(),
       Comment: comment,
@@ -88,9 +90,7 @@ function ChangeRequestModal(props: ChangeRequestModalProps) {
     };
 
     setErrorMessage('');
-    var response: any;
-
-    response = await createQuoteDetails(body);
+    const response: any = await createQuoteDetails(body);
     if (response.data) {
       setMessage(t('common:changes') + ' ' + t('common:sent'));
       onPress();
@@ -101,90 +101,81 @@ function ChangeRequestModal(props: ChangeRequestModalProps) {
 
   return (
     <Modal
+      animationType="fade"
+      transparent={true}
       visible={modalVisible}
-      modalAnimation={
-        new ScaleAnimation({
-          // initialValue: 1,
-          useNativeDriver: true,
-        })
-      }
-      // modalTitle={<ModalTitle title={props.title} />}
-      onTouchOutside={() => {
-        dismissKeyboard();
-      }}>
-      <ModalContent
-        style={{
-          width: width * 0.9,
-          maxHeight: height * 0.9,
-        }}>
-        <View style={{position: 'relative'}}>
-          <Pressable
-            onPress={() => {
-              setMessage(t('common:changes') + ' ' + t('common:sent'));
-              onPress();
-            }}
-            style={{position: 'absolute', right: 5, zIndex: 10}}>
-            <Feather color={colors.main} name={'x-circle'} size={25} />
-          </Pressable>
-          {isLoading && <CustomLoader color={colors.main} />}
-          <KeyboardAwareScrollView>
-            <View>
-              <DatePicker
-                date={deadlineDate}
-                setDate={setDeadlineDate}
-                title={t('common:date')}
-                label={t('common:deadline') + ' ' + t('common:date')}
-              />
+      onRequestClose={() => setModalVisible(false)}>
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <View style={styles.overlay}>
+          <View style={styles.modalView}>
+            <Pressable
+              onPress={() => {
+                setMessage(t('common:changes') + ' ' + t('common:sent'));
+                onPress();
+              }}
+              style={{position: 'absolute', right: 5, top: 5, zIndex: 10}}>
+              <Feather color={colors.main} name={'x-circle'} size={25} />
+            </Pressable>
 
-              <DatePicker
-                date={deadlineTime}
-                setDate={setDeadlineTime}
-                title={t('common:deadline') + ' ' + t('common:time')}
-                label={t('common:deadline') + ' ' + t('common:time')}
-                mode="time"
-              />
+            {isLoading && <CustomLoader color={colors.main} />}
 
-              <Text style={styles.title}>{t('common:price')}</Text>
-              <CustomInput
-                placeholder={t('common:price')}
-                onTextChange={setPrice}
-                value={price}
-              />
-
-              <Text style={styles.title}>{t('common:comment')}</Text>
-              <CustomInput
-                placeholder={
-                  t('common:write') +
-                  ' ' +
-                  t('common:additional') +
-                  ' ' +
-                  t('common:information').toLowerCase() +
-                  ' ' +
-                  t('common:here').toLowerCase()
-                }
-                height={120}
-                onTextChange={setComment}
-                value={comment}
-                onEnterPress={() => {
-                  dismissKeyboard();
-                }}
-              />
-              {(error || erroMessage !== '') && (
-                <CustomError message={erroMessage} />
-              )}
-              <View style={{width: width * 0.8}}>
-                <CustomButton
-                  buttonTitle={t('common:submit')}
-                  textSize={fontSize.light}
-                  onTap={() => {
-                    onSubmit();
-                  }}
+            <KeyboardAwareScrollView>
+              <View>
+                <DatePicker
+                  date={deadlineDate}
+                  setDate={setDeadlineDate}
+                  title={t('common:date')}
+                  label={t('common:deadline') + ' ' + t('common:date')}
                 />
+
+                <DatePicker
+                  date={deadlineTime}
+                  setDate={setDeadlineTime}
+                  title={t('common:deadline') + ' ' + t('common:time')}
+                  label={t('common:deadline') + ' ' + t('common:time')}
+                  mode="time"
+                />
+
+                <Text style={styles.title}>{t('common:price')}</Text>
+                <CustomInput
+                  placeholder={t('common:price')}
+                  onTextChange={setPrice}
+                  value={price}
+                />
+
+                <Text style={styles.title}>{t('common:comment')}</Text>
+                <CustomInput
+                  placeholder={
+                    t('common:write') +
+                    ' ' +
+                    t('common:additional') +
+                    ' ' +
+                    t('common:information').toLowerCase() +
+                    ' ' +
+                    t('common:here').toLowerCase()
+                  }
+                  height={120}
+                  onTextChange={setComment}
+                  value={comment}
+                  onEnterPress={dismissKeyboard}
+                />
+
+                {(error || erroMessage !== '') && (
+                  <CustomError message={erroMessage} />
+                )}
+
+                <View style={{width: width * 0.8}}>
+                  <CustomButton
+                    buttonTitle={t('common:submit')}
+                    textSize={fontSize.light}
+                    onTap={onSubmit}
+                  />
+                </View>
               </View>
-            </View>
-          </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
-      </ModalContent>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -193,6 +184,31 @@ export default ChangeRequestModal;
 
 const getStyles = (colors: colorTypes) =>
   StyleSheet.create({
+    overlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.4)',
+    },
+    modalView: {
+      width: width * 0.9,
+      maxHeight: height * 0.9,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 20,
+      paddingTop: 40,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    title: {
+      color: colors.black,
+      fontSize: fontSize.regular,
+      fontFamily: fonts.medium,
+      marginTop: spacing.ten,
+    },
     profileText: {
       fontSize: fontSize.regular,
       fontFamily: fonts.medium,
@@ -206,12 +222,6 @@ const getStyles = (colors: colorTypes) =>
       borderRadius: 10,
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    title: {
-      color: colors.black,
-      fontSize: fontSize.regular,
-      fontFamily: fonts.medium,
-      marginTop: spacing.ten,
     },
     image: {
       marginBottom: spacing.twenty * 2,

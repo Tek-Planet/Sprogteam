@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {
   CountryPicker,
@@ -108,6 +108,7 @@ const EditProfileScreen = ({navigation}: Props) => {
     setErrorMessage('Unable to update Profile');
   };
 
+
   return (
     <View style={{...styles.container}}>
       <Header
@@ -170,7 +171,6 @@ const EditProfileScreen = ({navigation}: Props) => {
                 />
 
                 <CountryPicker
-                  code={'DK'}
                   setCountryCallingCode={setCountryCallingCode}
                   setCountry={setCountry}
                   country={country}

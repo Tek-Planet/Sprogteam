@@ -13,7 +13,7 @@ export interface colorTypes {
 
 export const colors = {
   main: '#2260A6',
-  white: '#ffffff',
+  white: '#FFFFFF',
   black: '#000000',
   pink: '#F18585',
   red: '#FF0000',
