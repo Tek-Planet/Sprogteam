@@ -298,7 +298,7 @@ export function DrawerContent(props: any) {
             </View>
 
             {/* gig section for interpreter */}
-            {user?.interpreter && (
+            {/* {user?.interpreter && (
               <View style={styles.wrapper}>
                 <DrawerItem
                   icon={() => <Image style={styles.menuIcon} source={dollar} />}
@@ -319,7 +319,7 @@ export function DrawerContent(props: any) {
 
                 {showGigMenu && (
                   <View style={styles.subMenuView}>
-                    {/* Menu Item One */}
+                  
                     <DrawerItem
                       style={styles.subMenuDrawerItem}
                       icon={() => (
@@ -355,13 +355,13 @@ export function DrawerContent(props: any) {
                         navigation.navigate('GigNav', {screen: 'CreateGig'});
                       }}
                     />
-                    {/* menu item two */}
+                  
                   </View>
                 )}
 
-                {/* Quote section */}
+               
               </View>
-            )}
+            )} */}
 
             {/* end of gig section */}
             <View style={styles.wrapper}>
@@ -647,6 +647,6 @@ const getStyles = (colors: colorTypes) =>
     subMenuView: {marginStart: spacing.twenty * 1.8},
     subMenuDrawerItem: {marginTop: -spacing.twenty + 2},
     wrapper: {marginBottom: -spacing.fiften + 2},
-    subMenuIcon: {height: 18, width: 18, marginRight:spacing.fiften},
-    menuIcon: {height: 20, width: 20, marginRight:spacing.fiften},
+    subMenuIcon: {height: 18, width: 18, marginRight: spacing.fiften},
+    menuIcon: {height: 20, width: 20, marginRight: spacing.fiften},
   });

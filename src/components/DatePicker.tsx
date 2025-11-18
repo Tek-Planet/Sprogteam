@@ -115,7 +115,8 @@ const DatePicker = (props: DatePickerProps) => {
       )}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
-        mode={mode ? mode : 'date'}
+        mode={mode || 'date'}
+        date={date && date !== 'error' ? new Date(date) : new Date()}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
         is24Hour={true}
