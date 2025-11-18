@@ -45,7 +45,6 @@ import {
 } from '../screens/auths';
 import {PaymentScreen} from '../screens/payment';
 import {LanguageManager} from '../screens/gigs';
-import { SuccessModal } from '../components';
 
 export type RootStackParams = {
   Tab: TabParams;
@@ -109,7 +108,6 @@ export type RootStackParams = {
   EditBooking: {
     item: BookingModel;
   };
-  Modal: undefined
 };
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
@@ -128,10 +126,6 @@ const MainNavigation = () => {
       initialRouteName={
         gigState ? (currentRoute === 'Chats' ? 'Chats' : 'GigNav') : 'Tab'
       }>
-
-      <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <RootStack.Screen name="Modal" component={SuccessModal} />
-        </RootStack.Group>
       <RootStack.Screen name="Tab" component={ClientNavigation} />
       <RootStack.Screen
         name="OrderInterpreterAnonymous"
