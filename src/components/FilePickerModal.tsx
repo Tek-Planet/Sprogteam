@@ -44,6 +44,8 @@ function FilePickerModal(props: FilePickerModalProps) {
 
   const chooseImageFromPhotos = async () => {
     const selectedImage: any = await choosePhotoFromLibrary();
+
+  
     if (selectedImage) {
       onFileSelected(selectedImage);
     }
