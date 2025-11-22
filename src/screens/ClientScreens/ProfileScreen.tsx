@@ -59,7 +59,7 @@ const ProfileScreen = (
     setModalVisible(false);
 
     setLoading(true);
-    const path = await normalizePath(imageFile.path);
+    const path = await normalizePath(imageFile.uri);
 
     let formData = new FormData();
     formData.append('userName', user.Email);

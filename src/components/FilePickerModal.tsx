@@ -45,7 +45,8 @@ function FilePickerModal(props: FilePickerModalProps) {
   const chooseImageFromPhotos = async () => {
     const selectedImage: any = await choosePhotoFromLibrary();
 
-  
+    console.log(selectedImage);
+
     if (selectedImage) {
       onFileSelected(selectedImage);
     }
@@ -77,9 +78,7 @@ function FilePickerModal(props: FilePickerModalProps) {
       <Text style={styles.title}>
         {label ? label : t('common:upload') + ' ' + t('common:file')}
       </Text>
-      <Pressable
-        onPress={() => setModalVisible(true)}
-        style={styles.trigger}>
+      <Pressable onPress={() => setModalVisible(true)} style={styles.trigger}>
         <Text style={[styles.title, {marginTop: 0}]}>
           {choosenFile
             ? choosenFile?.filename
@@ -114,7 +113,11 @@ function FilePickerModal(props: FilePickerModalProps) {
                   <Pressable
                     onPress={chooseImageFromCamera}
                     style={[baseStyles.elevation, styles.iconBg]}>
-                    <Feather color={'#266EF1'} name={'photo-camera'} size={40} />
+                    <Feather
+                      color={'#266EF1'}
+                      name={'photo-camera'}
+                      size={40}
+                    />
                   </Pressable>
                 )}
                 <Pressable

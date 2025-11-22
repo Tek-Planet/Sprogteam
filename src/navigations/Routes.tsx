@@ -163,6 +163,3 @@ const Routes = () => {
 };
 
 export default Routes;
-// com.techplanetapps.aats
-// udo gem install cocoapods
-// https://stackoverflow.com/questions/78114348/firebaseauth-requires-cocoapods-version-1-12-0-which-is-not-satisfied-by-your-cu

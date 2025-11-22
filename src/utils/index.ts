@@ -28,10 +28,16 @@ import {
   translator,
 } from '../assets/images';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import { pick, keepLocalCopy, errorCodes, isErrorWithCode } from '@react-native-documents/picker';
+import {
+  pick,
+  keepLocalCopy,
+  errorCodes,
+  isErrorWithCode,
+} from '@react-native-documents/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import {checkAvailability} from '../rtk/features/user/userSlice';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 export const isIOS = Platform.OS === 'ios' ? true : false;
 
@@ -804,22 +810,8 @@ export const testModeMeetingUrl = {
 
 export async function requestStoragePermission() {
   try {
-    if (Platform.OS === 'android' && Platform.Version >= 33) {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-      ]);
-
-      if (
-        granted['android.permission.READ_MEDIA_IMAGES'] ===
-        PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('You can access storage');
-        return true;
-      } else {
-        console.log('Storage permission denied');
-        return false;
-      }
-    } else {
+    if (Platform.OS === 'android' && Platform.Version < 33) {
+      // For Android versions below 13, request legacy external storage permission
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         {
@@ -837,6 +829,11 @@ export async function requestStoragePermission() {
         console.log('Storage permission denied');
         return false;
       }
+    } else {
+      // For Android 13+ (API 33 and above), no storage permission should be requested.
+      // Use the Android Photo Picker API instead.
+      console.log('On Android 13+, use Photo Picker (no permission required)');
+      return true;
     }
   } catch (error) {
     console.warn(error);
@@ -847,29 +844,21 @@ export async function requestStoragePermission() {
 // image picker from file
 
 export const choosePhotoFromLibrary = async () => {
-  if (Platform.OS === 'android') {
-    console.log('Checking Perm');
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      Alert.alert('You need to enable storage permission to continue');
-      return null; // Return null to indicate that no image was selected.
-    }
-  }
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      const image = await ImagePicker.openPicker({
-        width: 500,
-        height: 500,
+  return new Promise((resolve, reject) => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        selectionLimit: 1,
         includeBase64: true,
-        cropping: true,
-      });
-
-      resolve(image); // Resolve the promise with the selected image data.
-    } catch (error) {
-      console.log(error);
-      reject(error); // Reject the promise if an error occurs.
-    }
+      },
+      response => {
+        if (response.didCancel || response.errorCode) {
+          reject(response.errorMessage || 'Image selection cancelled');
+        } else {
+          resolve(response.assets?.[0]);
+        }
+      },
+    );
   });
 };
 
@@ -1003,10 +992,10 @@ export const startFileDownload = async (url: string) => {
   }
 };
 
-
 export const chooseDocument = async () => {
   try {
-    if (Platform.OS === 'android') {
+    // Only request storage permission on Android < 13
+    if (Platform.OS === 'android' && Platform.Version < 33) {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
         Alert.alert('You need to enable storage permission to continue');
@@ -1014,6 +1003,7 @@ export const chooseDocument = async () => {
       }
     }
 
+    // Use system picker (no permission needed on Android 13+)
     const [file] = await pick({
       allowMultiSelection: false,
       type: ['*/*'], // or specific MIME types
@@ -1055,16 +1045,15 @@ export const chooseDocument = async () => {
   }
 };
 
-
 export const uploadFile = async (image: any) => {
-  const path = await normalizePath(image.path);
+  const path = await normalizePath(image.base64);
 
-  const pathToBase64 = await ReactNativeBlobUtil.fs.readFile(path, 'base64');
+  // const pathToBase64 = await ReactNativeBlobUtil.fs.readFile(path, 'base64');
   var fileUrl = null;
 
   try {
     const imageData = {
-      uri: pathToBase64,
+      uri: path,
       name: image?.filename,
       type: 'image/jpeg',
       originalname: image?.filename,
