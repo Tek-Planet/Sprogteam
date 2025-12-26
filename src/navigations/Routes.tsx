@@ -24,16 +24,16 @@ import messaging from '@react-native-firebase/messaging';
 import {
   areNotificationsEnabled,
   openNotificationSettings,
-} from '../../NotificationHelper';
+} from '../../NotificationHelper.js';
 
-console.log('NotificationHelper:', areNotificationsEnabled);
-console.log('openNotificationSettings:', openNotificationSettings);
+import VersionCheck from 'react-native-version-check';
 
 const Routes = () => {
   const {token, loading, user} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    updateChecker();
     requestUserPermission();
     initialiseLanguage();
     authenticateUser();
@@ -46,6 +46,17 @@ const Routes = () => {
   const initialiseLanguage = async () => {
     var response = await getStoredLanguage();
     dispatch(setDefaultLanguage(response));
+  };
+
+  const updateChecker = async () => {
+    try {
+      var res = await VersionCheck.needUpdate();
+      if (res !== undefined && res?.isNeeded) {
+        Linking.openURL(res.storeUrl); // open store if update is needed.
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -102,9 +113,8 @@ const Routes = () => {
 
   useEffect(() => {
     const checkNotificationPermission = async () => {
-      console.log('', 'Pass One');
       const enabled = await areNotificationsEnabled();
-      console.log(enabled, 'Pass two');
+
       if (!enabled) {
         Alert.alert(
           'Enable Notifications',
