@@ -17,21 +17,23 @@ import {
 import {Alert, Linking, Platform, View} from 'react-native';
 import {colors} from '../assets/colors';
 import {CustomStatusBar} from '../components';
-import {StripeProvider} from '@stripe/stripe-react-native';
+
 import {getStoredLanguage} from '../utils';
 import messaging from '@react-native-firebase/messaging';
-import VersionCheck from 'react-native-version-check';
+
 import {
   areNotificationsEnabled,
   openNotificationSettings,
 } from '../../NotificationHelper';
+
+console.log('NotificationHelper:', areNotificationsEnabled);
+console.log('openNotificationSettings:', openNotificationSettings);
 
 const Routes = () => {
   const {token, loading, user} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    updateChecker();
     requestUserPermission();
     initialiseLanguage();
     authenticateUser();
@@ -98,21 +100,11 @@ const Routes = () => {
     }
   };
 
-  const updateChecker = async () => {
-    try {
-      var res = await VersionCheck.needUpdate();
-      if (res !== undefined && res?.isNeeded) {
-        console.log('Doing this');
-        Linking.openURL(res.storeUrl); // open store if update is needed.
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const checkNotificationPermission = async () => {
+      console.log('', 'Pass One');
       const enabled = await areNotificationsEnabled();
+      console.log(enabled, 'Pass two');
       if (!enabled) {
         Alert.alert(
           'Enable Notifications',
@@ -147,18 +139,13 @@ const Routes = () => {
 
   if (loading) return <SplashScreen />;
 
-  const StripeKey =
-    'pk_test_51H7dhKIIFaIFWb8DibhnahU1Fct1pIwtMI1rCppJAnn0NRJalw1x5eNZoQ6kLCcRKWsKKjsuehF1fL6QpdlQorgm00pVgb8E3d';
-
   return (
-    <StripeProvider publishableKey={StripeKey}>
-      <NavigationContainer theme={MyTheme}>
-        <View style={{flex: 1, backgroundColor: '#000000'}}>
-          <CustomStatusBar />
-          <BaseNavigation />
-        </View>
-      </NavigationContainer>
-    </StripeProvider>
+    <NavigationContainer theme={MyTheme}>
+      <View style={{flex: 1, backgroundColor: '#000000'}}>
+        <CustomStatusBar />
+        <BaseNavigation />
+      </View>
+    </NavigationContainer>
   );
 };
 
