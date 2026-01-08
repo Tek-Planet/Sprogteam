@@ -41,9 +41,9 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 export const isIOS = Platform.OS === 'ios' ? true : false;
 
-export const BASE_URL = APIENV.development;
+export const BASE_URL = APIENV.production;
 
-export const AUTH_BASE_URL = AUTHAPIENV.local;
+export const AUTH_BASE_URL = AUTHAPIENV.production;
 
 export const {height, width} = Dimensions.get('screen');
 
