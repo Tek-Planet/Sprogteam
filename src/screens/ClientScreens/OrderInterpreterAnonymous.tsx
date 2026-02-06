@@ -20,6 +20,7 @@ import {
   CustomButton,
   Header,
   CustomDropDown,
+  MultiSelectDropDown,
 } from '../../components';
 import {
   BASE_URL,
@@ -43,6 +44,7 @@ import moment from 'moment';
 import {interpreter} from '../../assets/images';
 import {
   useCreateBookingMutation,
+  useFetchBlockInterpreterListQuery,
   useGetLanguagesQuery,
 } from '../../rtk/services';
 import {TabItem, SelectOptionType, BookingModel} from '../../types';
@@ -87,7 +89,10 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
   // dispatch(sendAnonymousEmail(dbody));
   const [error, setError] = useState<string>('');
   const [language, setLanguage] = useState<SelectOptionType>(initialLanguage);
+
   const [sex, setSex] = useState<SelectOptionType>(initialSex);
+  const [blockedList, setBlockedList] = useState<SelectOptionType[]>([]);
+
   const [startTime, setStartTime] = useState<Date | undefined>(undefined);
   const [endTime, setEndTime] = useState<Date | undefined>(undefined);
 
@@ -326,6 +331,10 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
             : address
           : null,
       link: taskTypeId === 1 ? null : meeting.joinUrl,
+      BlockerInterpreterIDs:
+        blockedList.length > 0
+          ? blockedList.map(item => item.value).join(',')
+          : null,
     };
 
     setLoading(false);
@@ -368,6 +377,20 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
       toast('unable to complete booking', 'error');
     }
   };
+  const languageId: any = language.value;
+
+  const {
+    data: interpreters,
+    error: isLoadingInterpretersError,
+    isLoading: isLoadingInterpreters,
+  } = useFetchBlockInterpreterListQuery(
+    {
+      languageId,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   return (
     <View style={{...styles.container, ...baseStyles.padding}}>
@@ -395,6 +418,14 @@ const OrderInterpreterAnonymous = ({navigation}: Props) => {
               options={sexOptions()}
               setValue={setSex}
               title={t('common:sex')}
+            />
+
+            <MultiSelectDropDown
+              label={t('common:blocked') + ' ' + t('common:interpreter')}
+              values={blockedList}
+              options={interpreters || []}
+              setValues={setBlockedList}
+              title={t('common:interpreter')}
             />
 
             <CustomRadioButton

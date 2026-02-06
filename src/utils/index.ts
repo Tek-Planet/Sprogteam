@@ -41,7 +41,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 export const isIOS = Platform.OS === 'ios' ? true : false;
 
-export const BASE_URL = APIENV.development;
+export const BASE_URL = APIENV.local;
 
 export const AUTH_BASE_URL = AUTHAPIENV.development;
 

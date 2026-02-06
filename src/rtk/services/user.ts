@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {BASE_URL} from '../../utils';
 import {store} from '..';
 import {suffix} from '../../environment';
-import {UserModel} from '../../types';
+import {SelectOptionType, UserModel} from '../../types';
 
 // Define a service using a base URL and expected endpoints
 export const userApi = createApi({
@@ -40,6 +40,13 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
+    fetchBlockInterpreterList: builder.query<
+      SelectOptionType[],
+      {languageId: number}
+    >({
+      query: ({languageId}) => `users/blocked/${languageId}`,
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -47,4 +54,5 @@ export const {
   useSearchTranslatorQuery,
   useGetUserDetailsQuery,
   useUpdateUserRatingMutation,
+  useFetchBlockInterpreterListQuery,
 } = userApi;

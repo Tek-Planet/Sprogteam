@@ -50,8 +50,6 @@ const JobsScreen = ({navigation, route}: Props) => {
 
   const [filterQuoteData, setFilterQuoteData] = useState<QuoteType[]>([]);
 
-  // console.log(openBookings?.length);
-
   const {data} = useGetBookingsQuery('', {
     pollingInterval: 45000,
     refetchOnMountOrArgChange: true,
@@ -81,6 +79,8 @@ const JobsScreen = ({navigation, route}: Props) => {
       refetchOnMountOrArgChange: true,
     },
   );
+
+  console.log(openBookings?.length, 'Booking lenght');
 
   const [filterData, setFilterData] = useState<BookingModel[]>([]);
 

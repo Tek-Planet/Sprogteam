@@ -66,7 +66,6 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
 
     let response: any = await dispatch(resetPassword(body));
     setLoading(false);
-    console.log(response);
     if (response.error) {
       setErrorMessage('uanble to reset your password please try again later');
       return;

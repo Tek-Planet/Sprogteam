@@ -22,6 +22,7 @@ type Props = NativeStackScreenProps<RootStackParams, 'Tanslators'>;
 const TranslatorsScreen = ({route, navigation}: Props) => {
   const {searchParameter} = route.params;
   let selectedLanguage = searchParameter.language;
+
   let language: any =
     selectedLanguage.value !== 'Select' ? selectedLanguage.value : '';
   let country = searchParameter.country;
@@ -38,8 +39,6 @@ const TranslatorsScreen = ({route, navigation}: Props) => {
       refetchOnMountOrArgChange: true,
     },
   );
-
-  console.log(data?.length);
 
   const {t} = useTranslation();
   const {colors} = useTheme();
